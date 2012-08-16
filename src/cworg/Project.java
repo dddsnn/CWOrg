@@ -35,9 +35,9 @@ public class Project implements Serializable {
 		v.add(TankType.MAUS);
 		v.add(TankType.E_100);
 		v.add(TankType.AMX_50B);
-		v.add(TankType.T_54);
-		v.add(TankType.PATTON);
-		v.add(TankType.E_50);
+		v.add(TankType.T_62A);
+		v.add(TankType.M48);
+		v.add(TankType.E_50_M);
 		v.add(TankType.BATCHAT);
 		v.add(TankType.OBJECT_261);
 		v.add(TankType.T92);
@@ -46,9 +46,10 @@ public class Project implements Serializable {
 		v.add(TankType.M40_M43);
 		v.add(TankType.GW_TIGER);
 		v.add(TankType.OBJECT_704);
-		v.add(TankType.T30);
-		v.add(TankType.T95);
-		v.add(TankType.JAGDTIGER);
+		v.add(TankType.T110E3);
+		v.add(TankType.T110E4);
+		v.add(TankType.JPZ_E_100);
+		v.add(TankType.AMX_50_FOCH_155);
 		v.add(TankType.T_50_2);
 		return v;
 	}
@@ -62,9 +63,9 @@ public class Project implements Serializable {
 		v.add(TankType.MAUS);
 		v.add(TankType.E_100);
 		v.add(TankType.AMX_50B);
-		v.add(TankType.T_54);
-		v.add(TankType.PATTON);
-		v.add(TankType.E_50);
+		v.add(TankType.T_62A);
+		v.add(TankType.M48);
+		v.add(TankType.E_50_M);
 		v.add(TankType.BATCHAT);
 		v.add(TankType.T_50_2);
 		return v;
