@@ -5,11 +5,11 @@ import java.util.Calendar;
 import java.util.TreeMap;
 
 enum TankClass {
-	HEAVY, MEDIUM, LIGHT, TD, SPG
+	UNKNOWN, HEAVY, MEDIUM, LIGHT, TD, SPG
 }
 
 enum TankNation {
-	USSR, USA, GERMANY, FRANCE
+	UNKNOWN, USSR, USA, GERMANY, FRANCE
 }
 
 public class Tank implements Serializable {
@@ -29,6 +29,7 @@ public class Tank implements Serializable {
 
 		private TankInfo() {
 			// fill name map
+			name_map.put(TankType.UNKNOWN, "Unknown");
 			name_map.put(TankType.IS_7, "IS-7");
 			name_map.put(TankType.IS_4, "IS-4");
 			name_map.put(TankType.IS_8, "IS-8");
@@ -65,7 +66,7 @@ public class Tank implements Serializable {
 			name_map.put(TankType.E_100, "E-100");
 			name_map.put(TankType.E_75, "E-75");
 			name_map.put(TankType.VK4502B, "VK 4502 Ausf. B");
-name_map.put(TankType.E_50_M, "E-50 Ausf. M");
+			name_map.put(TankType.E_50_M, "E-50 Ausf. M");
 			name_map.put(TankType.E_50, "E-50");
 			name_map.put(TankType.PANTHER_2, "Panther II");
 			name_map.put(TankType.VK2801, "VK 2801");
@@ -82,14 +83,15 @@ name_map.put(TankType.E_50_M, "E-50 Ausf. M");
 			name_map.put(TankType.LORRAINE, "Lorraine 40 t");
 			name_map.put(TankType.AMX_13_90, "AMX 13 90");
 			name_map.put(TankType.AMX_50_FOCH, "AMX 50 Foch");
-			name_map.put(TankType.AMX_50_FOCH_155, "AMX 50 Foch (155)");
+			name_map.put(TankType.AMX_50_FOCH_155,
+					"AMX 50 Foch (155)");
 
 			// short name
 			short_name_map = new TreeMap<TankType, String>(name_map);
 			short_name_map.put(TankType.IS_7, "7");
 			short_name_map.put(TankType.IS_4, "4");
 			short_name_map.put(TankType.IS_8, "8");
-name_map.put(TankType.T_62A, "62");
+			name_map.put(TankType.T_62A, "62");
 			short_name_map.put(TankType.T_54, "54");
 			short_name_map.put(TankType.T_44, "44");
 			name_map.put(TankType.OBJECT_268, "268");
@@ -124,6 +126,7 @@ name_map.put(TankType.T_62A, "62");
 			name_map.put(TankType.AMX_50_FOCH_155, "Foch 155");
 
 			// tier
+			tier_map.put(TankType.UNKNOWN, 0);
 			tier_map.put(TankType.IS_7, 10);
 			tier_map.put(TankType.IS_4, 10);
 			tier_map.put(TankType.T110E5, 10);
@@ -179,6 +182,7 @@ name_map.put(TankType.T_62A, "62");
 			tier_map.put(TankType.HUMMEL, 5);
 
 			// nation
+			nation_map.put(TankType.UNKNOWN, TankNation.UNKNOWN);
 			nation_map.put(TankType.IS_7, TankNation.USSR);
 			nation_map.put(TankType.IS_4, TankNation.USSR);
 			nation_map.put(TankType.IS_8, TankNation.USSR);
@@ -232,9 +236,11 @@ name_map.put(TankType.T_62A, "62");
 			nation_map.put(TankType.LORRAINE, TankNation.FRANCE);
 			nation_map.put(TankType.AMX_13_90, TankNation.FRANCE);
 			nation_map.put(TankType.AMX_50_FOCH, TankNation.FRANCE);
-			nation_map.put(TankType.AMX_50_FOCH_155, TankNation.FRANCE);
+			nation_map.put(TankType.AMX_50_FOCH_155,
+					TankNation.FRANCE);
 
 			// class
+			class_map.put(TankType.UNKNOWN, TankClass.UNKNOWN);
 			class_map.put(TankType.IS_7, TankClass.HEAVY);
 			class_map.put(TankType.IS_4, TankClass.HEAVY);
 			class_map.put(TankType.IS_8, TankClass.HEAVY);
@@ -320,6 +326,26 @@ name_map.put(TankType.T_62A, "62");
 		status = new TankStatus(type);
 	}
 
+	public static String getTankName(TankType t) {
+		return TankInfo.getInstance().getTankName(t);
+	}
+
+	public static String getTankShortName(TankType t) {
+		return TankInfo.getInstance().getTankShortName(t);
+	}
+
+	public static TankClass getTankClass(TankType t) {
+		return TankInfo.getInstance().getTankClass(t);
+	}
+
+	public static int getTankTier(TankType t) {
+		return TankInfo.getInstance().getTankTier(t);
+	}
+
+	public static TankNation getTankNation(TankType t) {
+		return TankInfo.getInstance().getTankNation(t);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof Tank))
@@ -354,26 +380,6 @@ name_map.put(TankType.T_62A, "62");
 
 	public String getShortName() {
 		return Tank.getTankShortName(type);
-	}
-
-	public static String getTankName(TankType t) {
-		return TankInfo.getInstance().getTankName(t);
-	}
-
-	public static String getTankShortName(TankType t) {
-		return TankInfo.getInstance().getTankShortName(t);
-	}
-
-	public static TankClass getTankClass(TankType t) {
-		return TankInfo.getInstance().getTankClass(t);
-	}
-
-	public static int getTankTier(TankType t) {
-		return TankInfo.getInstance().getTankTier(t);
-	}
-
-	public static TankNation getTankNation(TankType t) {
-		return TankInfo.getInstance().getTankNation(t);
 	}
 
 	public TankStatus getStatus() {

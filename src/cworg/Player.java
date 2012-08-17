@@ -9,13 +9,21 @@ public class Player implements Serializable {
 	private boolean is_active;
 	private String name;
 
-	Player(String name) {
+	public Player(String name) {
 		this.name = name;
 		tanks = new Vector<Tank>();
 		is_banned = false;
 		is_active = true;
 	}
 
+	public void addTank(Tank newTank){
+		for(Tank t : tanks) {
+			if(t.equals(newTank) && t.getType() != TankType.UNKNOWN)
+				return;
+		}
+		tanks.add(newTank);
+	}
+	
 	public Vector<Tank> getTanks() {
 		return tanks;
 	}

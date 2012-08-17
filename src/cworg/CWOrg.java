@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import cworg.ui.MainWindow;
+import cworg.web.WebAccess;
 
 public class CWOrg {
 	public static final Color TANK_NOT_RESEARCHED = Color.BLACK;
@@ -125,6 +126,12 @@ public class CWOrg {
 	}
 
 	public static void main(String[] args) {
+		try {
+			System.out.println(WebAccess.getInstance().getPlayer("dddsnn"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		new CWOrg();
 	}
 	

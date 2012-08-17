@@ -14,6 +14,11 @@ public class Clan implements Serializable {
 		players = new Vector<Player>();
 	}
 
+	public static Clan loadData(String clantag) {
+
+		return null;
+	}
+
 	public String getClantag() {
 		return clantag;
 	}
