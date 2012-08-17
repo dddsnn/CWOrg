@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
@@ -19,6 +20,9 @@ import cworg.Player;
 import cworg.Project;
 import cworg.Tank;
 import cworg.TankType;
+import cworg.web.UnknownClanException;
+import cworg.web.UnknownFormatException;
+import cworg.web.WebAccess;
 
 //import com.toedter.calendar.JCalendar;
 //import com.toedter.calendar.JDateChooser;
@@ -91,11 +95,10 @@ public class MainWindow extends JFrame {
 		Action file_new_action = new AbstractAction(
 				"New monitor project") {
 			public void actionPerformed(ActionEvent e) {
-				String clantag = JOptionPane.showInputDialog(
-						_this, "Enter a clan tag");
 				String name = JOptionPane.showInputDialog(
-						_this, "Enter a clan name");
-				org.createProject(clantag, name);
+						_this,
+						"Enter a name for the project");
+				org.createProject(name);
 			}
 		};
 		Action file_save_action = new AbstractAction(
@@ -323,10 +326,10 @@ public class MainWindow extends JFrame {
 			tm.setColumnCount(0);
 			tm.setRowCount(0);
 		}
-		setTitle("FreezeMon - [" + project.getClan().getClantag()
-				+ "]: " + project.getClan().getName());
+		setTitle("CWOrg - " + project.getName());
 		tm.setTankColumns(project.getDisplayedTanks());
-		tm.setPlayers(project.getClan().getPlayers());
+		if (project.getSelectedClan() != null)
+			tm.setPlayers(project.getSelectedClan().getPlayers());
 	}
 
 	void updateCurrentProject() {

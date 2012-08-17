@@ -34,7 +34,7 @@ public class PlayerTableModel extends DefaultTableModel {
 	public void setTankColumns(Vector<TankType> tanks) {
 		setColumnCount(3);
 		tank_cols.clear();
-		if(tanks == null)
+		if (tanks == null)
 			return;
 		for (TankType t : tanks)
 			addTankColumn(t);
@@ -63,7 +63,7 @@ public class PlayerTableModel extends DefaultTableModel {
 	public void setPlayers(Vector<Player> players) {
 		setRowCount(0);
 		player_rows.clear();
-		if(players == null)
+		if (players == null)
 			return;
 		for (Player p : players)
 			addPlayer(p);
@@ -83,6 +83,11 @@ public class PlayerTableModel extends DefaultTableModel {
 
 	public TankType getTankTypeAt(int row, int col) {
 		return tank_cols.get(col);
+	}
+
+	public void clear() {
+		setRowCount(0);
+		player_rows.clear();
 	}
 
 	@Override

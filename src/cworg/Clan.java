@@ -6,17 +6,31 @@ import java.util.Vector;
 public class Clan implements Serializable {
 	private String clantag;
 	private String name;
-	private Vector<Player> players;
+	private Vector<Player> players = new Vector<Player>();
+	private long id = -1;
 
 	Clan(String clantag, String name) {
 		this.clantag = clantag;
 		this.name = name;
-		players = new Vector<Player>();
 	}
 
-	public static Clan loadData(String clantag) {
+	public Clan(String clantag, String name, long id) {
+		this.clantag = clantag;
+		this.name = name;
+		this.id = id;
+	}
 
-		return null;
+	// public static Clan loadData(String clantag) {
+
+	// return null;
+	// }
+
+	public void addPlayer(Player newPlayer) {
+		for (Player p : players) {
+			if (p.equals(newPlayer))
+				return;
+		}
+		players.add(newPlayer);
 	}
 
 	public String getClantag() {
@@ -41,5 +55,13 @@ public class Clan implements Serializable {
 
 	public Vector<Player> getPlayers() {
 		return players;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof Clan))
+			return false;
+		Clan c = (Clan) o;
+		return (c.getClantag().equals(this.getClantag()));
 	}
 }

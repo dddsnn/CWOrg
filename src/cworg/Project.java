@@ -6,21 +6,21 @@ import java.util.Vector;
 import cworg.Tank;
 
 public class Project implements Serializable {
-	private Clan clan;
+	private String name;
+	private Vector<Clan> clans = new Vector<Clan>();
+	private Clan selectedClan = null;
 	/**
 	 * Which tanks are considered top tanks in this project and should be
 	 * displayed in the table
 	 */
 	private Vector<TankType> displayed_tanks;
 
-	Project(Clan clan) {
-		this(clan, Project.TOP_TIERS());
+	public Project(String name) {
+		this.name = name;
 	}
 
-	Project(Clan clan, Vector<TankType> displayed_tanks) {
-		this.clan = clan;
-		if (clan == null)
-			this.clan = new Clan("", "");
+	Project(String name, Vector<TankType> displayed_tanks) {
+		this.name = name;
 		this.displayed_tanks = displayed_tanks;
 		if (displayed_tanks == null)
 			this.displayed_tanks = new Vector<TankType>();
@@ -101,13 +101,23 @@ public class Project implements Serializable {
 		v.add(TankType.HUMMEL);
 		return v;
 	}
-
-	public Clan getClan() {
-		return clan;
+	
+	public void addClan(Clan newClan){
+		for(Clan c : clans){
+			if(c.equals(newClan))
+				return;
+		}
+		if(clans.isEmpty())
+			selectedClan = newClan;
+		clans.add(newClan);
 	}
 
-	public void setClan(Clan clan) {
-		this.clan = clan;
+	public Vector<Clan> getClans() {
+		return clans;
+	}
+
+	public void setClans(Vector<Clan> clans) {
+		this.clans = clans;
 	}
 
 	public Vector<TankType> getDisplayedTanks() {
@@ -118,14 +128,32 @@ public class Project implements Serializable {
 		this.displayed_tanks = displayed_tanks;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Clan getSelectedClan() {
+		return selectedClan;
+	}
+
+	public void setSelectedClan(Clan selectedClan) {
+		this.selectedClan = selectedClan;
+	}
+
 	/**
 	 * Checks whether the players tanks are still frozen and updates their
 	 * status if they have become unfrozen.
 	 */
 	public void refresh() {
-		for (Player p : getClan().getPlayers()) {
-			for (Tank t : p.getTanks()) {
-				t.getStatus().refresh();
+		for (Clan c : clans) {
+			for (Player p : c.getPlayers()) {
+				for (Tank t : p.getTanks()) {
+					t.getStatus().refresh();
+				}
 			}
 		}
 	}

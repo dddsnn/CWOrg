@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Vector;
 
 import cworg.ui.MainWindow;
+import cworg.web.UnknownClanException;
+import cworg.web.UnknownFormatException;
 import cworg.web.WebAccess;
 
 public class CWOrg {
@@ -32,8 +34,8 @@ public class CWOrg {
 		project = null;
 	}
 
-	public void createProject(String clantag, String name) {
-		project = new Project(new Clan(clantag, name));
+	public void createProject(String name) {
+		project = new Project(name);
 		mw.displayProject(project);
 	}
 
@@ -41,32 +43,34 @@ public class CWOrg {
 		if (project == null)
 			return;
 		// names must be unique
-		for (Player p : project.getClan().getPlayers()) {
-			if (name.equals(p.getName()))
-				throw new IllegalArgumentException(
-						"Player names must be unique");
+		for (Clan c : project.getClans()) {
+			for (Player p : c.getPlayers()) {
+				if (name.equals(p.getName()))
+					throw new IllegalArgumentException(
+							"Player names must be unique");
+			}
 		}
-		project.getClan().getPlayers().add(new Player(name));
+		project.getSelectedClan().getPlayers().add(new Player(name));
 		mw.displayProject(project);
 	}
 
-	void toggleActive(String name) {
-		for (Player p : project.getClan().getPlayers()) {
-			if (name == p.getName()) {
-				p.setActive(!p.isActive());
-				mw.displayProject(project);
-			}
-		}
-	}
+	// void toggleActive(String name) {
+	// for (Player p : project.getClan().getPlayers()) {
+	// if (name == p.getName()) {
+	// p.setActive(!p.isActive());
+	// mw.displayProject(project);
+	// }
+	// }
+	// }
 
-	void toggleBanned(String name) {
-		for (Player p : project.getClan().getPlayers()) {
-			if (name == p.getName()) {
-				p.setBanned(!p.isBanned());
-				mw.displayProject(project);
-			}
-		}
-	}
+	// void toggleBanned(String name) {
+	// for (Player p : project.getClan().getPlayers()) {
+	// if (name == p.getName()) {
+	// p.setBanned(!p.isBanned());
+	// mw.displayProject(project);
+	// }
+	// }
+	// }
 
 	void setFrozen(String name, TankType tank, Calendar cal) {
 
@@ -126,17 +130,14 @@ public class CWOrg {
 	}
 
 	public static void main(String[] args) {
-		try {
-			System.out.println(WebAccess.getInstance().getPlayer("dddsnn"));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		new CWOrg();
 	}
-	
+
 	public void removePlayer(Player player) {
-		project.getClan().getPlayers().remove(player);
+		for(Clan c:project.getClans()){
+			if(c.getPlayers().remove(player))
+				break;
+		}
 		mw.displayProject(project);
 	}
 
@@ -146,11 +147,13 @@ public class CWOrg {
 
 	public void changePlayerName(Player player, String name)
 			throws IllegalArgumentException {
-		for (Player p : project.getClan().getPlayers()) {
-			// names must be unique
-			if (p != player && p.getName().equals(name)) {
-				throw new IllegalArgumentException(
-						"Player names must be unique");
+		for (Clan c : project.getClans()) {
+			for (Player p : c.getPlayers()) {
+				// names must be unique
+				if (p != player && p.getName().equals(name)) {
+					throw new IllegalArgumentException(
+							"Player names must be unique");
+				}
 			}
 		}
 		player.setName(name);
@@ -169,7 +172,7 @@ public class CWOrg {
 	}
 
 	public void viewTanks(Vector<TankType> displayed_tanks) {
-		if(getProject() == null)
+		if (getProject() == null)
 			return;
 		getProject().setDisplayedTanks(displayed_tanks);
 		mw.displayProject(getProject());
