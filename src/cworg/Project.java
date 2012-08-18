@@ -101,13 +101,13 @@ public class Project implements Serializable {
 		v.add(TankType.HUMMEL);
 		return v;
 	}
-	
-	public void addClan(Clan newClan){
-		for(Clan c : clans){
-			if(c.equals(newClan))
-				return;
+
+	public void addClan(Clan newClan) throws IllegalArgumentException {
+		for (Clan c : clans) {
+			if (c.equals(newClan))
+				throw new IllegalArgumentException("Clan already exists in project");
 		}
-		if(clans.isEmpty())
+		if (clans.isEmpty())
 			selectedClan = newClan;
 		clans.add(newClan);
 	}

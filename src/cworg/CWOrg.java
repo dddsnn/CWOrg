@@ -39,9 +39,11 @@ public class CWOrg {
 		mw.displayProject(project);
 	}
 
-	public void addPlayer(String name) throws IllegalArgumentException {
+	public void addPlayer(String name) throws IllegalOperationException,
+			IllegalArgumentException {
 		if (project == null)
-			return;
+			throw new IllegalOperationException(
+					"Cannot add players without a project.");
 		// names must be unique
 		for (Clan c : project.getClans()) {
 			for (Player p : c.getPlayers()) {
@@ -53,24 +55,6 @@ public class CWOrg {
 		project.getSelectedClan().getPlayers().add(new Player(name));
 		mw.displayProject(project);
 	}
-
-	// void toggleActive(String name) {
-	// for (Player p : project.getClan().getPlayers()) {
-	// if (name == p.getName()) {
-	// p.setActive(!p.isActive());
-	// mw.displayProject(project);
-	// }
-	// }
-	// }
-
-	// void toggleBanned(String name) {
-	// for (Player p : project.getClan().getPlayers()) {
-	// if (name == p.getName()) {
-	// p.setBanned(!p.isBanned());
-	// mw.displayProject(project);
-	// }
-	// }
-	// }
 
 	void setFrozen(String name, TankType tank, Calendar cal) {
 
@@ -134,8 +118,8 @@ public class CWOrg {
 	}
 
 	public void removePlayer(Player player) {
-		for(Clan c:project.getClans()){
-			if(c.getPlayers().remove(player))
+		for (Clan c : project.getClans()) {
+			if (c.getPlayers().remove(player))
 				break;
 		}
 		mw.displayProject(project);
@@ -176,5 +160,14 @@ public class CWOrg {
 			return;
 		getProject().setDisplayedTanks(displayed_tanks);
 		mw.displayProject(getProject());
+	}
+
+	public void addClan(Clan clan) throws IllegalOperationException, IllegalArgumentException {
+		if (project == null) {
+			throw new IllegalOperationException(
+					"Cannot add a clan without a project.");
+		}
+		project.addClan(clan);
+		mw.displayProject(project);
 	}
 }

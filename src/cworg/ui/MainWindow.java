@@ -16,6 +16,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import cworg.CWOrg;
+import cworg.Clan;
+import cworg.IllegalOperationException;
 import cworg.Player;
 import cworg.Project;
 import cworg.Tank;
@@ -23,9 +25,6 @@ import cworg.TankType;
 import cworg.web.UnknownClanException;
 import cworg.web.UnknownFormatException;
 import cworg.web.WebAccess;
-
-//import com.toedter.calendar.JCalendar;
-//import com.toedter.calendar.JDateChooser;
 
 public class MainWindow extends JFrame {
 	private final CWOrg org;
@@ -191,9 +190,53 @@ public class MainWindow extends JFrame {
 		viewmenu.add(view_arty_action);
 		viewmenu.add(view_custom_action);
 
+		// Clans
+		JMenu clanmenu = new JMenu("Clans");
+		Action clan_add_action = new AbstractAction(
+				"Load Clan info from web") {
+			public void actionPerformed(ActionEvent e) {
+				String name = JOptionPane
+						.showInputDialog(_this,
+								"Enter the clan name (must be exact)");
+				Clan clan = null;
+				try {
+					clan = WebAccess.getInstance().getClan(
+							name);
+				} catch (UnknownClanException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (UnknownFormatException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (clan != null) {
+					try {
+						org.addClan(clan);
+					} catch (IllegalArgumentException ex) {
+						JOptionPane.showMessageDialog(
+								_this,
+								ex.getMessage(),
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+					} catch (IllegalOperationException ex) {
+						JOptionPane.showMessageDialog(
+								_this,
+								ex.getMessage(),
+								"Warning",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		};
+		clanmenu.add(clan_add_action);
+
 		JMenuBar menubar = new JMenuBar();
 		menubar.add(filemenu);
 		menubar.add(viewmenu);
+		menubar.add(clanmenu);
 		setJMenuBar(menubar);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -270,6 +313,12 @@ public class MainWindow extends JFrame {
 				try {
 					org.addPlayer(name);
 				} catch (IllegalArgumentException ex) {
+					JOptionPane.showMessageDialog(
+							_this,
+							ex.getMessage(),
+							"Warning",
+							JOptionPane.WARNING_MESSAGE);
+				} catch (IllegalOperationException ex) {
 					JOptionPane.showMessageDialog(
 							_this,
 							ex.getMessage(),
