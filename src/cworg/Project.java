@@ -105,7 +105,8 @@ public class Project implements Serializable {
 	public void addClan(Clan newClan) throws IllegalArgumentException {
 		for (Clan c : clans) {
 			if (c.equals(newClan))
-				throw new IllegalArgumentException("Clan already exists in project");
+				throw new IllegalArgumentException(
+						"Clan already exists in project");
 		}
 		if (clans.isEmpty())
 			selectedClan = newClan;
@@ -118,6 +119,8 @@ public class Project implements Serializable {
 
 	public void setClans(Vector<Clan> clans) {
 		this.clans = clans;
+		if (!clans.contains(selectedClan))
+			selectedClan = clans.isEmpty() ? null : clans.get(0);
 	}
 
 	public Vector<TankType> getDisplayedTanks() {

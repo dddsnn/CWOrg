@@ -17,7 +17,7 @@ import cworg.Player;
 import cworg.Tank;
 import cworg.TankType;
 
-public class PlayerTable extends JTable {
+public class TanksTable extends JTable {
 //	private static class PlayerTableModel extends DefaultTableModel {
 //		/**
 //		 * Maps the index of a table column to the TankType it
@@ -106,7 +106,7 @@ public class PlayerTable extends JTable {
 //		}
 //	}
 
-	public PlayerTable(PlayerTableModel m) {
+	public TanksTable(PlayerTableModel m) {
 		super(m);
 	}
 
