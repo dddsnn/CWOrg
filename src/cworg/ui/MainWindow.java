@@ -126,8 +126,7 @@ public class MainWindow extends JFrame {
 				JFileChooser fc = new JFileChooser();
 				fc.setMultiSelectionEnabled(false);
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"WoT CW information",
-						"tanks");
+						"WoT CW information", "tanks");
 				fc.setFileFilter(filter);
 				int res = fc.showSaveDialog(_this);
 				if (res == JFileChooser.APPROVE_OPTION) {
@@ -148,8 +147,7 @@ public class MainWindow extends JFrame {
 				JFileChooser fc = new JFileChooser();
 				fc.setMultiSelectionEnabled(false);
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"WoT CW information",
-						"tanks");
+						"WoT CW information", "tanks");
 				fc.setFileFilter(filter);
 				int res = fc.showOpenDialog(_this);
 				if (res == JFileChooser.APPROVE_OPTION)
@@ -170,23 +168,23 @@ public class MainWindow extends JFrame {
 		viewMenu = new JMenu("View");
 		viewTopTierAction = new AbstractAction("Only top tiers") {
 			public void actionPerformed(ActionEvent e) {
-				org.viewTanks(Project.TOP_TIERS());
+				org.setDisplayedTanks(Project.TOP_TIERS());
 			}
 		};
 		viewTopTanksAction = new AbstractAction("Only top tier tanks") {
 			public void actionPerformed(ActionEvent e) {
-				org.viewTanks(Project.TOP_TANKS());
+				org.setDisplayedTanks(Project.TOP_TANKS());
 			}
 		};
 		viewTopHeaviesAction = new AbstractAction(
 				"Only top tier heavies") {
 			public void actionPerformed(ActionEvent e) {
-				org.viewTanks(Project.TOP_HEAVIES());
+				org.setDisplayedTanks(Project.TOP_HEAVIES());
 			}
 		};
 		viewArtyAction = new AbstractAction("Only high tier arties") {
 			public void actionPerformed(ActionEvent e) {
-				org.viewTanks(Project.ARTIES());
+				org.setDisplayedTanks(Project.ARTIES());
 			}
 		};
 		viewCustomAction = new AbstractAction("Custom") {
@@ -203,9 +201,15 @@ public class MainWindow extends JFrame {
 		clanMenu = new JMenu("Clans");
 		clanAddAction = new AbstractAction("Add clan manually") {
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				ClanAddDialog d = new ClanAddDialog(_this);
-				d.waitInput();
+				Clan c = new Clan(d.getClanTag(),
+						d.getClanName());
+				try {
+					org.addClan(c);
+				} catch (IllegalOperationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		};
 		clanAddFromWebAction = new AbstractAction(
@@ -214,6 +218,9 @@ public class MainWindow extends JFrame {
 				String name = JOptionPane
 						.showInputDialog(_this,
 								"Enter the clan name (must be exact)");
+				// cancel
+				if (name == null)
+					return;
 				Clan clan = null;
 				try {
 					clan = WebAccess.getInstance().getClan(
@@ -259,7 +266,6 @@ public class MainWindow extends JFrame {
 
 	public void displayProject(Project project) {
 		clanList.displayProject(project);
-		detailsComp.displayProject(project);
 		if (project == null) {
 			setTitle("CWOrg");
 			// turn off options
@@ -267,19 +273,15 @@ public class MainWindow extends JFrame {
 			clanMenu.setEnabled(false);
 			viewMenu.setEnabled(false);
 			fileSaveProjectAction.setEnabled(false);
-			// tm.setColumnCount(0);
-			// tm.setRowCount(0);
 			return;
 		}
+		detailsComp.displayClan(project.getSelectedClan());
 		setTitle("CWOrg - " + project.getName());
 		// enable options
 		splitPane.setVisible(true);
 		clanMenu.setEnabled(true);
 		viewMenu.setEnabled(true);
 		fileSaveProjectAction.setEnabled(true);
-		// tm.setTankColumns(project.getDisplayedTanks());
-		// if (project.getSelectedClan() != null)
-		// tm.setPlayers(project.getSelectedClan().getPlayers());
 	}
 
 	void updateCurrentProject() {

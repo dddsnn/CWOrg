@@ -3,6 +3,7 @@ package cworg.ui;
 import java.awt.Desktop.Action;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -19,46 +20,30 @@ import cworg.Player;
 
 public class PlayerEditDialog extends JDialog {
 	private final PlayerEditDialog _this;
-	private CWOrg fm;
 	private Player player;
 	private JTextField name;
 	private JCheckBox active;
 	private JCheckBox banned;
 	private JButton close;
+	private CountDownLatch latch = new CountDownLatch(1);
 
-	public PlayerEditDialog(Window parent, final CWOrg fm, Player p) {
+	public PlayerEditDialog(Window parent, Player p) {
 		super(parent);
 		_this = this;
-		this.fm = fm;
 		player = p;
 		name = new JTextField(player.getName());
 		active = new JCheckBox("Active", player.isActive());
 		banned = new JCheckBox("Banned", player.isBanned());
 		close = new JButton("Close");
 
-		AbstractAction toggle_active_action = new AbstractAction(
-				"Active") {
+		AbstractAction closeAction = new AbstractAction("Close") {
 			public void actionPerformed(ActionEvent e) {
-				player.setActive(active.isSelected());
-
-			}
-		};
-		AbstractAction toggle_banned_action = new AbstractAction(
-				"Banned") {
-			public void actionPerformed(ActionEvent e) {
-				player.setBanned(banned.isSelected());
-			}
-		};
-		AbstractAction close_action = new AbstractAction("Close") {
-			public void actionPerformed(ActionEvent e) {
-				applyChanges();
 				dispose();
+				latch.countDown();
 			}
 		};
 
-		active.setAction(toggle_active_action);
-		banned.setAction(toggle_banned_action);
-		close.setAction(close_action);
+		close.setAction(closeAction);
 
 		Box box = new Box(BoxLayout.Y_AXIS);
 		box.add(name);
@@ -67,20 +52,39 @@ public class PlayerEditDialog extends JDialog {
 		box.add(close);
 		setContentPane(box);
 		pack();
+		setTitle("Edit Player " + player.getName());
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
-	
-	private void applyChanges(){
+
+	public String getPlayerName() {
 		try {
-			fm.changePlayerName(player, name.getText());
-		} catch (IllegalArgumentException ex) {
-			JOptionPane.showMessageDialog(
-					_this,
-					ex.getMessage(),
-					"Warning",
-					JOptionPane.WARNING_MESSAGE);
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return name.getText();
+	}
+	
+	public boolean getIsActive(){
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return active.isSelected();
+	}
+	
+	public boolean getIsBanned(){
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return banned.isSelected();
 	}
 }

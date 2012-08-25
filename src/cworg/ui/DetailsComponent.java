@@ -20,25 +20,25 @@ import cworg.Tank;
 import cworg.TankType;
 
 public class DetailsComponent extends JTabbedPane {
-	private PlayerTableModel tm;
-	private PlayerTable table;
+	private PlayerTable playerTable;
+	private TanksTable tanksTable;
 
 	public DetailsComponent() {
-		tm = new PlayerTableModel();
-		table = new PlayerTable(tm);
-		table.setName("Players");
-		add(table);
+		playerTable = new PlayerTable();
+		playerTable.setName("Players");
+		add(playerTable);
+		tanksTable = new TanksTable();
+		tanksTable.setName("Tanks");
+		add(tanksTable);
 	}
 
-	public void displayProject(Project project) {
-		if (project == null) {
-			tm.clear();
+	public void displayClan(Clan clan) {
+		if(clan == null){
+			playerTable.clear();
 			return;
 		}
-		tm.setTankColumns(project.getDisplayedTanks());
-		if (project.getSelectedClan() == null)
-			return;
-		tm.setPlayers(project.getSelectedClan().getPlayers());
+		playerTable.displayClan(clan);
+		tanksTable.displayClan(clan);
 	}
 
 	// private void setupPopupMenu() {

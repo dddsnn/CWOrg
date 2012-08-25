@@ -9,7 +9,7 @@ public class Clan implements Serializable {
 	private Vector<Player> players = new Vector<Player>();
 	private long id = -1;
 
-	Clan(String clantag, String name) {
+	public Clan(String clantag, String name) {
 		this.clantag = clantag;
 		this.name = name;
 	}

@@ -13,17 +13,17 @@ public class Project implements Serializable {
 	 * Which tanks are considered top tanks in this project and should be
 	 * displayed in the table
 	 */
-	private Vector<TankType> displayed_tanks;
+	private Vector<TankType> displayedTanks;
 
 	public Project(String name) {
 		this.name = name;
 	}
 
-	Project(String name, Vector<TankType> displayed_tanks) {
+	Project(String name, Vector<TankType> displayedTanks) {
 		this.name = name;
-		this.displayed_tanks = displayed_tanks;
-		if (displayed_tanks == null)
-			this.displayed_tanks = new Vector<TankType>();
+		this.displayedTanks = displayedTanks;
+		if (displayedTanks == null)
+			this.displayedTanks = new Vector<TankType>();
 	}
 
 	public static Vector<TankType> TOP_TIERS() {
@@ -124,11 +124,11 @@ public class Project implements Serializable {
 	}
 
 	public Vector<TankType> getDisplayedTanks() {
-		return displayed_tanks;
+		return displayedTanks;
 	}
 
 	public void setDisplayedTanks(Vector<TankType> displayed_tanks) {
-		this.displayed_tanks = displayed_tanks;
+		this.displayedTanks = displayed_tanks;
 	}
 
 	public String getName() {
@@ -144,7 +144,8 @@ public class Project implements Serializable {
 	}
 
 	public void setSelectedClan(Clan selectedClan) {
-		this.selectedClan = selectedClan;
+		if (selectedClan != null)
+			this.selectedClan = selectedClan;
 	}
 
 	/**

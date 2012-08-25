@@ -3,6 +3,7 @@ package cworg.ui;
 import java.awt.Desktop.Action;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.CountDownLatch;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -22,6 +23,7 @@ public class ClanAddDialog extends JDialog {
 	private JTextField name = new JTextField();
 	private JTextField tag = new JTextField();
 	private JButton add = new JButton("Add");
+	private CountDownLatch latch = new CountDownLatch(1);
 
 	public ClanAddDialog(Window parent) {
 		super(parent);
@@ -30,6 +32,7 @@ public class ClanAddDialog extends JDialog {
 		AbstractAction addAction = new AbstractAction("Add") {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
+				latch.countDown();
 			}
 		};
 		add.setAction(addAction);
@@ -42,15 +45,29 @@ public class ClanAddDialog extends JDialog {
 		box.add(add);
 		setContentPane(box);
 		pack();
+		setTitle("Add new Clan");
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 
-	/**
-	 * TODO Blocks until it's closed
-	 */
-	public void waitInput() {
-//		 
+	public String getClanName() {
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name.getText();
+	}
+	
+	public String getClanTag() {
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return tag.getText();
 	}
 }

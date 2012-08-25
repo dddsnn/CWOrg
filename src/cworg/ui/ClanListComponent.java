@@ -33,8 +33,8 @@ public class ClanListComponent extends JComponent {
 		add(list);
 		GridBagConstraints listConstraints = new GridBagConstraints(0,
 				1, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH,
-				GridBagConstraints.BOTH, new Insets(0, 0,
-						0, 0), 0, 0);
+				GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0);
 		gbl.setConstraints(list, listConstraints);
 	}
 
@@ -47,6 +47,7 @@ public class ClanListComponent extends JComponent {
 			model.addElement("[" + c.getClantag() + "]: "
 					+ c.getName());
 		}
-		list.setSelectedIndex(project.getClans().indexOf(project.getSelectedClan()));
+		list.setSelectedIndex(project.getClans().indexOf(
+				project.getSelectedClan()));
 	}
 }

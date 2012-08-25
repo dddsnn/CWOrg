@@ -34,32 +34,19 @@ public class CWOrg {
 		project = null;
 	}
 
+	public static void main(String[] args) {
+		new CWOrg();
+	}
+
 	public void createProject(String name) {
 		project = new Project(name);
 		mw.displayProject(project);
 	}
 
-	public void addPlayer(String name) throws IllegalOperationException,
-			IllegalArgumentException {
-		if (project == null)
-			throw new IllegalOperationException(
-					"Cannot add players without a project.");
-		// names must be unique
-		for (Clan c : project.getClans()) {
-			for (Player p : c.getPlayers()) {
-				if (name.equals(p.getName()))
-					throw new IllegalArgumentException(
-							"Player names must be unique");
-			}
-		}
-		project.getSelectedClan().getPlayers().add(new Player(name));
-		mw.displayProject(project);
-	}
-
-	void setFrozen(String name, TankType tank, Calendar cal) {
-
-	}
-
+	// void setFrozen(String name, TankType tank, Calendar cal) {
+	//
+	// }
+	
 	public void saveProject(File f) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -84,6 +71,10 @@ public class CWOrg {
 		}
 	}
 
+	// void setFrozen(String name, TankType tank, Calendar cal) {
+	//
+	// }
+	
 	public void loadProject(File f) {
 		FileInputStream fis;
 		ObjectInputStream ois;
@@ -113,9 +104,26 @@ public class CWOrg {
 		}
 	}
 
-	public static void main(String[] args) {
-		new CWOrg();
+	public void addPlayer(String name) throws IllegalOperationException,
+			IllegalArgumentException {
+		if (project == null)
+			throw new IllegalOperationException(
+					"Cannot add players without a project.");
+		// names must be unique
+		for (Clan c : project.getClans()) {
+			for (Player p : c.getPlayers()) {
+				if (name.equals(p.getName()))
+					throw new IllegalArgumentException(
+							"Player names must be unique");
+			}
+		}
+		project.getSelectedClan().getPlayers().add(new Player(name));
+		mw.displayProject(project);
 	}
+
+	// void setFrozen(String name, TankType tank, Calendar cal) {
+	//
+	// }
 
 	public void removePlayer(Player player) {
 		for (Clan c : project.getClans()) {
@@ -125,49 +133,53 @@ public class CWOrg {
 		mw.displayProject(project);
 	}
 
-	public Project getProject() {
-		return this.project;
-	}
-
-	public void changePlayerName(Player player, String name)
-			throws IllegalArgumentException {
-		for (Clan c : project.getClans()) {
-			for (Player p : c.getPlayers()) {
-				// names must be unique
-				if (p != player && p.getName().equals(name)) {
-					throw new IllegalArgumentException(
-							"Player names must be unique");
-				}
-			}
-		}
-		player.setName(name);
-	}
-
-	public void setInGarage(Tank tank, boolean selected) {
-		tank.getStatus().setInGarage(selected);
-	}
-
-	public void setUnfrozen(Tank tank) {
-		tank.getStatus().setFrozen(false);
-	}
-
-	public void setFrozen(Tank tank, Calendar start) {
-		tank.getStatus().setFrozenFrom(start);
-	}
-
-	public void viewTanks(Vector<TankType> displayed_tanks) {
-		if (getProject() == null)
-			return;
-		getProject().setDisplayedTanks(displayed_tanks);
-		mw.displayProject(getProject());
-	}
-
-	public void addClan(Clan clan) throws IllegalOperationException, IllegalArgumentException {
+	public void addClan(Clan clan) throws IllegalOperationException {
 		if (project == null) {
 			throw new IllegalOperationException(
 					"Cannot add a clan without a project.");
 		}
 		project.addClan(clan);
 		mw.displayProject(project);
+	}
+
+	public void removeClan(Clan clan) {
+		// TODO
+	}
+
+	public Project getProject() {
+		return this.project;
+	}
+
+	// public void changePlayerName(Player player, String name)
+	// throws IllegalArgumentException {
+	// for (Clan c : project.getClans()) {
+	// for (Player p : c.getPlayers()) {
+	// // names must be unique
+	// if (p != player && p.getName().equals(name)) {
+	// throw new IllegalArgumentException(
+	// "Player names must be unique");
+	// }
+	// }
+	// }
+	// player.setName(name);
+	// }
+
+	// public void setInGarage(Tank tank, boolean selected) {
+	// tank.getStatus().setInGarage(selected);
+	// }
+	//
+	// public void setUnfrozen(Tank tank) {
+	// tank.getStatus().setFrozen(false);
+	// }
+	//
+	// public void setFrozen(Tank tank, Calendar start) {
+	// tank.getStatus().setFrozenFrom(start);
+	// }
+
+	public void setDisplayedTanks(Vector<TankType> displayedTanks) {
+		if (getProject() == null)
+			return;
+		getProject().setDisplayedTanks(displayedTanks);
+		mw.displayProject(getProject());
 	}
 }

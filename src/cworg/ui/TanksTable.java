@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import cworg.CWOrg;
+import cworg.Clan;
 import cworg.Player;
 import cworg.Tank;
 import cworg.TankType;
@@ -106,8 +107,8 @@ public class TanksTable extends JTable {
 //		}
 //	}
 
-	public TanksTable(PlayerTableModel m) {
-		super(m);
+	public TanksTable() {
+		super(new PlayerTableModel());
 	}
 
 	public Player getSelectedPlayer() {
@@ -167,5 +168,10 @@ public class TanksTable extends JTable {
 	@Override
 	public PlayerTableModel getModel() {
 		return (PlayerTableModel) super.getModel();
+	}
+
+	public void displayClan(Clan clan) {
+		// TODO Auto-generated method stub
+		
 	}
 }
