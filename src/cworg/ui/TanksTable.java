@@ -1,23 +1,23 @@
 package cworg.ui;
-
-import java.awt.Color;
-import java.awt.Component;
-import java.util.TreeMap;
-import java.util.Vector;
-
-import javax.swing.DefaultRowSorter;
+//
+//import java.awt.Color;
+//import java.awt.Component;
+//import java.util.TreeMap;
+//import java.util.Vector;
+//
+//import javax.swing.DefaultRowSorter;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
-import cworg.CWOrg;
-import cworg.Clan;
-import cworg.Player;
-import cworg.Tank;
-import cworg.TankType;
-
+//import javax.swing.table.DefaultTableModel;
+//import javax.swing.table.TableCellRenderer;
+//import javax.swing.table.TableModel;
+//import javax.swing.table.TableRowSorter;
+//
+//import cworg.CWOrg;
+//import cworg.Clan;
+//import cworg.Player;
+//import cworg.Tank;
+//import cworg.TankType;
+//
 public class TanksTable extends JTable {
 //	private static class PlayerTableModel extends DefaultTableModel {
 //		/**
@@ -106,72 +106,72 @@ public class TanksTable extends JTable {
 //			return false;
 //		}
 //	}
-
-	public TanksTable() {
-		super(new PlayerTableModel());
-	}
-
-	public Player getSelectedPlayer() {
-		int row = getSelectedRow();
-		int col = getSelectedColumn();
-		if (row == -1 || col == -1)
-			return null;
-		return getModel().getPlayerAt(row, col);
-	}
-
-	public TankType getSelectedTankType() {
-		int row = getSelectedRow();
-		int col = getSelectedColumn();
-		if (row == -1 || col == -1)
-			return null;
-		return getModel().getTankTypeAt(row, col);
-	}
-
-	public Tank getSelectedTank() {
-		int row = getSelectedRow();
-		int col = getSelectedColumn();
-		if (row == -1 || col == -1)
-			return null;
-		return getModel().getTankAt(row, col);
-	}
-
-	@Override
-	public Component prepareRenderer(TableCellRenderer r, int row,
-			int column) {
-		Component c = super.prepareRenderer(r, row, column);
-		Player p = getModel().getPlayerAt(row, column);
-		// player unavailable
-		if ((!p.isActive() || p.isBanned()) && column != 0) {
-			c.setBackground(CWOrg.PLAYER_UNAVAILABLE);
-			return c;
-		}
-		Tank t = getModel().getTankAt(row, column);
-		if (t == null) {
-			if (column == 0) {
-				c.setBackground(Color.WHITE);
-				return c;
-			} else if (column < 3) {
-				// player available
-				c.setBackground(CWOrg.PLAYER_AVAILABLE);
-				return c;
-			} else {
-
-				c.setBackground(CWOrg.TANK_NOT_RESEARCHED);
-				return c;
-			}
-		}
-
-		c.setBackground(t.getStatus().getColor());
-		return c;
-	}
-
-	@Override
-	public PlayerTableModel getModel() {
-		return (PlayerTableModel) super.getModel();
-	}
-
-	public void displayClan(Clan clan) {
-		// TODO Auto-generated method stub
-		
-	}
+//
+//	public TanksTable() {
+//		super(new PlayerTableModel());
+//	}
+//
+//	public Player getSelectedPlayer() {
+//		int row = getSelectedRow();
+//		int col = getSelectedColumn();
+//		if (row == -1 || col == -1)
+//			return null;
+//		return getModel().getPlayerAt(row, col);
+//	}
+//
+//	public TankType getSelectedTankType() {
+//		int row = getSelectedRow();
+//		int col = getSelectedColumn();
+//		if (row == -1 || col == -1)
+//			return null;
+//		return getModel().getTankTypeAt(row, col);
+//	}
+//
+//	public Tank getSelectedTank() {
+//		int row = getSelectedRow();
+//		int col = getSelectedColumn();
+//		if (row == -1 || col == -1)
+//			return null;
+//		return getModel().getTankAt(row, col);
+//	}
+//
+//	@Override
+//	public Component prepareRenderer(TableCellRenderer r, int row,
+//			int column) {
+//		Component c = super.prepareRenderer(r, row, column);
+//		Player p = getModel().getPlayerAt(row, column);
+//		// player unavailable
+//		if ((!p.isActive() || p.isBanned()) && column != 0) {
+//			c.setBackground(CWOrg.PLAYER_UNAVAILABLE);
+//			return c;
+//		}
+//		Tank t = getModel().getTankAt(row, column);
+//		if (t == null) {
+//			if (column == 0) {
+//				c.setBackground(Color.WHITE);
+//				return c;
+//			} else if (column < 3) {
+//				// player available
+//				c.setBackground(CWOrg.PLAYER_AVAILABLE);
+//				return c;
+//			} else {
+//
+//				c.setBackground(CWOrg.TANK_NOT_RESEARCHED);
+//				return c;
+//			}
+//		}
+//
+//		c.setBackground(t.getStatus().getColor());
+//		return c;
+//	}
+//
+//	@Override
+//	public PlayerTableModel getModel() {
+//		return (PlayerTableModel) super.getModel();
+//	}
+//
+//	public void displayClan(Clan clan) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 }

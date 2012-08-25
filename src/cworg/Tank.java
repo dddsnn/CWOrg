@@ -4,14 +4,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TreeMap;
 
-enum TankClass {
-	UNKNOWN, HEAVY, MEDIUM, LIGHT, TD, SPG
-}
-
-enum TankNation {
-	UNKNOWN, USSR, USA, GERMANY, FRANCE
-}
-
 public class Tank implements Serializable {
 	private static class TankInfo {
 		private static TankInfo instance = new TankInfo();
@@ -21,11 +13,16 @@ public class Tank implements Serializable {
 		}
 
 		// maps for name, nation, tier and class
-		private TreeMap<TankType, String> name_map = new TreeMap<TankType, String>();
-		private TreeMap<TankType, String> short_name_map = new TreeMap<TankType, String>();
-		private TreeMap<TankType, Integer> tier_map = new TreeMap<TankType, Integer>();
-		private TreeMap<TankType, TankNation> nation_map = new TreeMap<TankType, TankNation>();
-		private TreeMap<TankType, TankClass> class_map = new TreeMap<TankType, TankClass>();
+		private TreeMap<TankType, String> name_map =
+				new TreeMap<TankType, String>();
+		private TreeMap<TankType, String> short_name_map =
+				new TreeMap<TankType, String>();
+		private TreeMap<TankType, Integer> tier_map =
+				new TreeMap<TankType, Integer>();
+		private TreeMap<TankType, TankNation> nation_map =
+				new TreeMap<TankType, TankNation>();
+		private TreeMap<TankType, TankClass> class_map =
+				new TreeMap<TankType, TankClass>();
 
 		private TankInfo() {
 			// fill name map
@@ -87,7 +84,8 @@ public class Tank implements Serializable {
 					"AMX 50 Foch (155)");
 
 			// short name
-			short_name_map = new TreeMap<TankType, String>(name_map);
+			short_name_map =
+					new TreeMap<TankType, String>(name_map);
 			short_name_map.put(TankType.IS_7, "7");
 			short_name_map.put(TankType.IS_4, "4");
 			short_name_map.put(TankType.IS_8, "8");
@@ -138,6 +136,7 @@ public class Tank implements Serializable {
 			tier_map.put(TankType.E_50_M, 10);
 			tier_map.put(TankType.BATCHAT, 10);
 			tier_map.put(TankType.OBJECT_268, 10);
+			tier_map.put(TankType.JPZ_E_100, 10);
 			tier_map.put(TankType.T110E3, 10);
 			tier_map.put(TankType.T110E4, 10);
 			tier_map.put(TankType.AMX_50_FOCH_155, 10);

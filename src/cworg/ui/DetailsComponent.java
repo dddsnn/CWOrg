@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import cworg.Clan;
@@ -20,25 +21,21 @@ import cworg.Tank;
 import cworg.TankType;
 
 public class DetailsComponent extends JTabbedPane {
-	private PlayerTable playerTable;
-	private TanksTable tanksTable;
+	private PlayerTable playerTable = new PlayerTable();
+	private TanksTable tanksTable = new TanksTable();
+	JScrollPane playerTableScroll = new JScrollPane(playerTable);
+	JScrollPane tanksTableScroll = new JScrollPane(tanksTable);
 
 	public DetailsComponent() {
-		playerTable = new PlayerTable();
-		playerTable.setName("Players");
-		add(playerTable);
-		tanksTable = new TanksTable();
-		tanksTable.setName("Tanks");
-		add(tanksTable);
+		playerTableScroll.setName("Players");
+		add(playerTableScroll);
+		tanksTableScroll.setName("Tanks");
+		add(tanksTableScroll);
 	}
 
 	public void displayClan(Clan clan) {
-		if(clan == null){
-			playerTable.clear();
-			return;
-		}
 		playerTable.displayClan(clan);
-		tanksTable.displayClan(clan);
+//		tanksTable.displayClan(clan);
 	}
 
 	// private void setupPopupMenu() {

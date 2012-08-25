@@ -26,7 +26,7 @@ import cworg.web.UnknownClanException;
 import cworg.web.UnknownFormatException;
 import cworg.web.WebAccess;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements ActionProvider{
 	private final CWOrg org;
 	// private final JPopupMenu popmen;
 	private MainWindow _this = this;
@@ -48,7 +48,7 @@ public class MainWindow extends JFrame {
 
 		setupMenu();
 
-		clanList = new ClanListComponent();
+		clanList = new ClanListComponent(org, this);
 		detailsComp = new DetailsComponent();
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				clanList, detailsComp);
@@ -273,6 +273,7 @@ public class MainWindow extends JFrame {
 			clanMenu.setEnabled(false);
 			viewMenu.setEnabled(false);
 			fileSaveProjectAction.setEnabled(false);
+			detailsComp.displayClan(null);
 			return;
 		}
 		detailsComp.displayClan(project.getSelectedClan());
@@ -286,5 +287,16 @@ public class MainWindow extends JFrame {
 
 	void updateCurrentProject() {
 		displayProject(org.getProject());
+	}
+	
+	@Override
+	public Action getClanAddAction() {
+		return clanAddAction;
+	}
+	
+
+	@Override
+	public Action getClanAddFromWebAction() {
+		return clanAddFromWebAction;
 	}
 }

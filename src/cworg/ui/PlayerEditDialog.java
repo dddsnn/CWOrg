@@ -32,8 +32,8 @@ public class PlayerEditDialog extends JDialog {
 		_this = this;
 		player = p;
 		name = new JTextField(player.getName());
-		active = new JCheckBox("Active", player.isActive());
-		banned = new JCheckBox("Banned", player.isBanned());
+//TODO		active = new JCheckBox("Active", player.isActive());
+//TODO		banned = new JCheckBox("Banned", player.isBanned());
 		close = new JButton("Close");
 
 		AbstractAction closeAction = new AbstractAction("Close") {

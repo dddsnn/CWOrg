@@ -1,14 +1,16 @@
 package cworg;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Vector;
 
 public class Player implements Serializable {
-	private Vector<Tank> tanks = new Vector<Tank>();
-	private boolean is_banned = false;
-	private boolean is_active = true;
 	private String name;
+	private Vector<Tank> tanks = new Vector<Tank>();
+	private Calendar unavailableStart = null;
+	private Calendar unavailableEnd = null;
 	private long id = -1;
+	private Calendar lastCW = null;
 
 	public Player(String name) {
 		this.name = name;
@@ -36,22 +38,6 @@ public class Player implements Serializable {
 		this.tanks = tanks;
 	}
 
-	public boolean isBanned() {
-		return is_banned;
-	}
-
-	public void setBanned(boolean is_banned) {
-		this.is_banned = is_banned;
-	}
-
-	public boolean isActive() {
-		return is_active;
-	}
-
-	public void setActive(boolean is_active) {
-		this.is_active = is_active;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -70,6 +56,51 @@ public class Player implements Serializable {
 
 	boolean hasTank(TankType t) {
 		return tanks.contains(new Tank(t));
+	}
+
+	public Calendar getUnavailableStart() {
+		return unavailableStart;
+	}
+
+	public void setUnavailableStart(Calendar unavailableStart) {
+		this.unavailableStart = unavailableStart;
+	}
+
+	public Calendar getUnavailableEnd() {
+		return unavailableEnd;
+	}
+
+	public void setUnavailableEnd(Calendar unavailableEnd) {
+		this.unavailableEnd = unavailableEnd;
+	}
+
+	public Calendar getLastCW() {
+		return lastCW;
+	}
+
+	public void setLastCW(Calendar lastCW) {
+		this.lastCW = lastCW;
+	}
+
+	public boolean isAvailable() {
+		if (unavailableStart == null && unavailableEnd == null)
+			return true;
+		Calendar now = Calendar.getInstance();
+		if (unavailableEnd != null) {
+			if (unavailableEnd.before(now)) {
+				unavailableStart = null;
+				unavailableEnd = null;
+				return true;
+			} else
+				return false;
+		}
+		if (unavailableStart != null) {
+			if (unavailableStart.after(now))
+				return true;
+			else
+				return false;
+		}
+		return true;
 	}
 
 	@Override

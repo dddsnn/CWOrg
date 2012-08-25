@@ -17,7 +17,7 @@ import cworg.web.UnknownClanException;
 import cworg.web.UnknownFormatException;
 import cworg.web.WebAccess;
 
-public class CWOrg {
+public class CWOrg implements UICallback {
 	public static final Color TANK_NOT_RESEARCHED = Color.BLACK;
 	public static final Color TANK_NOT_IN_GARAGE = Color.LIGHT_GRAY;
 	public static final Color TANK_AVAILABLE = Color.GREEN;
@@ -27,11 +27,10 @@ public class CWOrg {
 	public static final Color PLAYER_UNAVAILABLE = Color.RED;
 
 	private MainWindow mw;
-	private Project project;
+	private Project project = null;
 
 	CWOrg() {
 		mw = new MainWindow(this);
-		project = null;
 	}
 
 	public static void main(String[] args) {
@@ -46,7 +45,7 @@ public class CWOrg {
 	// void setFrozen(String name, TankType tank, Calendar cal) {
 	//
 	// }
-	
+
 	public void saveProject(File f) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -74,7 +73,7 @@ public class CWOrg {
 	// void setFrozen(String name, TankType tank, Calendar cal) {
 	//
 	// }
-	
+
 	public void loadProject(File f) {
 		FileInputStream fis;
 		ObjectInputStream ois;
@@ -181,5 +180,14 @@ public class CWOrg {
 			return;
 		getProject().setDisplayedTanks(displayedTanks);
 		mw.displayProject(getProject());
+	}
+
+	@Override
+	public void setSelectedClan(Clan c) {
+		if (project == null || !project.getClans().contains(c)
+				|| c == project.getSelectedClan())
+			return;
+		project.setSelectedClan(c);
+		mw.displayProject(project);
 	}
 }
