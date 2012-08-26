@@ -14,7 +14,7 @@ import java.util.Vector;
 
 import cworg.ui.MainWindow;
 import cworg.web.UnknownClanException;
-import cworg.web.UnknownFormatException;
+import cworg.web.UnknownWebFormatException;
 import cworg.web.WebAccess;
 
 public class CWOrg implements UICallback {

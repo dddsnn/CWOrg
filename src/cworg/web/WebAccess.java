@@ -23,7 +23,7 @@ public class WebAccess {
 	}
 
 	public long getPlayerID(String name) throws UnknownPlayerException,
-			UnknownFormatException, IOException {
+			UnknownWebFormatException, IOException {
 		String response = getResponse("http://worldoftanks.eu/community/accounts/api/1.1/?source_token=WG-WoT_Assistant-1.2.2&search="
 				+ name + "&offset=0&limit=1");
 
@@ -31,20 +31,20 @@ public class WebAccess {
 		try {
 			json = new JSONObject(response);
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		try {
 			if (!json.getString("status").equals("ok"))
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 		} catch (JSONException e1) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		JSONArray results;
 		try {
 			results = json.getJSONObject("data").getJSONArray(
 					"items");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		if (results.length() == 0)
 			throw new UnknownPlayerException("Player " + name
@@ -55,7 +55,7 @@ public class WebAccess {
 			receivedName = results.getJSONObject(0).getString(
 					"name");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		if (!receivedName.equals(name))
 			throw new UnknownPlayerException("Player " + name
@@ -66,12 +66,12 @@ public class WebAccess {
 			id = json.getJSONObject("data").getJSONArray("items")
 					.getJSONObject(0).getLong("id");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		return id;
 	}
 
-	public Player getPlayer(long id) throws UnknownFormatException,
+	public Player getPlayer(long id) throws UnknownWebFormatException,
 			IOException {
 		String response = getResponse("http://worldoftanks.eu/community/accounts/"
 				+ id
@@ -80,26 +80,26 @@ public class WebAccess {
 		try {
 			json = new JSONObject(response);
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		try {
 			if (!json.getString("status").equals("ok"))
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 		} catch (JSONException e1) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		JSONArray tanks;
 		try {
 			tanks = json.getJSONObject("data").getJSONArray(
 					"vehicles");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		String name;
 		try {
 			name = json.getJSONObject("data").getString("name");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		Player p = new Player(name, id);
 		for (int i = 0; i < tanks.length(); i++) {
@@ -108,7 +108,7 @@ public class WebAccess {
 				tankName = tanks.getJSONObject(i).getString(
 						"name");
 			} catch (JSONException e) {
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 			}
 			p.addTank(new Tank(WebAdapter.getLocalType(tankName)));
 		}
@@ -116,13 +116,13 @@ public class WebAccess {
 	}
 
 	public Player getPlayer(String name) throws UnknownPlayerException,
-			UnknownFormatException, IOException {
+			UnknownWebFormatException, IOException {
 		long id = getPlayerID(name);
 		return getPlayer(id);
 	}
 
 	public long getClanID(String name) throws UnknownClanException,
-			UnknownFormatException, IOException {
+			UnknownWebFormatException, IOException {
 		String response = getResponse("http://worldoftanks.eu/community/clans/api/1.1/?source_token=WG-WoT_Assistant-1.2.2&search="
 				+ name + "&offset=0&limit=1");
 
@@ -130,20 +130,20 @@ public class WebAccess {
 		try {
 			json = new JSONObject(response);
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		try {
 			if (!json.getString("status").equals("ok"))
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 		} catch (JSONException e1) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		JSONArray results;
 		try {
 			results = json.getJSONObject("data").getJSONArray(
 					"items");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		if (results.length() == 0)
 			throw new UnknownClanException("Clan " + name
@@ -154,7 +154,7 @@ public class WebAccess {
 			receivedName = results.getJSONObject(0).getString(
 					"name");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		if (!receivedName.equals(name))
 			throw new UnknownClanException("Clan " + name
@@ -165,12 +165,12 @@ public class WebAccess {
 			id = json.getJSONObject("data").getJSONArray("items")
 					.getJSONObject(0).getLong("id");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		return id;
 	}
 
-	public Clan getClan(long id) throws UnknownFormatException, IOException {
+	public Clan getClan(long id) throws UnknownWebFormatException, IOException {
 		String response = getResponse("http://worldoftanks.eu/community/clans/"
 				+ id
 				+ "/api/1.1/?source_token=WG-WoT_Assistant-1.2.2");
@@ -178,13 +178,13 @@ public class WebAccess {
 		try {
 			json = new JSONObject(response);
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		try {
 			if (!json.getString("status").equals("ok"))
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 
 		String name, clantag;
@@ -193,7 +193,7 @@ public class WebAccess {
 			clantag = json.getJSONObject("data").getString(
 					"abbreviation");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		Clan clan = new Clan(clantag, name, id);
 
@@ -203,7 +203,7 @@ public class WebAccess {
 			members = json.getJSONObject("data").getJSONArray(
 					"members");
 		} catch (JSONException e) {
-			throw new UnknownFormatException();
+			throw new UnknownWebFormatException();
 		}
 		for (int i = 0; i < members.length(); i++) {
 			long playerID;
@@ -211,7 +211,7 @@ public class WebAccess {
 				playerID = members.getJSONObject(i).getLong(
 						"account_id");
 			} catch (JSONException e) {
-				throw new UnknownFormatException();
+				throw new UnknownWebFormatException();
 			}
 			clan.addPlayer(getPlayer(playerID));
 		}
@@ -219,7 +219,7 @@ public class WebAccess {
 	}
 
 	public Clan getClan(String name) throws UnknownClanException,
-			UnknownFormatException, IOException {
+			UnknownWebFormatException, IOException {
 		long id = getClanID(name);
 		return getClan(id);
 	}
