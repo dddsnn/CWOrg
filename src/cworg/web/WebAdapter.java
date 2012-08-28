@@ -42,7 +42,7 @@ public class WebAdapter {
 			map.put("T110E4", TankType.T110E4);
 			map.put("T30", TankType.T30);
 			map.put("T28_Prototype", TankType.T28_P);
-			map.put("95", TankType.T95);
+			map.put("T95", TankType.T95);
 			map.put("T28", TankType.T28);
 			map.put("T92", TankType.T92);
 			map.put("M40M43", TankType.M40_M43);
@@ -78,13 +78,11 @@ public class WebAdapter {
 	}
 
 	public static TankType getLocalType(String remoteTankName) {
-		TankType type = NameInfo.getInstance().getLocalType(
-				remoteTankName);
+		TankType type = NameInfo.getInstance().getLocalType(remoteTankName);
 		if (type == null) {
 			System.err.println("Unknown Tank: " + remoteTankName);
 			return TankType.UNKNOWN;
 		}
 		return type;
 	}
-
 }

@@ -32,8 +32,8 @@ public class PlayerEditDialog extends JDialog {
 		_this = this;
 		player = p;
 		name = new JTextField(player.getName());
-//TODO		active = new JCheckBox("Active", player.isActive());
-//TODO		banned = new JCheckBox("Banned", player.isBanned());
+		// TODO active = new JCheckBox("Active", player.isActive());
+		// TODO banned = new JCheckBox("Banned", player.isBanned());
 		close = new JButton("Close");
 
 		AbstractAction closeAction = new AbstractAction("Close") {
@@ -67,8 +67,8 @@ public class PlayerEditDialog extends JDialog {
 		}
 		return name.getText();
 	}
-	
-	public boolean getIsActive(){
+
+	public boolean getIsActive() {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
@@ -77,8 +77,8 @@ public class PlayerEditDialog extends JDialog {
 		}
 		return active.isSelected();
 	}
-	
-	public boolean getIsBanned(){
+
+	public boolean getIsBanned() {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {

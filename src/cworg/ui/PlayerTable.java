@@ -65,12 +65,10 @@ public class PlayerTable extends JTable {
 				if (p.getUnavailableStart() == null)
 					availability = "available";
 				else {
-					Calendar start =
-							p.getUnavailableStart();
+					Calendar start = p.getUnavailableStart();
 					availability =
 							"available until "
-									+ start.get(Calendar.DAY_OF_MONTH)
-									+ "."
+									+ start.get(Calendar.DAY_OF_MONTH) + "."
 									+ start.get(Calendar.MONTH);
 				}
 			} else {
@@ -78,8 +76,7 @@ public class PlayerTable extends JTable {
 					Calendar end = p.getUnavailableEnd();
 					availability =
 							"unavailable until "
-									+ end.get(Calendar.DAY_OF_MONTH)
-									+ "."
+									+ end.get(Calendar.DAY_OF_MONTH) + "."
 									+ end.get(Calendar.MONTH);
 				} else
 					availability = "unavailable";
@@ -92,19 +89,16 @@ public class PlayerTable extends JTable {
 			else {
 				Calendar c = p.getLastCW();
 				lastCW =
-						c.get(Calendar.DAY_OF_MONTH)
-								+ "."
-								+ c.get(Calendar.MONTH)
-								+ ", "
-								+ c.get(Calendar.HOUR_OF_DAY)
-								+ ":"
+						c.get(Calendar.DAY_OF_MONTH) + "."
+								+ c.get(Calendar.MONTH) + ", "
+								+ c.get(Calendar.HOUR_OF_DAY) + ":"
 								+ c.get(Calendar.MINUTE);
 			}
 			row.add(lastCW);
 			// tanks
 			int heaviesAvail = 0, heaviesFrozen = 0, tdsAvail = 0, tdsFrozen =
-					0, medsAvail = 0, medsFrozen = 0, artyAvail =
-					0, artyFrozen = 0;
+					0, medsAvail = 0, medsFrozen = 0, artyAvail = 0, artyFrozen =
+					0;
 			for (Tank t : p.getTanks()) {
 				switch (t.getTier()) {
 				case 10:
@@ -140,17 +134,13 @@ public class PlayerTable extends JTable {
 				}
 			}
 			// heavies
-			row.add(heaviesAvail + "/"
-					+ (heaviesAvail + heaviesFrozen));
+			row.add(heaviesAvail + "/" + (heaviesAvail + heaviesFrozen));
 			// tds
-			row.add(tdsAvail + "/"
-					+ (tdsAvail + tdsFrozen));
+			row.add(tdsAvail + "/" + (tdsAvail + tdsFrozen));
 			// meds
-			row.add(medsAvail + "/"
-					+ (medsAvail + medsFrozen));
+			row.add(medsAvail + "/" + (medsAvail + medsFrozen));
 			// arties
-			row.add(artyAvail + "/"
-					+ (artyAvail + artyFrozen));
+			row.add(artyAvail + "/" + (artyAvail + artyFrozen));
 			// // two rows for active/banned status, signalized with
 			// // colors, so no text
 			// row.add("");

@@ -23,8 +23,7 @@ public class Player implements Serializable {
 
 	public void addTank(Tank newTank) {
 		for (Tank t : tanks) {
-			if (t.equals(newTank)
-					&& t.getType() != TankType.UNKNOWN)
+			if (t.equals(newTank) && t.getType() != TankType.UNKNOWN)
 				return;
 		}
 		tanks.add(newTank);

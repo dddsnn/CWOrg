@@ -142,17 +142,14 @@ public class TankStatus implements Serializable {
 			// unfreezing
 			if (getFrozenUntil().after(tomorrow)) {
 				int day = getFrozenUntil().get(Calendar.DATE);
-				int month = (getFrozenUntil().get(
-						Calendar.MONTH) + 1);
+				int month = (getFrozenUntil().get(Calendar.MONTH) + 1);
 				return day + "." + month;
 			}
 			// frozen for less than 24 hours -> display time of
 			// unfreezing
 			else {
-				int hour = getFrozenUntil().get(
-						Calendar.HOUR_OF_DAY);
-				int minute = getFrozenUntil().get(
-						Calendar.MINUTE);
+				int hour = getFrozenUntil().get(Calendar.HOUR_OF_DAY);
+				int minute = getFrozenUntil().get(Calendar.MINUTE);
 				return hour + ":" + minute;
 			}
 		}

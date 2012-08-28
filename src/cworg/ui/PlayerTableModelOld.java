@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import cworg.Player;
 import cworg.Tank;
 import cworg.TankType;
+
 @Deprecated
 public class PlayerTableModelOld extends DefaultTableModel {
 	/**
@@ -48,8 +49,7 @@ public class PlayerTableModelOld extends DefaultTableModel {
 		row.add("");
 		row.add("");
 		for (int i = 3; i < getColumnCount(); i++) {
-			int index = p.getTanks().indexOf(
-					new Tank(tank_cols.get(i)));
+			int index = p.getTanks().indexOf(new Tank(tank_cols.get(i)));
 			if (index == -1) {
 				row.add("");
 				continue;

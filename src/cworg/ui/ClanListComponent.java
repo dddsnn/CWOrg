@@ -49,17 +49,18 @@ public class ClanListComponent extends JComponent {
 		});
 		setLayout(gbl);
 		add(label);
-		GridBagConstraints labelConstraints = new GridBagConstraints(0,
-				0, 1, 1, 1.0, 0.0, GridBagConstraints.NORTH,
-				GridBagConstraints.HORIZONTAL, new Insets(0, 0,
-						0, 0), 0, 0);
+		GridBagConstraints labelConstraints =
+				new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
+						GridBagConstraints.NORTH,
+						GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0),
+						0, 0);
 		gbl.setConstraints(label, labelConstraints);
 		JScrollPane listScroll = new JScrollPane(list);
 		add(listScroll);
-		GridBagConstraints listScrollConstraints = new GridBagConstraints(0,
-				1, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH,
-				GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0);
+		GridBagConstraints listScrollConstraints =
+				new GridBagConstraints(0, 1, 1, 1, 1.0, 1.0,
+						GridBagConstraints.NORTH, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0);
 		gbl.setConstraints(listScroll, listScrollConstraints);
 		setupPopupMenu();
 	}
@@ -71,14 +72,12 @@ public class ClanListComponent extends JComponent {
 		MouseAdapter ma = new MouseAdapter() {
 			public void mouseReleased(MouseEvent me) {
 				if (me.isPopupTrigger())
-					popmen.show(me.getComponent(),
-							me.getX(), me.getY());
+					popmen.show(me.getComponent(), me.getX(), me.getY());
 			}
 
 			public void mousePressed(MouseEvent me) {
 				if (me.isPopupTrigger())
-					popmen.show(me.getComponent(),
-							me.getX(), me.getY());
+					popmen.show(me.getComponent(), me.getX(), me.getY());
 			}
 		};
 		list.addMouseListener(ma);
@@ -92,8 +91,7 @@ public class ClanListComponent extends JComponent {
 		}
 		displayedClans = project.getClans();
 		for (Clan c : project.getClans()) {
-			model.addElement("[" + c.getClantag() + "]: "
-					+ c.getName());
+			model.addElement("[" + c.getClantag() + "]: " + c.getName());
 		}
 		list.setSelectedIndex(project.getClans().indexOf(
 				project.getSelectedClan()));

@@ -80,12 +80,10 @@ public class Tank implements Serializable {
 			name_map.put(TankType.LORRAINE, "Lorraine 40 t");
 			name_map.put(TankType.AMX_13_90, "AMX 13 90");
 			name_map.put(TankType.AMX_50_FOCH, "AMX 50 Foch");
-			name_map.put(TankType.AMX_50_FOCH_155,
-					"AMX 50 Foch (155)");
+			name_map.put(TankType.AMX_50_FOCH_155, "AMX 50 Foch (155)");
 
 			// short name
-			short_name_map =
-					new TreeMap<TankType, String>(name_map);
+			short_name_map = new TreeMap<TankType, String>(name_map);
 			short_name_map.put(TankType.IS_7, "7");
 			short_name_map.put(TankType.IS_4, "4");
 			short_name_map.put(TankType.IS_8, "8");
@@ -235,8 +233,7 @@ public class Tank implements Serializable {
 			nation_map.put(TankType.LORRAINE, TankNation.FRANCE);
 			nation_map.put(TankType.AMX_13_90, TankNation.FRANCE);
 			nation_map.put(TankType.AMX_50_FOCH, TankNation.FRANCE);
-			nation_map.put(TankType.AMX_50_FOCH_155,
-					TankNation.FRANCE);
+			nation_map.put(TankType.AMX_50_FOCH_155, TankNation.FRANCE);
 
 			// class
 			class_map.put(TankType.UNKNOWN, TankClass.UNKNOWN);

@@ -25,9 +25,8 @@ import cworg.Player;
 import cworg.Project;
 import cworg.Tank;
 import cworg.TankType;
-import cworg.replay.IncompleteReplayException;
 import cworg.replay.ReplayImport;
-import cworg.replay.UnknownReplayFormatException;
+import cworg.replay.ReplayException;
 import cworg.web.UnknownClanException;
 import cworg.web.UnknownWebFormatException;
 import cworg.web.WebAccess;
@@ -36,13 +35,12 @@ public class MainWindow extends JFrame implements ActionProvider {
 	private final CWOrg org;
 	// private final JPopupMenu popmen;
 	private MainWindow _this = this;
-	private JMenu fileMenu, viewMenu, clanMenu, battlesMenu;
+	private JMenu fileMenu, viewMenu, clanMenu, playedBattlesMenu;
 	private Action fileNewProjectAction, fileSaveProjectAction,
-			fileLoadProjectAction, fileQuitAction,
-			viewTopTierAction, viewTopTanksAction,
-			viewTopHeaviesAction, viewArtyAction, viewCustomAction,
-			clanAddAction, clanAddFromWebAction,
-			battleImportAction;
+			fileLoadProjectAction, fileQuitAction, viewTopTierAction,
+			viewTopTanksAction, viewTopHeaviesAction, viewArtyAction,
+			viewCustomAction, clanAddAction, clanAddFromWebAction,
+			playedBattlesImportAction;
 	private JSplitPane splitPane;
 	private ClanListComponent clanList;
 	private DetailsComponent detailsComp;
@@ -58,8 +56,8 @@ public class MainWindow extends JFrame implements ActionProvider {
 		clanList = new ClanListComponent(org, this);
 		detailsComp = new DetailsComponent();
 		splitPane =
-				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-						clanList, detailsComp);
+				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, clanList,
+						detailsComp);
 		add(splitPane);
 		validate();
 		splitPane.setDividerLocation(0.2);
@@ -112,76 +110,52 @@ public class MainWindow extends JFrame implements ActionProvider {
 	private void setupMenu() {
 		// File
 		fileMenu = new JMenu("File");
-		fileNewProjectAction =
-				new AbstractAction("New monitor project") {
-					public void actionPerformed(
-							ActionEvent e) {
-						String name =
-								JOptionPane.showInputDialog(
-										_this,
-										"Enter a name for the project");
-						org.createProject(name);
-					}
-				};
-		fileSaveProjectAction =
-				new AbstractAction("Save monitor project") {
-					public void actionPerformed(
-							ActionEvent e) {
-						if (org.getProject() == null) {
-							JOptionPane.showMessageDialog(
-									_this,
-									"No project to save",
-									"Warning",
-									JOptionPane.WARNING_MESSAGE);
-							return;
-						}
-						JFileChooser fc =
-								new JFileChooser();
-						fc.setMultiSelectionEnabled(false);
-						FileNameExtensionFilter filter =
-								new FileNameExtensionFilter(
-										"WoT CW information",
-										"tanks");
-						fc.setFileFilter(filter);
-						int res =
-								fc.showSaveDialog(_this);
-						if (res == JFileChooser.APPROVE_OPTION) {
-							String path =
-									fc.getSelectedFile()
-											.getPath();
-							File f;
-							if (!path.endsWith(".tanks"))
-								f =
-										new File(
-												path
-														+ ".tanks");
-							else
-								f =
-										new File(
-												path);
-							org.saveProject(f);
-						}
-					}
-				};
-		fileLoadProjectAction =
-				new AbstractAction("Load monitor project") {
-					public void actionPerformed(
-							ActionEvent e) {
-						JFileChooser fc =
-								new JFileChooser();
-						fc.setMultiSelectionEnabled(false);
-						FileNameExtensionFilter filter =
-								new FileNameExtensionFilter(
-										"WoT CW information",
-										"tanks");
-						fc.setFileFilter(filter);
-						int res =
-								fc.showOpenDialog(_this);
-						if (res == JFileChooser.APPROVE_OPTION)
-							org.loadProject(fc
-									.getSelectedFile());
-					}
-				};
+		fileNewProjectAction = new AbstractAction("New monitor project") {
+			public void actionPerformed(ActionEvent e) {
+				String name =
+						JOptionPane.showInputDialog(_this,
+								"Enter a name for the project");
+				org.createProject(name);
+			}
+		};
+		fileSaveProjectAction = new AbstractAction("Save monitor project") {
+			public void actionPerformed(ActionEvent e) {
+				if (org.getProject() == null) {
+					JOptionPane.showMessageDialog(_this, "No project to save",
+							"Warning", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				JFileChooser fc = new JFileChooser();
+				fc.setMultiSelectionEnabled(false);
+				FileNameExtensionFilter filter =
+						new FileNameExtensionFilter("WoT CW information",
+								"tanks");
+				fc.setFileFilter(filter);
+				int res = fc.showSaveDialog(_this);
+				if (res == JFileChooser.APPROVE_OPTION) {
+					String path = fc.getSelectedFile().getPath();
+					File f;
+					if (!path.endsWith(".tanks"))
+						f = new File(path + ".tanks");
+					else
+						f = new File(path);
+					org.saveProject(f);
+				}
+			}
+		};
+		fileLoadProjectAction = new AbstractAction("Load monitor project") {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser();
+				fc.setMultiSelectionEnabled(false);
+				FileNameExtensionFilter filter =
+						new FileNameExtensionFilter("WoT CW information",
+								"tanks");
+				fc.setFileFilter(filter);
+				int res = fc.showOpenDialog(_this);
+				if (res == JFileChooser.APPROVE_OPTION)
+					org.loadProject(fc.getSelectedFile());
+			}
+		};
 		fileQuitAction = new AbstractAction("Quit") {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -193,48 +167,43 @@ public class MainWindow extends JFrame implements ActionProvider {
 		fileMenu.add(fileQuitAction);
 
 		// View
-		viewMenu = new JMenu("View");
-		viewTopTierAction = new AbstractAction("Only top tiers") {
-			public void actionPerformed(ActionEvent e) {
-				org.setDisplayedTanks(Project.TOP_TIERS());
-			}
-		};
-		viewTopTanksAction = new AbstractAction("Only top tier tanks") {
-			public void actionPerformed(ActionEvent e) {
-				org.setDisplayedTanks(Project.TOP_TANKS());
-			}
-		};
-		viewTopHeaviesAction =
-				new AbstractAction("Only top tier heavies") {
-					public void actionPerformed(
-							ActionEvent e) {
-						org.setDisplayedTanks(Project
-								.TOP_HEAVIES());
-					}
-				};
-		viewArtyAction = new AbstractAction("Only high tier arties") {
-			public void actionPerformed(ActionEvent e) {
-				org.setDisplayedTanks(Project.ARTIES());
-			}
-		};
-		viewCustomAction = new AbstractAction("Custom") {
-			public void actionPerformed(ActionEvent e) {
-			}
-		};
-		viewMenu.add(viewTopTierAction);
-		viewMenu.add(viewTopTanksAction);
-		viewMenu.add(viewTopHeaviesAction);
-		viewMenu.add(viewArtyAction);
-		viewMenu.add(viewCustomAction);
+		// viewMenu = new JMenu("View");
+		// viewTopTierAction = new AbstractAction("Only top tiers") {
+		// public void actionPerformed(ActionEvent e) {
+		// org.setDisplayedTanks(Project.TOP_TIERS());
+		// }
+		// };
+		// viewTopTanksAction = new AbstractAction("Only top tier tanks") {
+		// public void actionPerformed(ActionEvent e) {
+		// org.setDisplayedTanks(Project.TOP_TANKS());
+		// }
+		// };
+		// viewTopHeaviesAction = new AbstractAction("Only top tier heavies") {
+		// public void actionPerformed(ActionEvent e) {
+		// org.setDisplayedTanks(Project.TOP_HEAVIES());
+		// }
+		// };
+		// viewArtyAction = new AbstractAction("Only high tier arties") {
+		// public void actionPerformed(ActionEvent e) {
+		// org.setDisplayedTanks(Project.ARTIES());
+		// }
+		// };
+		// viewCustomAction = new AbstractAction("Custom") {
+		// public void actionPerformed(ActionEvent e) {
+		// }
+		// };
+		// viewMenu.add(viewTopTierAction);
+		// viewMenu.add(viewTopTanksAction);
+		// viewMenu.add(viewTopHeaviesAction);
+		// viewMenu.add(viewArtyAction);
+		// viewMenu.add(viewCustomAction);
 
 		// Clans
 		clanMenu = new JMenu("Clans");
 		clanAddAction = new AbstractAction("Add clan manually") {
 			public void actionPerformed(ActionEvent arg0) {
 				ClanAddDialog d = new ClanAddDialog(_this);
-				Clan c =
-						new Clan(d.getClanTag(),
-								d.getClanName());
+				Clan c = new Clan(d.getClanTag(), d.getClanName());
 				try {
 					org.addClan(c);
 				} catch (IllegalOperationException e) {
@@ -244,22 +213,17 @@ public class MainWindow extends JFrame implements ActionProvider {
 			}
 		};
 		clanAddFromWebAction =
-				new AbstractAction(
-						"Add Clan with info from web") {
-					public void actionPerformed(
-							ActionEvent e) {
+				new AbstractAction("Add Clan with info from web") {
+					public void actionPerformed(ActionEvent e) {
 						String name =
-								JOptionPane.showInputDialog(
-										_this,
+								JOptionPane.showInputDialog(_this,
 										"Enter the clan name (must be exact)");
 						// cancel
 						if (name == null)
 							return;
 						Clan clan = null;
 						try {
-							clan =
-									WebAccess.getInstance()
-											.getClan(name);
+							clan = WebAccess.getInstance().getClan(name);
 						} catch (UnknownClanException e1) {
 							// TODO Auto-generated
 							// catch block
@@ -277,16 +241,12 @@ public class MainWindow extends JFrame implements ActionProvider {
 							try {
 								org.addClan(clan);
 							} catch (IllegalArgumentException ex) {
-								JOptionPane.showMessageDialog(
-										_this,
-										ex.getMessage(),
-										"Warning",
+								JOptionPane.showMessageDialog(_this,
+										ex.getMessage(), "Warning",
 										JOptionPane.WARNING_MESSAGE);
 							} catch (IllegalOperationException ex) {
-								JOptionPane.showMessageDialog(
-										_this,
-										ex.getMessage(),
-										"Warning",
+								JOptionPane.showMessageDialog(_this,
+										ex.getMessage(), "Warning",
 										JOptionPane.WARNING_MESSAGE);
 							}
 						}
@@ -296,43 +256,41 @@ public class MainWindow extends JFrame implements ActionProvider {
 		clanMenu.add(clanAddFromWebAction);
 
 		// battles
-		battlesMenu = new JMenu("Battles");
-		battleImportAction = new AbstractAction("Import Replay") {
+		playedBattlesMenu = new JMenu("Played Battles");
+		playedBattlesImportAction = new AbstractAction("Import Replay") {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fc = new JFileChooser();
 				fc.setMultiSelectionEnabled(false);
 				FileNameExtensionFilter filter =
-						new FileNameExtensionFilter(
-								"WoT Replays",
-								"wotreplay");
+						new FileNameExtensionFilter("WoT Replays", "wotreplay");
 				fc.setFileFilter(filter);
 				int res = fc.showOpenDialog(_this);
 				if (res == JFileChooser.APPROVE_OPTION)
 					try {
-						ReplayImport.getInstance()
-								.getBattleFromReplay(fc.getSelectedFile());
+						ReplayImport.getInstance().getBattleFromReplay(
+								fc.getSelectedFile());
 					} catch (IllegalArgumentException e) {
-						// TODO Auto-generated catch
+						// TODO
+						// Auto-generated
+						// catch
 						// block
 						e.printStackTrace();
-					} catch (IncompleteReplayException e) {
-						// TODO Auto-generated catch
-						// block
-						e.printStackTrace();
-					} catch (UnknownReplayFormatException e) {
-						// TODO Auto-generated catch
+					} catch (ReplayException e) {
+						// TODO
+						// Auto-generated
+						// catch
 						// block
 						e.printStackTrace();
 					}
 			}
 		};
-		battlesMenu.add(battleImportAction);
+		playedBattlesMenu.add(playedBattlesImportAction);
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(fileMenu);
-		menuBar.add(viewMenu);
+//		menuBar.add(viewMenu);
 		menuBar.add(clanMenu);
-		menuBar.add(battlesMenu);
+		menuBar.add(playedBattlesMenu);
 		setJMenuBar(menuBar);
 	}
 
@@ -344,7 +302,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 			splitPane.setVisible(false);
 			clanMenu.setEnabled(false);
 			viewMenu.setEnabled(false);
-			battlesMenu.setEnabled(false);
+			playedBattlesMenu.setEnabled(false);
 			fileSaveProjectAction.setEnabled(false);
 			detailsComp.displayClan(null);
 			return;
@@ -355,7 +313,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 		splitPane.setVisible(true);
 		clanMenu.setEnabled(true);
 		viewMenu.setEnabled(true);
-		battlesMenu.setEnabled(true);
+		playedBattlesMenu.setEnabled(true);
 		fileSaveProjectAction.setEnabled(true);
 	}
 

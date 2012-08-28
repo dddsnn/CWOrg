@@ -60,7 +60,7 @@ public class ClanAddDialog extends JDialog {
 		}
 		return name.getText();
 	}
-	
+
 	public String getClanTag() {
 		try {
 			latch.await();

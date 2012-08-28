@@ -35,7 +35,7 @@ public class DetailsComponent extends JTabbedPane {
 
 	public void displayClan(Clan clan) {
 		playerTable.displayClan(clan);
-//		tanksTable.displayClan(clan);
+		// tanksTable.displayClan(clan);
 	}
 
 	// private void setupPopupMenu() {

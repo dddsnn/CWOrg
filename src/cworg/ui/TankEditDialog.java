@@ -38,8 +38,7 @@ public class TankEditDialog extends JDialog {
 		player = owner;
 
 		frozenDesc = new JLabel("Freezing start time");
-		inGarage = new JCheckBox("In garage", t.getStatus()
-				.isInGarage());
+		inGarage = new JCheckBox("In garage", t.getStatus().isInGarage());
 		frozen = new JCheckBox("Frozen", t.getStatus().isFrozen());
 		model = new SpinnerDateModel();
 		time = new JSpinner(model);
@@ -48,8 +47,7 @@ public class TankEditDialog extends JDialog {
 			time.setValue(t.getStatus().getFrozenFrom().getTime());
 		close = new JButton("Close");
 
-		AbstractAction toggleFrozenAction = new AbstractAction(
-				"Frozen") {
+		AbstractAction toggleFrozenAction = new AbstractAction("Frozen") {
 			public void actionPerformed(ActionEvent e) {
 				time.setEnabled(frozen.isSelected());
 			}
@@ -78,7 +76,7 @@ public class TankEditDialog extends JDialog {
 		setVisible(true);
 	}
 
-	public boolean getIsInGarage(){
+	public boolean getIsInGarage() {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
@@ -87,8 +85,8 @@ public class TankEditDialog extends JDialog {
 		}
 		return inGarage.isSelected();
 	}
-	
-	public boolean getIsFrozen(){
+
+	public boolean getIsFrozen() {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
@@ -97,8 +95,8 @@ public class TankEditDialog extends JDialog {
 		}
 		return frozen.isSelected();
 	}
-	
-	public Calendar getFreezeTime(){
+
+	public Calendar getFreezeTime() {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {

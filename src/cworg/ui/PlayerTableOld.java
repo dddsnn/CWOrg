@@ -77,4 +77,4 @@
 //	public PlayerTableModel getModel() {
 //		return (PlayerTableModel) super.getModel();
 //	}
-//}
+// }

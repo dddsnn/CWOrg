@@ -56,7 +56,7 @@ public class Clan implements Serializable {
 	public Vector<Player> getPlayers() {
 		return players;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if (o == null || !(o instanceof Clan))
