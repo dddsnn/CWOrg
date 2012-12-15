@@ -12,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.Vector;
 
+import cworg.replay.ReplayBattle;
+import cworg.replay.ReplayBattlePlayer;
 import cworg.ui.MainWindow;
 import cworg.web.UnknownClanException;
 import cworg.web.UnknownWebFormatException;
@@ -28,6 +30,7 @@ public class CWOrg implements UICallback {
 
 	private MainWindow mw;
 	private Project project = null;
+	private Clan selectedClan = null;
 
 	CWOrg() {
 		mw = new MainWindow(this);
@@ -42,10 +45,7 @@ public class CWOrg implements UICallback {
 		mw.displayProject(project);
 	}
 
-	// void setFrozen(String name, TankType tank, Calendar cal) {
-	//
-	// }
-
+	@Override
 	public void saveProject(File f) {
 		FileOutputStream fos;
 		ObjectOutputStream oos;
@@ -70,10 +70,7 @@ public class CWOrg implements UICallback {
 		}
 	}
 
-	// void setFrozen(String name, TankType tank, Calendar cal) {
-	//
-	// }
-
+	@Override
 	public void loadProject(File f) {
 		FileInputStream fis;
 		ObjectInputStream ois;
@@ -103,11 +100,14 @@ public class CWOrg implements UICallback {
 		}
 	}
 
+	@Override
 	public void addPlayer(String name) throws IllegalOperationException,
 			IllegalArgumentException {
 		if (project == null)
 			throw new IllegalOperationException(
 					"Cannot add players without a project.");
+		if (selectedClan == null)
+			throw new IllegalOperationException("No clan selected.");
 		// names must be unique
 		for (Clan c : project.getClans()) {
 			for (Player p : c.getPlayers()) {
@@ -116,13 +116,9 @@ public class CWOrg implements UICallback {
 							"Player names must be unique");
 			}
 		}
-		project.getSelectedClan().getPlayers().add(new Player(name));
+		selectedClan.getPlayers().add(new Player(name));
 		mw.displayProject(project);
 	}
-
-	// void setFrozen(String name, TankType tank, Calendar cal) {
-	//
-	// }
 
 	public void removePlayer(Player player) {
 		for (Clan c : project.getClans()) {
@@ -132,21 +128,21 @@ public class CWOrg implements UICallback {
 		mw.displayProject(project);
 	}
 
+	@Override
 	public void addClan(Clan clan) throws IllegalOperationException {
 		if (project == null) {
 			throw new IllegalOperationException(
 					"Cannot add a clan without a project.");
 		}
 		project.addClan(clan);
+		if (selectedClan == null)
+			selectedClan = clan;
 		mw.displayProject(project);
 	}
 
 	public void removeClan(Clan clan) {
 		// TODO
-	}
-
-	public Project getProject() {
-		return this.project;
+		// reset selectedClan
 	}
 
 	// public void changePlayerName(Player player, String name)
@@ -174,20 +170,81 @@ public class CWOrg implements UICallback {
 	// public void setFrozen(Tank tank, Calendar start) {
 	// tank.getStatus().setFrozenFrom(start);
 	// }
-
+	@Override
 	public void setDisplayedTanks(Vector<TankType> displayedTanks) {
-		if (getProject() == null)
+		if (project == null)
 			return;
-		getProject().setDisplayedTanks(displayedTanks);
-		mw.displayProject(getProject());
+		project.setDisplayedTanks(displayedTanks);
+		mw.displayProject(project);
 	}
 
 	@Override
 	public void setSelectedClan(Clan c) {
-		if (project == null || !project.getClans().contains(c)
-				|| c == project.getSelectedClan())
+		if (c == null || !project.getClans().contains(c) || c == selectedClan)
 			return;
-		project.setSelectedClan(c);
+		selectedClan = c;
 		mw.displayProject(project);
+	}
+
+	@Override
+	public Clan getSelectedClan() {
+		return selectedClan;
+	}
+
+	@Override
+	public boolean hasProject() {
+		return project != null;
+	}
+
+	@Override
+	public void addReplayBattle(ReplayBattle replayBattle)
+			throws IllegalArgumentException {
+		if (!replayBattle.isSameClanBattle())
+			throw new IllegalArgumentException("Not a clan wars battle.");
+		// load clan info if necessary
+		String tag1 = replayBattle.getTeam1().firstElement().getClanTag();
+		if (project.containsClanByTag(tag1)) {
+			try {
+				addClan(WebAccess.getInstance().getClanByTag(tag1));
+			} catch (IllegalOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownClanException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownWebFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		String tag2 = replayBattle.getTeam2().firstElement().getClanTag();
+		if (project.containsClanByTag(tag2)) {
+			try {
+				addClan(WebAccess.getInstance().getClanByTag(tag2));
+			} catch (IllegalOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownClanException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (UnknownWebFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// TODO update existing information here?
+//		Clan clan1 = project.getClans().getClanByTag(tag1);
+		for (ReplayBattlePlayer rp : replayBattle.getTeam1()) {
+//			Player p = clan1.getPlayerByName(rp.getName());
+//			if(p == null)
+//				continue;
+			
+		}
 	}
 }

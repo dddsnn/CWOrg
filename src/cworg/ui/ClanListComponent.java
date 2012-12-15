@@ -32,10 +32,12 @@ public class ClanListComponent extends JComponent {
 	private JPopupMenu popmen;
 	private Action clanAddAction, clanAddFromWebAction;
 	private Vector<Clan> displayedClans = null;
+	private UICallback uic;
 
 	public ClanListComponent(final UICallback uic, ActionProvider ap) {
 		this.clanAddAction = ap.getClanAddAction();
 		this.clanAddFromWebAction = ap.getClanAddFromWebAction();
+		this.uic = uic;
 		list.setModel(model);
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -94,6 +96,6 @@ public class ClanListComponent extends JComponent {
 			model.addElement("[" + c.getClantag() + "]: " + c.getName());
 		}
 		list.setSelectedIndex(project.getClans().indexOf(
-				project.getSelectedClan()));
+				uic.getSelectedClan()));
 	}
 }

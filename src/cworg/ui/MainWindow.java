@@ -25,6 +25,7 @@ import cworg.Player;
 import cworg.Project;
 import cworg.Tank;
 import cworg.TankType;
+import cworg.UICallback;
 import cworg.replay.ReplayImport;
 import cworg.replay.ReplayException;
 import cworg.web.UnknownClanException;
@@ -32,7 +33,7 @@ import cworg.web.UnknownWebFormatException;
 import cworg.web.WebAccess;
 
 public class MainWindow extends JFrame implements ActionProvider {
-	private final CWOrg org;
+	private final UICallback uic;
 	// private final JPopupMenu popmen;
 	private MainWindow _this = this;
 	private JMenu fileMenu, viewMenu, clanMenu, playedBattlesMenu;
@@ -45,15 +46,15 @@ public class MainWindow extends JFrame implements ActionProvider {
 	private ClanListComponent clanList;
 	private DetailsComponent detailsComp;
 
-	public MainWindow(final CWOrg org) {
-		this.org = org;
+	public MainWindow(final UICallback uic) {
+		this.uic = uic;
 
 		setTitle("FreezeMon");
 		setVisible(true);
 
 		setupMenu();
 
-		clanList = new ClanListComponent(org, this);
+		clanList = new ClanListComponent(uic, this);
 		detailsComp = new DetailsComponent();
 		splitPane =
 				new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, clanList,
@@ -115,12 +116,12 @@ public class MainWindow extends JFrame implements ActionProvider {
 				String name =
 						JOptionPane.showInputDialog(_this,
 								"Enter a name for the project");
-				org.createProject(name);
+				uic.createProject(name);
 			}
 		};
 		fileSaveProjectAction = new AbstractAction("Save monitor project") {
 			public void actionPerformed(ActionEvent e) {
-				if (org.getProject() == null) {
+				if (!uic.hasProject()) {
 					JOptionPane.showMessageDialog(_this, "No project to save",
 							"Warning", JOptionPane.WARNING_MESSAGE);
 					return;
@@ -139,7 +140,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 						f = new File(path + ".tanks");
 					else
 						f = new File(path);
-					org.saveProject(f);
+					uic.saveProject(f);
 				}
 			}
 		};
@@ -153,7 +154,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 				fc.setFileFilter(filter);
 				int res = fc.showOpenDialog(_this);
 				if (res == JFileChooser.APPROVE_OPTION)
-					org.loadProject(fc.getSelectedFile());
+					uic.loadProject(fc.getSelectedFile());
 			}
 		};
 		fileQuitAction = new AbstractAction("Quit") {
@@ -167,36 +168,36 @@ public class MainWindow extends JFrame implements ActionProvider {
 		fileMenu.add(fileQuitAction);
 
 		// View
-		// viewMenu = new JMenu("View");
-		// viewTopTierAction = new AbstractAction("Only top tiers") {
-		// public void actionPerformed(ActionEvent e) {
-		// org.setDisplayedTanks(Project.TOP_TIERS());
-		// }
-		// };
-		// viewTopTanksAction = new AbstractAction("Only top tier tanks") {
-		// public void actionPerformed(ActionEvent e) {
-		// org.setDisplayedTanks(Project.TOP_TANKS());
-		// }
-		// };
-		// viewTopHeaviesAction = new AbstractAction("Only top tier heavies") {
-		// public void actionPerformed(ActionEvent e) {
-		// org.setDisplayedTanks(Project.TOP_HEAVIES());
-		// }
-		// };
-		// viewArtyAction = new AbstractAction("Only high tier arties") {
-		// public void actionPerformed(ActionEvent e) {
-		// org.setDisplayedTanks(Project.ARTIES());
-		// }
-		// };
-		// viewCustomAction = new AbstractAction("Custom") {
-		// public void actionPerformed(ActionEvent e) {
-		// }
-		// };
-		// viewMenu.add(viewTopTierAction);
-		// viewMenu.add(viewTopTanksAction);
-		// viewMenu.add(viewTopHeaviesAction);
-		// viewMenu.add(viewArtyAction);
-		// viewMenu.add(viewCustomAction);
+		viewMenu = new JMenu("View");
+		viewTopTierAction = new AbstractAction("Only top tiers") {
+			public void actionPerformed(ActionEvent e) {
+				uic.setDisplayedTanks(Project.TOP_TIERS());
+			}
+		};
+		viewTopTanksAction = new AbstractAction("Only top tier tanks") {
+			public void actionPerformed(ActionEvent e) {
+				uic.setDisplayedTanks(Project.TOP_TANKS());
+			}
+		};
+		viewTopHeaviesAction = new AbstractAction("Only top tier heavies") {
+			public void actionPerformed(ActionEvent e) {
+				uic.setDisplayedTanks(Project.TOP_HEAVIES());
+			}
+		};
+		viewArtyAction = new AbstractAction("Only high tier arties") {
+			public void actionPerformed(ActionEvent e) {
+				uic.setDisplayedTanks(Project.ARTIES());
+			}
+		};
+		viewCustomAction = new AbstractAction("Custom") {
+			public void actionPerformed(ActionEvent e) {
+			}
+		};
+		viewMenu.add(viewTopTierAction);
+		viewMenu.add(viewTopTanksAction);
+		viewMenu.add(viewTopHeaviesAction);
+		viewMenu.add(viewArtyAction);
+		viewMenu.add(viewCustomAction);
 
 		// Clans
 		clanMenu = new JMenu("Clans");
@@ -205,7 +206,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 				ClanAddDialog d = new ClanAddDialog(_this);
 				Clan c = new Clan(d.getClanTag(), d.getClanName());
 				try {
-					org.addClan(c);
+					uic.addClan(c);
 				} catch (IllegalOperationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -223,7 +224,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 							return;
 						Clan clan = null;
 						try {
-							clan = WebAccess.getInstance().getClan(name);
+							clan = WebAccess.getInstance().getClanByName(name);
 						} catch (UnknownClanException e1) {
 							// TODO Auto-generated
 							// catch block
@@ -239,7 +240,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 						}
 						if (clan != null) {
 							try {
-								org.addClan(clan);
+								uic.addClan(clan);
 							} catch (IllegalArgumentException ex) {
 								JOptionPane.showMessageDialog(_this,
 										ex.getMessage(), "Warning",
@@ -288,7 +289,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(fileMenu);
-//		menuBar.add(viewMenu);
+		menuBar.add(viewMenu);
 		menuBar.add(clanMenu);
 		menuBar.add(playedBattlesMenu);
 		setJMenuBar(menuBar);
@@ -307,7 +308,7 @@ public class MainWindow extends JFrame implements ActionProvider {
 			detailsComp.displayClan(null);
 			return;
 		}
-		detailsComp.displayClan(project.getSelectedClan());
+		detailsComp.displayClan(uic.getSelectedClan());
 		setTitle("CWOrg - " + project.getName());
 		// enable options
 		splitPane.setVisible(true);
@@ -315,10 +316,6 @@ public class MainWindow extends JFrame implements ActionProvider {
 		viewMenu.setEnabled(true);
 		playedBattlesMenu.setEnabled(true);
 		fileSaveProjectAction.setEnabled(true);
-	}
-
-	void updateCurrentProject() {
-		displayProject(org.getProject());
 	}
 
 	@Override

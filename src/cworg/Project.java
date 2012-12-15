@@ -1,18 +1,21 @@
 package cworg;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Vector;
 
 import cworg.Tank;
+import cworg.replay.ReplayBattle;
 
 public class Project implements Serializable {
 	private String name;
 	private Vector<Clan> clans = new Vector<Clan>();
-	private Clan selectedClan = null;
+	private Vector<ReplayBattle> replayBattles = new Vector<ReplayBattle>();
 	/**
 	 * Which tanks are considered top tanks in this project and should be
 	 * displayed in the table
 	 */
+	// TODO put this into settings
 	private Vector<TankType> displayedTanks;
 
 	public Project(String name) {
@@ -108,8 +111,6 @@ public class Project implements Serializable {
 				throw new IllegalArgumentException(
 						"Clan already exists in project");
 		}
-		if (clans.isEmpty())
-			selectedClan = newClan;
 		clans.add(newClan);
 	}
 
@@ -119,8 +120,6 @@ public class Project implements Serializable {
 
 	public void setClans(Vector<Clan> clans) {
 		this.clans = clans;
-		if (!clans.contains(selectedClan))
-			selectedClan = clans.isEmpty() ? null : clans.get(0);
 	}
 
 	public Vector<TankType> getDisplayedTanks() {
@@ -139,18 +138,18 @@ public class Project implements Serializable {
 		this.name = name;
 	}
 
-	public Clan getSelectedClan() {
-		return selectedClan;
+	public Vector<ReplayBattle> getReplayBattles() {
+		return replayBattles;
 	}
 
-	public void setSelectedClan(Clan selectedClan) {
-		if (selectedClan != null)
-			this.selectedClan = selectedClan;
+	public void setReplayBattles(Vector<ReplayBattle> replayBattles) {
+		this.replayBattles = replayBattles;
 	}
 
 	/**
 	 * Checks whether the players tanks are still frozen and updates their
-	 * status if they have become unfrozen.
+	 * status if they have become unfrozen. Removes irrelevant
+	 * {@link ReplayBattle}s.
 	 */
 	public void refresh() {
 		for (Clan c : clans) {
@@ -160,5 +159,19 @@ public class Project implements Serializable {
 				}
 			}
 		}
+		Calendar lastWeek = Calendar.getInstance();
+		lastWeek.add(Calendar.WEEK_OF_YEAR, -1);
+		for (int i = 0; i < replayBattles.size(); i++) {
+			if (replayBattles.get(i).getArenaCreateTime().before(lastWeek)) {
+				replayBattles.remove(i);
+				// decrement i because all elements have been shifted
+				i--;
+			}
+		}
+	}
+
+	public boolean containsClanByTag(String clanTag) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

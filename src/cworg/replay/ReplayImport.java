@@ -55,7 +55,7 @@ public class ReplayImport {
 		try {
 			// time
 			arenaCreateTime.setTimeInMillis(postBattle.getJSONObject(0)
-					.getLong("arenaCreateTime"));
+					.getLong("arenaCreateTime") * 1000);
 			// teams
 			JSONObject players = postBattle.getJSONObject(1);
 			@SuppressWarnings("unchecked")
@@ -79,7 +79,7 @@ public class ReplayImport {
 					"Failed to parse the post-battle information "
 							+ "in replay file " + replayFile.getName());
 		}
-		return null;
+		return new ReplayBattle(team1, team2, arenaCreateTime);
 	}
 
 	/**

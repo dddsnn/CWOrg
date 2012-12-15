@@ -117,7 +117,7 @@ public class WebAccess {
 		return getPlayer(id);
 	}
 
-	public long getClanID(String name) throws UnknownClanException,
+	public long getClanIDByName(String name) throws UnknownClanException,
 			UnknownWebFormatException, IOException {
 		String response =
 				getResponse("http://worldoftanks.eu/community/clans/api/1.1/?source_token=WG-WoT_Assistant-1.2.2&search="
@@ -158,6 +158,60 @@ public class WebAccess {
 			id =
 					json.getJSONObject("data").getJSONArray("items")
 							.getJSONObject(0).getLong("id");
+		} catch (JSONException e) {
+			throw new UnknownWebFormatException();
+		}
+		return id;
+	}
+
+	public long getClanIDByTag(String clanTag) throws UnknownClanException,
+			UnknownWebFormatException, IOException {
+		String response =
+				getResponse("http://worldoftanks.eu/community/clans/api/1.1/?source_token=WG-WoT_Assistant-1.2.2&search="
+						+ clanTag + "&offset=0&limit=10");
+
+		JSONObject json = null;
+		try {
+			json = new JSONObject(response);
+		} catch (JSONException e) {
+			throw new UnknownWebFormatException();
+		}
+		try {
+			if (!json.getString("status").equals("ok"))
+				throw new UnknownWebFormatException();
+		} catch (JSONException e1) {
+			throw new UnknownWebFormatException();
+		}
+		JSONArray results;
+		try {
+			results = json.getJSONObject("data").getJSONArray("items");
+		} catch (JSONException e) {
+			throw new UnknownWebFormatException();
+		}
+		if (results.length() == 0)
+			throw new UnknownClanException("No clan with clan tag" + clanTag
+					+ " found.");
+		// check that it's the exact clan
+		String receivedTag = null;
+		int index;
+		try {
+			for (index = 0; index < results.length(); index++) {
+				receivedTag =
+						results.getJSONObject(index).getString("abbreviation");
+				if (receivedTag.equals(clanTag))
+					break;
+			}
+		} catch (JSONException e) {
+			throw new UnknownWebFormatException();
+		}
+		if (!receivedTag.equals(clanTag))
+			throw new UnknownClanException("Clan with tag " + clanTag
+					+ " wasn't found. First match was " + receivedTag);
+		long id = 0;
+		try {
+			id =
+					json.getJSONObject("data").getJSONArray("items")
+							.getJSONObject(index).getLong("id");
 		} catch (JSONException e) {
 			throw new UnknownWebFormatException();
 		}
@@ -209,9 +263,15 @@ public class WebAccess {
 		return clan;
 	}
 
-	public Clan getClan(String name) throws UnknownClanException,
+	public Clan getClanByName(String name) throws UnknownClanException,
 			UnknownWebFormatException, IOException {
-		long id = getClanID(name);
+		long id = getClanIDByName(name);
+		return getClan(id);
+	}
+
+	public Clan getClanByTag(String clanTag) throws UnknownClanException,
+			UnknownWebFormatException, IOException {
+		long id = getClanIDByTag(clanTag);
 		return getClan(id);
 	}
 
