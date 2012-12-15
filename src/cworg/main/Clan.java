@@ -1,4 +1,4 @@
-package cworg;
+package cworg.main;
 
 import java.io.Serializable;
 import java.util.Vector;

@@ -1,4 +1,4 @@
-package cworg;
+package cworg.main;
 
 import java.io.File;
 import java.util.Vector;

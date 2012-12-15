@@ -2,7 +2,7 @@ package cworg.replay;
 
 import java.util.TreeMap;
 
-import cworg.TankType;
+import cworg.main.TankType;
 
 public class ReplayAdapter {
 	private static class NameInfo {

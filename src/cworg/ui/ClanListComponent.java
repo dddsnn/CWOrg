@@ -20,9 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import cworg.Clan;
-import cworg.Project;
-import cworg.UICallback;
+import cworg.main.Clan;
+import cworg.main.Project;
+import cworg.main.UICallback;
 
 public class ClanListComponent extends JComponent {
 	private JList list = new JList();

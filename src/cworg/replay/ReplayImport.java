@@ -16,7 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cworg.TankType;
+import cworg.main.TankType;
 
 public class ReplayImport {
 	private static ReplayImport instance = new ReplayImport();

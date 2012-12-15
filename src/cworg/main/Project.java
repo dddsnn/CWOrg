@@ -1,10 +1,10 @@
-package cworg;
+package cworg.main;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Vector;
 
-import cworg.Tank;
+import cworg.main.Tank;
 import cworg.replay.ReplayBattle;
 
 public class Project implements Serializable {

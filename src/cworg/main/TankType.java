@@ -1,4 +1,4 @@
-package cworg;
+package cworg.main;
 
 public enum TankType {
 	UNKNOWN, IS_7, IS_4, IS_8, ST_I, T_62A, T_54, T_44, T_50_2, OBJECT_268,

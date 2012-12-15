@@ -6,9 +6,9 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
-import cworg.Player;
-import cworg.Tank;
-import cworg.TankType;
+import cworg.main.Player;
+import cworg.main.Tank;
+import cworg.main.TankType;
 
 @Deprecated
 public class PlayerTableModelOld extends DefaultTableModel {

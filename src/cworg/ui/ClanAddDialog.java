@@ -15,8 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import cworg.CWOrg;
-import cworg.Player;
+import cworg.main.CWOrg;
+import cworg.main.Player;
 
 public class ClanAddDialog extends JDialog {
 	private final ClanAddDialog _this;

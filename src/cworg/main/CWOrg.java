@@ -1,4 +1,4 @@
-package cworg;
+package cworg.main;
 
 import java.awt.Color;
 import java.io.File;

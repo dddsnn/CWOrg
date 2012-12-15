@@ -18,14 +18,14 @@ import javax.swing.table.DefaultTableModel;
 
 import org.json.JSONException;
 
-import cworg.CWOrg;
-import cworg.Clan;
-import cworg.IllegalOperationException;
-import cworg.Player;
-import cworg.Project;
-import cworg.Tank;
-import cworg.TankType;
-import cworg.UICallback;
+import cworg.main.CWOrg;
+import cworg.main.Clan;
+import cworg.main.IllegalOperationException;
+import cworg.main.Player;
+import cworg.main.Project;
+import cworg.main.Tank;
+import cworg.main.TankType;
+import cworg.main.UICallback;
 import cworg.replay.ReplayImport;
 import cworg.replay.ReplayException;
 import cworg.web.UnknownClanException;

@@ -17,9 +17,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
-import cworg.CWOrg;
-import cworg.Player;
-import cworg.Tank;
+import cworg.main.CWOrg;
+import cworg.main.Player;
+import cworg.main.Tank;
 
 public class TankEditDialog extends JDialog {
 	private final Tank tank;

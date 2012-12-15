@@ -13,12 +13,12 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import cworg.CWOrg;
-import cworg.Clan;
-import cworg.Player;
-import cworg.Tank;
-import cworg.TankType;
-import cworg.TankClass;
+import cworg.main.CWOrg;
+import cworg.main.Clan;
+import cworg.main.Player;
+import cworg.main.Tank;
+import cworg.main.TankClass;
+import cworg.main.TankType;
 
 public class PlayerTable extends JTable {
 	private static class PlayerTableModel extends DefaultTableModel {

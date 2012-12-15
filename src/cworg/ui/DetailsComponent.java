@@ -13,12 +13,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
-import cworg.Clan;
-import cworg.IllegalOperationException;
-import cworg.Player;
-import cworg.Project;
-import cworg.Tank;
-import cworg.TankType;
+import cworg.main.Clan;
+import cworg.main.IllegalOperationException;
+import cworg.main.Player;
+import cworg.main.Project;
+import cworg.main.Tank;
+import cworg.main.TankType;
 
 public class DetailsComponent extends JTabbedPane {
 	private PlayerTable playerTable = new PlayerTable();
