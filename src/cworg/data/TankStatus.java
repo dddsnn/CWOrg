@@ -1,8 +1,10 @@
-package cworg.main;
+package cworg.data;
 
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Calendar;
+
+import cworg.main.CWOrg;
 
 public class TankStatus implements Serializable {
 	private TankType type;

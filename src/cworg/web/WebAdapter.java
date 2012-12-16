@@ -2,8 +2,8 @@ package cworg.web;
 
 import java.util.TreeMap;
 
-import cworg.main.Tank;
-import cworg.main.TankType;
+import cworg.data.Tank;
+import cworg.data.TankType;
 
 public class WebAdapter {
 	private static class NameInfo {

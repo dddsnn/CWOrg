@@ -11,9 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cworg.main.Clan;
-import cworg.main.Player;
-import cworg.main.Tank;
+import cworg.data.Clan;
+import cworg.data.Player;
+import cworg.data.Tank;
 
 public class WebAccess {
 	private static WebAccess instance = new WebAccess();

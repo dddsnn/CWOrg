@@ -1,6 +1,6 @@
 package cworg.replay;
 
-import cworg.main.TankType;
+import cworg.data.TankType;
 
 public class ReplayBattlePlayer {
 	private String name;
