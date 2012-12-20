@@ -1,13 +1,51 @@
-CREATE SCHEMA duende;
-SET SCHEMA duende;
+CREATE SCHEMA cworg;
+SET SCHEMA cworg;
 
 
 -- Tables will be dropped, if they exist
-drop table  duende.friendship;
+drop table  duende.friendship;--TODO
 drop table  duende.images;
 drop table  duende.comments;
 drop table  duende.users;
 
+-- WoT players (not necesserily users of this application)
+CREATE TABLE cworg.players (
+	id UNSIGNED BIGINT PRIMARY KEY,
+	name VARCHAR(30) NOT NULL UNIQUE,
+	lastCW DATETIME DEFAULT NULL
+);
+
+-- Clans
+CREATE TABLE cworg.clans (
+	id UNSIGNED BIGINT PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	tag VARCHAR(5) NOT NULL
+);
+
+CREATE TABLE cworg.clanMembership (
+	membershipId UNSIGNED INTEGER PRIMARY KEY GENERATED ALWAYS,
+	playerId UNSIGNED BIGINT NOT NULL,
+	clanId UNSIGNED BIGINT NOT NULL,
+	FOREIGN KEY (playerId) REFERENCES cworg.players(id),
+	FOREIGN KEY (clanId) REFERENCES cworg.clans(id)
+);
+
+-- Users of this application
+-- Passwords are hashed with BCrypt
+CREATE TABLE cworg.users (
+	id UNSIGNED BIGINT PRIMARY KEY,
+	passwordBCrypt NOT NULL,
+	FOREIGN KEY (id) REFERENCES cworg.players(id)
+);
+
+-- List of tanks in the game
+CREATE TABLE cworg.tanks (
+	id UNSIGNED INTEGER PRIMARY KEY GENERATED ALWAYS,
+	name VARCHAR(50) NOT NULL,
+	shortName VARCHAR(20) DEFAULT NULL,
+	tier SMALLINT NOT NULL
+	--TODO
+);
 
 -- User table: One entry represents one physical user.
 -- Username is used to log in, thus it has to be unique,
