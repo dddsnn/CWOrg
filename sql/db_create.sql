@@ -1,7 +1,6 @@
 CREATE SCHEMA cworg;
 SET SCHEMA cworg;
 
-
 -- Tables will be dropped, if they exist
 drop table  duende.friendship;--TODO
 drop table  duende.images;
@@ -22,6 +21,7 @@ CREATE TABLE cworg.clans (
 	tag VARCHAR(5) NOT NULL
 );
 
+-- Mapping players-clans
 CREATE TABLE cworg.clanMembership (
 	membershipId UNSIGNED INTEGER PRIMARY KEY GENERATED ALWAYS,
 	playerId UNSIGNED BIGINT NOT NULL,
@@ -43,8 +43,21 @@ CREATE TABLE cworg.tanks (
 	id UNSIGNED INTEGER PRIMARY KEY GENERATED ALWAYS,
 	name VARCHAR(50) NOT NULL,
 	shortName VARCHAR(20) DEFAULT NULL,
-	tier SMALLINT NOT NULL
-	--TODO
+	tier SMALLINT NOT NULL,
+	nation SMALLINT NOT NULL,
+	class SMALLINT NOT NULL,
+	freezeTime TIME NOT NULL,
+);
+
+-- Who has which tank, and is it frozen
+CREATE TABLE cworg.tankOwnership (
+	ownershipId UNSIGNED INTEGER PRIMARY KEY GENERATED ALWAYS,
+	playerId UNSIGNED BIGINT NOT NULL,
+	tankId UNSIGEND INTEGER NOT NULL,
+	freezingStart DATETIME,
+	freezingStop DATETIME,
+	FOREIGN KEY (playerId) REFERENCES cworg.players(id),
+	FOREIGN KEY (tankId) REFERENCES cworg.tanks(id)
 );
 
 -- User table: One entry represents one physical user.
