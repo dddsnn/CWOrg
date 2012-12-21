@@ -63,20 +63,20 @@ CREATE TABLE cworg.tankOwnership (
 -- User table: One entry represents one physical user.
 -- Username is used to log in, thus it has to be unique,
 -- the userId is used for foreign keys to link to the user table.
-create table duende.users
-(
-   userId INTEGER primary key generated always as identity,
-   username varchar( 30 ) not null UNIQUE,
-   password varchar( 30 ) not null,
-   firstname varchar( 50 ) default null,
-   lastname varchar( 50 ) default null,
-   birthdate date default null,
-   city varchar( 150 ) default null,
-   country varchar( 150 ) default null,
-   text varchar( 500 ) default null,
-   photofilename varchar( 100 ) default null,
-   currentLocation varchar ( 250 ) default null
-);
+--create table duende.users
+--(
+   --userId INTEGER primary key generated always as identity,
+   --username varchar( 30 ) not null UNIQUE,
+   --password varchar( 30 ) not null,
+   --firstname varchar( 50 ) default null,
+   ----lastname varchar( 50 ) default null,
+   ----birthdate date default null,
+   --city varchar( 150 ) default null,
+   --country varchar( 150 ) default null,
+   --text varchar( 500 ) default null,
+   --photofilename varchar( 100 ) default null,
+   --currentLocation varchar ( 250 ) default null
+----);
 
 
 -- Friendship table: A friendship entry denotes the connection 
@@ -90,37 +90,34 @@ create table duende.users
 -- friendship relation. A second entry in the friendship table
 -- is NOT necessary and NOT allowed! (Would lead to having to
 -- delete the friendship twice to get rid of it.)
-create table duende.friendship
-(
-   friendshipId INTEGER primary key generated always as identity,
-   fromUserId INTEGER CONSTRAINT fromUserId_fk REFERENCES duende.users(userId),
-   toUserId INTEGER CONSTRAINT toUserId_fk REFERENCES duende.users(userId),
-   state INTEGER
-);
+--create table duende.friendship
+--(
+   --friendshipId INTEGER primary key generated always as identity,
+   --fromUserId INTEGER CONSTRAINT fromUserId_fk REFERENCES duende.users(userId),
+   --toUserId INTEGER CONSTRAINT toUserId_fk REFERENCES duende.users(userId),
+   --state INTEGER
+--);
 
 
 -- An entry in the image table represents one photo in the gallery. 
 -- Filename can be artificial filename, picked by the application.
 -- Make sure that several users can upload images like, e.g. "me.jpg".
-create table duende.images
-(
-   imageId INTEGER primary key generated always as identity,
-   userId INTEGER CONSTRAINT galleryImageToUserId_fk REFERENCES duende.users(userId),
-   filename varchar( 100 ) not null,
-   insertDate timestamp DEFAULT CURRENT TIMESTAMP
-);
+--create table duende.images
+--(
+   --imageId INTEGER primary key generated always as identity,
+   ----userId INTEGER CONSTRAINT galleryImageToUserId_fk REFERENCES duende.users(userId),
+   --filename varchar( 100 ) not null,
+   --insertDate timestamp DEFAULT CURRENT TIMESTAMP
+--);
 
 
 -- Entries in the comment table represent wall comments one user 
 -- has written on someone elses wall. 
-create table duende.comments
-(
-   commentId INTEGER primary key generated always as identity,
-   fromUserId INTEGER CONSTRAINT commentFromUserId_fk REFERENCES duende.users(userId),
-   toUserId INTEGER CONSTRAINT commentToUserId_fk REFERENCES duende.users(userId),
-   insertDate timestamp DEFAULT CURRENT TIMESTAMP,
-   text varchar( 500 ) default null
-);
-
-
-
+--create table duende.comments
+--(
+   --commentId INTEGER primary key generated always as identity,
+   --fromUserId INTEGER CONSTRAINT commentFromUserId_fk REFERENCES duende.users(userId),
+   --toUserId INTEGER CONSTRAINT commentToUserId_fk REFERENCES duende.users(userId),
+   --insertDate timestamp DEFAULT CURRENT TIMESTAMP,
+   --text varchar( 500 ) default null
+--);
