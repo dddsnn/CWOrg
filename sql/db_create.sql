@@ -48,9 +48,9 @@ CREATE TABLE cworg.tanks (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	shortName VARCHAR(20) DEFAULT NULL,
-	tier SMALLINT NOT NULL,
-	nation SMALLINT NOT NULL,
-	class SMALLINT NOT NULL,
+	tier SMALLINT UNSIGNED NOT NULL,
+	nation ENUM('Germany', 'Russia', 'USA', 'France', 'Britain', 'China') NOT NULL,
+	class ENUM('Light', 'Medium', 'Heavy', 'TD', 'SPG') NOT NULL,
 	freezeTime TIME NOT NULL
 );
 
