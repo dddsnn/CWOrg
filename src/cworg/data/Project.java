@@ -151,6 +151,7 @@ public class Project implements Serializable {
 	 * status if they have become unfrozen. Removes irrelevant
 	 * {@link ReplayBattle}s.
 	 */
+	//TODO necessary?
 	public void refresh() {
 		for (Clan c : clans) {
 			for (Player p : c.getPlayers()) {

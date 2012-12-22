@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public class Clan implements Serializable {
+	public static final long INVALID_ID = -1;
+
 	private String clantag;
 	private String name;
 	private Vector<Player> players = new Vector<Player>();
-	private long id = -1;
+	private long id = Clan.INVALID_ID;
 
 	public Clan(String clantag, String name) {
 		this.clantag = clantag;

@@ -106,6 +106,8 @@ public class WebAccess {
 			} catch (JSONException e) {
 				throw new UnknownWebFormatException();
 			}
+			// TODO this needs to call the DBHelper to get the id in the db and
+			// get the tankinfo from the db
 			p.addTank(new Tank(WebAdapter.getLocalType(tankName)));
 		}
 		return p;

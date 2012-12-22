@@ -5,11 +5,11 @@ import java.util.Calendar;
 import java.util.Vector;
 
 public class Player implements Serializable {
+	public static final long INVALID_ID = -1;
+
 	private String name;
 	private Vector<Tank> tanks = new Vector<Tank>();
-	private Calendar unavailableStart = null;
-	private Calendar unavailableEnd = null;
-	private long id = -1;
+	private long id = Player.INVALID_ID;
 	private Calendar lastCW = null;
 
 	public Player(String name) {
@@ -53,25 +53,9 @@ public class Player implements Serializable {
 		this.id = id;
 	}
 
-	boolean hasTank(TankType t) {
-		return tanks.contains(new Tank(t));
-	}
-
-	public Calendar getUnavailableStart() {
-		return unavailableStart;
-	}
-
-	public void setUnavailableStart(Calendar unavailableStart) {
-		this.unavailableStart = unavailableStart;
-	}
-
-	public Calendar getUnavailableEnd() {
-		return unavailableEnd;
-	}
-
-	public void setUnavailableEnd(Calendar unavailableEnd) {
-		this.unavailableEnd = unavailableEnd;
-	}
+//	boolean hasTank(TankType t) {
+//		return tanks.contains(new Tank(t));
+//	}
 
 	public Calendar getLastCW() {
 		return lastCW;
@@ -79,34 +63,5 @@ public class Player implements Serializable {
 
 	public void setLastCW(Calendar lastCW) {
 		this.lastCW = lastCW;
-	}
-
-	public boolean isAvailable() {
-		if (unavailableStart == null && unavailableEnd == null)
-			return true;
-		Calendar now = Calendar.getInstance();
-		if (unavailableEnd != null) {
-			if (unavailableEnd.before(now)) {
-				unavailableStart = null;
-				unavailableEnd = null;
-				return true;
-			} else
-				return false;
-		}
-		if (unavailableStart != null) {
-			if (unavailableStart.after(now))
-				return true;
-			else
-				return false;
-		}
-		return true;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == null || !(o instanceof Player))
-			return false;
-		Player p = (Player) o;
-		return (p.getName().equals(this.getName()));
 	}
 }

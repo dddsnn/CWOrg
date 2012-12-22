@@ -10,6 +10,8 @@ DROP TABLE IF EXISTS cworg.clanMembership;
 DROP TABLE IF EXISTS cworg.users;
 DROP TABLE IF EXISTS cworg.tanks;
 DROP TABLE IF EXISTS cworg.tankOwnership;
+DROP TABLE IF EXISTS cworg.nation;
+DROP TABLE IF EXISTS cworg.tankClass;
 -- TODO
 
 -- WoT players (not necesserily users of this application)
@@ -43,15 +45,29 @@ CREATE TABLE cworg.users (
 	FOREIGN KEY (id) REFERENCES cworg.players(id)
 );
 
+-- Nations in the game, instead of an enum
+CREATE TABLE cworg.nation (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(30) NOT NULL
+);
+
+-- Tank classes in the game
+CREATE TABLE cworg.tankClass (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(30) NOT NULL
+);
+
 -- List of tanks in the game
 CREATE TABLE cworg.tanks (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50) NOT NULL,
 	shortName VARCHAR(20) DEFAULT NULL,
 	tier SMALLINT UNSIGNED NOT NULL,
-	nation ENUM('Germany', 'Russia', 'USA', 'France', 'Britain', 'China') NOT NULL,
-	class ENUM('Light', 'Medium', 'Heavy', 'TD', 'SPG') NOT NULL,
-	freezeTime TIME NOT NULL
+	nationId INT NOT NULL,
+	classId INT NOT NULL,
+	freezeTime TIME NOT NULL,
+	FOREIGN KEY (nationId) REFERENCES cworg.nation(id),
+	FOREIGN KEY (classId) REFERENCES cworg.tankClass(id)
 );
 
 -- Who has which tank, and is it frozen
