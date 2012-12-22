@@ -6,10 +6,11 @@ import java.util.Vector;
 
 public class Player implements Serializable {
 	public static final long INVALID_ID = -1;
+	private static final long serialVersionUID = 7493764929965791178L;
 
+	private long id = Player.INVALID_ID;
 	private String name;
 	private Vector<Tank> tanks = new Vector<Tank>();
-	private long id = Player.INVALID_ID;
 	private Calendar lastCW = null;
 
 	public Player(String name) {

@@ -108,7 +108,7 @@ public class WebAccess {
 			}
 			// TODO this needs to call the DBHelper to get the id in the db and
 			// get the tankinfo from the db
-			p.addTank(new Tank(WebAdapter.getLocalType(tankName)));
+//			p.addTank(new Tank(WebAdapter.getLocalType(tankName)));
 		}
 		return p;
 	}

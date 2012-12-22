@@ -1,20 +1,21 @@
 package cworg.data;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.util.Calendar;
+import org.joda.time.DateTime;
+import org.joda.time.Duration;
 
 public class Tank implements Serializable {
-	// TODO yodatime
+	private static final long serialVersionUID = -6124006686650022014L;
+	
 	private TankType type;
 	private String name;
 	private String shortName;
 	private int tier;
 	private TankNation nation;
 	private TankClass tankClass;
-	private Time freezeTime;
-	private Calendar frozenFrom;
-	private Calendar frozenUntil;
+	private Duration freezeTime;
+	private DateTime frozenFrom;
+	private DateTime frozenUntil;
 	private boolean inGarage;
 
 	public TankType getType() {
@@ -65,27 +66,27 @@ public class Tank implements Serializable {
 		this.tankClass = tankClass;
 	}
 
-	public Time getFreezeTime() {
+	public Duration getFreezeTime() {
 		return freezeTime;
 	}
 
-	public void setFreezeTime(Time freezeTime) {
+	public void setFreezeTime(Duration freezeTime) {
 		this.freezeTime = freezeTime;
 	}
 
-	public Calendar getFrozenFrom() {
+	public DateTime getFrozenFrom() {
 		return frozenFrom;
 	}
 
-	public void setFrozenFrom(Calendar frozenFrom) {
+	public void setFrozenFrom(DateTime frozenFrom) {
 		this.frozenFrom = frozenFrom;
 	}
 
-	public Calendar getFrozenUntil() {
+	public DateTime getFrozenUntil() {
 		return frozenUntil;
 	}
 
-	public void setFrozenUntil(Calendar frozenUntil) {
+	public void setFrozenUntil(DateTime frozenUntil) {
 		this.frozenUntil = frozenUntil;
 	}
 

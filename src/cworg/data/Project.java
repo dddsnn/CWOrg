@@ -152,24 +152,24 @@ public class Project implements Serializable {
 	 * {@link ReplayBattle}s.
 	 */
 	//TODO necessary?
-	public void refresh() {
-		for (Clan c : clans) {
-			for (Player p : c.getPlayers()) {
-				for (Tank t : p.getTanks()) {
-					t.getStatus().refresh();
-				}
-			}
-		}
-		Calendar lastWeek = Calendar.getInstance();
-		lastWeek.add(Calendar.WEEK_OF_YEAR, -1);
-		for (int i = 0; i < replayBattles.size(); i++) {
-			if (replayBattles.get(i).getArenaCreateTime().before(lastWeek)) {
-				replayBattles.remove(i);
-				// decrement i because all elements have been shifted
-				i--;
-			}
-		}
-	}
+//	public void refresh() {
+//		for (Clan c : clans) {
+//			for (Player p : c.getPlayers()) {
+//				for (Tank t : p.getTanks()) {
+//					t.getStatus().refresh();
+//				}
+//			}
+//		}
+//		Calendar lastWeek = Calendar.getInstance();
+//		lastWeek.add(Calendar.WEEK_OF_YEAR, -1);
+//		for (int i = 0; i < replayBattles.size(); i++) {
+//			if (replayBattles.get(i).getArenaCreateTime().before(lastWeek)) {
+//				replayBattles.remove(i);
+//				// decrement i because all elements have been shifted
+//				i--;
+//			}
+//		}
+//	}
 
 	public boolean containsClanByTag(String clanTag) {
 		// TODO Auto-generated method stub
