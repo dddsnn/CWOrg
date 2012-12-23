@@ -98,7 +98,9 @@ public class WebAccess {
 		} catch (JSONException e) {
 			throw new UnknownWebFormatException();
 		}
-		Player p = new Player(name, id);
+		Player p = new Player();
+		p.setName(name);
+		p.setId(id);
 		for (int i = 0; i < tanks.length(); i++) {
 			String tankName;
 			try {

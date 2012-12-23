@@ -13,10 +13,6 @@ public class Tank implements Serializable {
 	private int tier;
 	private TankNation nation;
 	private TankClass tankClass;
-	private Duration freezeTime;
-	private DateTime frozenFrom;
-	private DateTime frozenUntil;
-	private boolean inGarage;
 
 	public TankType getType() {
 		return type;
@@ -65,37 +61,4 @@ public class Tank implements Serializable {
 	public void setTankClass(TankClass tankClass) {
 		this.tankClass = tankClass;
 	}
-
-	public Duration getFreezeTime() {
-		return freezeTime;
-	}
-
-	public void setFreezeTime(Duration freezeTime) {
-		this.freezeTime = freezeTime;
-	}
-
-	public DateTime getFrozenFrom() {
-		return frozenFrom;
-	}
-
-	public void setFrozenFrom(DateTime frozenFrom) {
-		this.frozenFrom = frozenFrom;
-	}
-
-	public DateTime getFrozenUntil() {
-		return frozenUntil;
-	}
-
-	public void setFrozenUntil(DateTime frozenUntil) {
-		this.frozenUntil = frozenUntil;
-	}
-
-	public boolean isInGarage() {
-		return inGarage;
-	}
-
-	public void setInGarage(boolean inGarage) {
-		this.inGarage = inGarage;
-	}
-
 }

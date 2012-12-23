@@ -2,20 +2,32 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:composite="http://java.sun.com/jsf/composite">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <head>
 <title />
 </head>
 <body>
 	<composite:interface>
-
+		<composite:attribute name="freezingTable" required="true" />
 	</composite:interface>
 	<composite:implementation>
 		<table>
 			<tr>
-				<td>asd</td>
-				<td>sdf</td>
+				<th>Name</th>
+				<ui:repeat value="#{cc.attrs.freezingTable.displayedTanks}" var="t">
+					<th>#{t.shortName}</th>
+				</ui:repeat>
 			</tr>
+			<ui:repeat value="#{cc.attrs.freezingTable.players}" var="p">
+				<tr>
+					<td>#{p.name}</td>
+					<ui:repeat value="#{p.tanks}" var="t">
+
+					</ui:repeat>
+				</tr>
+			</ui:repeat>
 		</table>
 	</composite:implementation>
 </body>

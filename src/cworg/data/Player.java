@@ -2,6 +2,7 @@ package cworg.data;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Vector;
 
 public class Player implements Serializable {
@@ -10,31 +11,22 @@ public class Player implements Serializable {
 
 	private long id = Player.INVALID_ID;
 	private String name;
-	private Vector<Tank> tanks = new Vector<Tank>();
+	private List<PlayerTank> tanks = new Vector<PlayerTank>();
 	private Calendar lastCW = null;
 
-	public Player(String name) {
-		this.name = name;
-	}
-
-	public Player(String name, long id) {
-		this.name = name;
-		this.id = id;
-	}
-
-	public void addTank(Tank newTank) {
-		for (Tank t : tanks) {
+	public void addTank(PlayerTank newTank) {
+		for (PlayerTank t : tanks) {
 			if (t.equals(newTank) && t.getType() != TankType.UNKNOWN)
 				return;
 		}
 		tanks.add(newTank);
 	}
 
-	public Vector<Tank> getTanks() {
+	public List<PlayerTank> getTanks() {
 		return tanks;
 	}
 
-	public void setTanks(Vector<Tank> tanks) {
+	public void setTanks(List<PlayerTank> tanks) {
 		this.tanks = tanks;
 	}
 
