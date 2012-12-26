@@ -6,13 +6,14 @@ import org.joda.time.Duration;
 
 public class Tank implements Serializable {
 	private static final long serialVersionUID = -6124006686650022014L;
-	
+
 	private TankType type;
 	private String name;
 	private String shortName;
 	private int tier;
 	private TankNation nation;
 	private TankClass tankClass;
+	private Duration freezeTime;
 
 	public TankType getType() {
 		return type;
@@ -60,5 +61,13 @@ public class Tank implements Serializable {
 
 	public void setTankClass(TankClass tankClass) {
 		this.tankClass = tankClass;
+	}
+
+	public Duration getFreezeTime() {
+		return freezeTime;
+	}
+
+	public void setFreezeTime(Duration freezeTime) {
+		this.freezeTime = freezeTime;
 	}
 }

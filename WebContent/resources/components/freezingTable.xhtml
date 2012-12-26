@@ -10,17 +10,17 @@
 </head>
 <body>
 	<composite:interface>
-		<composite:attribute name="freezingTable" required="true" />
+		<composite:attribute name="backBean" required="true" />
 	</composite:interface>
 	<composite:implementation>
 		<table>
 			<tr>
 				<th>Name</th>
-				<ui:repeat value="#{cc.attrs.freezingTable.displayedTanks}" var="t">
+				<ui:repeat value="#{cc.attrs.backBean.displayedTanks}" var="t">
 					<th>#{t.shortName}</th>
 				</ui:repeat>
 			</tr>
-			<ui:repeat value="#{cc.attrs.freezingTable.players}" var="p">
+			<ui:repeat value="#{cc.attrs.backBean.players}" var="p">
 				<tr>
 					<td>#{p.name}</td>
 					<ui:repeat value="#{p.tanks}" var="t">
