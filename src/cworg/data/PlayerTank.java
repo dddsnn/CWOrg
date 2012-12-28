@@ -30,4 +30,12 @@ public class PlayerTank extends Tank {
 	public void setInGarage(boolean inGarage) {
 		status.setInGarage(inGarage);
 	}
+
+	public TankStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TankStatus status) {
+		this.status = status;
+	}
 }

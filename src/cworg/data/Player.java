@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
 	public static final long INVALID_ID = -1;
 	private static final long serialVersionUID = 7493764929965791178L;
 
@@ -46,9 +46,9 @@ public class Player implements Serializable {
 		this.id = id;
 	}
 
-//	boolean hasTank(TankType t) {
-//		return tanks.contains(new Tank(t));
-//	}
+	// boolean hasTank(TankType t) {
+	// return tanks.contains(new Tank(t));
+	// }
 
 	public Calendar getLastCW() {
 		return lastCW;
@@ -56,5 +56,15 @@ public class Player implements Serializable {
 
 	public void setLastCW(Calendar lastCW) {
 		this.lastCW = lastCW;
+	}
+
+	@Override
+	public int compareTo(Player o) {
+		if (getId() < o.getId())
+			return -1;
+		if (getId() == o.getId())
+			return 0;
+		else
+			return 1;
 	}
 }

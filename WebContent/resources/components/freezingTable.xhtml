@@ -10,21 +10,20 @@
 </head>
 <body>
 	<composite:interface>
-		<composite:attribute name="backBean" required="true" />
 	</composite:interface>
 	<composite:implementation>
 		<table>
 			<tr>
 				<th>Name</th>
-				<ui:repeat value="#{cc.attrs.backBean.displayedTanks}" var="t">
+				<ui:repeat value="#{freezingTableBean.displayedTanks}" var="t">
 					<th>#{t.shortName}</th>
 				</ui:repeat>
 			</tr>
-			<ui:repeat value="#{cc.attrs.backBean.players}" var="p">
+			<ui:repeat value="#{freezingTableBean.players}" var="p">
 				<tr>
 					<td>#{p.name}</td>
-					<ui:repeat value="#{p.tanks}" var="t">
-
+					<ui:repeat value="#{freezingTableBean.statusMap[p]}" var="s">
+						<td>#{s}</td>
 					</ui:repeat>
 				</tr>
 			</ui:repeat>
