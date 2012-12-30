@@ -16,6 +16,7 @@ public class DBHelper {
 		try {
 			instance = new DBHelper();
 		} catch (Exception e) {
+			throw new ExceptionInInitializerError(e);
 		}
 	}
 

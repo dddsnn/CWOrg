@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import cworg.beans.model.User;
 
 public class UserDAO implements GenericDAO<User, Long> {
@@ -44,9 +46,22 @@ public class UserDAO implements GenericDAO<User, Long> {
 
 		try {
 			stmt = con.createStatement();
-
-			String query = "";
+			String query =
+					"SELECT u.id, u.passwordBCrypt FROM cworg.users u, cworg.players p WHERE u.id = p.id AND p.name='"
+							+ name + "'";
 			rs = stmt.executeQuery(query);
+			if (rs.next()) {
+				long id = rs.getLong(1);
+				String pwHash = rs.getString(2);
+				// check password, if wrong return null
+				if (!BCrypt.checkpw(password, pwHash)) {
+					return null;
+				}
+				user = new User();
+				user.setId(id);
+				user.setName(name);
+			}
+
 		} finally {
 			if (con != null) {
 				con.close();
@@ -58,8 +73,6 @@ public class UserDAO implements GenericDAO<User, Long> {
 				stmt.close();
 			}
 		}
-
-		// TODO
-		return null;
+		return user;
 	}
 }

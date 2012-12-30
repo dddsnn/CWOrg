@@ -32,7 +32,7 @@ public class LoginController {
 			e.printStackTrace();
 		}
 		// no valid data -> stay on login
-		if (user.getId() == Player.INVALID_ID)
+		if (user == null || user.getId() == Player.INVALID_ID)
 			return null;
 		// forward to main
 		return "main.jsf";

@@ -17,7 +17,7 @@
 			<h:outputLabel for="username" value="User Name" />
 			<h:inputText id="username" value="#{loginModel.userName}" />
 			<h:outputLabel for="password" value="Password" />
-			<h:inputText id="password" value="#{loginModel.password}" />
+			<h:inputSecret id="password" value="#{loginModel.password}" />
 			<f:facet name="footer">
 				<h:commandButton id="submit" action="#{loginController.submit}"
 					value="Login" />

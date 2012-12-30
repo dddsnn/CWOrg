@@ -5,7 +5,7 @@
      Make sure db.properties is configured correctly and all required present in ./lib folder. -->
 
 	<!-- Loads the build.properties file. -->
-	<property file="db.properties" />
+	<property file="src/db.properties" />
 
 	<!--
 		Defines the classpath which is used for starting and stopping
