@@ -1,8 +1,6 @@
 package cworg.beans;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
