@@ -8,7 +8,6 @@ import javax.faces.bean.ManagedProperty;
 import cworg.beans.model.User;
 import cworg.beans.model.LoginModel;
 import cworg.data.Player;
-import cworg.db.UserDAO;
 
 @ManagedBean
 public class LoginController {
@@ -24,17 +23,17 @@ public class LoginController {
 	}
 
 	public String submit() {
-		User user = null;
-		try {
-			user = new UserDAO().read(model.getUserName(), model.getPassword());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// no valid data -> stay on login
-		if (user == null || user.getId() == Player.INVALID_ID)
-			return null;
-		// forward to main
+//		User user = null;
+//		try {
+//			user = new UserDAO().read(model.getUserName(), model.getPassword());
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		// no valid data -> stay on login
+//		if (user == null || user.getId() == Player.INVALID_ID)
+//			return null;
+//		// forward to main
 		return "main.jsf";
 	}
 }

@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/joda-time-2.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/json-2.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/oracle-jdk-bin-1.8.0.40">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSF 2.1 (Apache MyFaces 2.1.5)">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-			<attribute name="owner.project.facets" value="jst.jsf"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSTL">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-			<attribute name="owner.project.facets" value="jst.jsf"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jdbc-mysql.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/joda-time-2.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/json-2.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/cssparser-0.9.5.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/guava-14.0-rc1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jbcrypt-0.3m.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/richfaces-components-api-4.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/richfaces-components-ui-4.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/richfaces-core-api-4.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/richfaces-core-impl-4.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/sac-1.3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JSTL"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Glassfish stuff"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
