@@ -7,9 +7,13 @@
 	<title>Insert title here</title>
 </h:head>
 <h:body>
-	<!-- 
-	<h:outputLink value="login.jsf">Login</h:outputLink>
-	<h:outputLink value="signup.jsf">Sign Up</h:outputLink> -->
-	#{testBean.appId}
+
+	<h:outputLink value="#{testBean.url}">Login</h:outputLink>
+	<h:form>
+		<h:commandButton value="Logout" action="#{testBean.logout}" />
+	</h:form>
+	<!--<h:outputLink value="signup.jsf">Sign Up</h:outputLink> -->
+	
+#{testBean.nick}
 </h:body>
 </html>

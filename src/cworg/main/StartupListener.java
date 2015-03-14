@@ -7,9 +7,6 @@ import java.util.Properties;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-/**
- * Puts the app id into the ServletContext.
- */
 public class StartupListener implements ServletContextListener {
 
 	@Override
@@ -19,6 +16,7 @@ public class StartupListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent e) {
+		// put app id into servletcontext
 		InputStream is =
 				getClass().getClassLoader().getResourceAsStream(
 						"/app-id.properties");
@@ -38,5 +36,4 @@ public class StartupListener implements ServletContextListener {
 		String appId = (String) prop.get("app-id");
 		e.getServletContext().setAttribute("app-id", appId);
 	}
-
 }
