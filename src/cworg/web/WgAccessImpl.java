@@ -34,17 +34,13 @@ public class WgAccessImpl implements WgAccess {
 	private ServletContext ctx;
 	private String appId;
 
-	// public WgAccessImpl() {
-	// // TODO Auto-generated constructor stub
-	// }
-
 	@PostConstruct
 	private void init() {
 		appId = (String) ctx.getAttribute("app-id");
 	}
 
 	@Override
-	public String getLoginUrl(String redirectUrl) throws WgApiException,
+	public String getLoginUrl(String redirectUrl) throws WgApiError,
 			WebException {
 		String url = "https://api.worldoftanks.eu/wot/auth/login/";
 		Map<String, String> params = new HashMap<String, String>(3);
@@ -57,7 +53,7 @@ public class WgAccessImpl implements WgAccess {
 
 	@Override
 	public ProlongateResponse prolongate(String accessToken, Duration duration)
-			throws WebException, WgApiException {
+			throws WebException, WgApiError {
 		String url = "https://api.worldoftanks.eu/wot/auth/prolongate/";
 		long seconds = duration.getSeconds();
 		Map<String, String> params = new HashMap<String, String>(3);
@@ -73,7 +69,7 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	private static String makeQueryString(String appId,
-			Map<String, String> params) {
+			Map<String, String> params) throws WebException {
 		Charset charset = StandardCharsets.UTF_8;
 		StringBuilder sb = new StringBuilder();
 		sb.append("application_id=");
@@ -87,8 +83,8 @@ public class WgAccessImpl implements WgAccess {
 				sb.append('=');
 				sb.append(URLEncoder.encode(e.getValue(), charset.name()));
 			} catch (UnsupportedEncodingException ex) {
-				// TODO
-				ex.printStackTrace();
+				throw new WebException(
+						"Server doesn't support needed encoding", ex);
 			}
 		}
 		return sb.toString();
@@ -110,8 +106,7 @@ public class WgAccessImpl implements WgAccess {
 		try {
 			con = (HttpsURLConnection) url.openConnection();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new WebException("Error opening connection to WG", e);
 		}
 		// paranoid tls settings
 		con.setSSLSocketFactory(new SecureSSLSocketFactory());
@@ -145,17 +140,19 @@ public class WgAccessImpl implements WgAccess {
 
 		// read the response
 		JsonStructure json = null;
+		JsonReader reader = null;
 		try {
 			InputStream is = con.getInputStream();
-			JsonReader reader = Json.createReader(is);
+			reader = Json.createReader(is);
 			try {
 				json = reader.read();
 			} catch (JsonException | IllegalStateException e) {
 				throw new WebException("Error parsing response", e);
 			}
-			reader.close();
 		} catch (IOException e) {
 			throw new WebException("Error reading response", e);
+		} finally {
+			reader.close();
 		}
 		return json;
 	}
@@ -168,7 +165,7 @@ public class WgAccessImpl implements WgAccess {
 	 */
 	private JsonValue getResponseData(String urlString,
 			Map<String, String> params, String method) throws WebException,
-			WgApiException {
+			WgApiError {
 		JsonObject json;
 		try {
 			json = (JsonObject) getResponse(urlString, params, method);
@@ -176,7 +173,7 @@ public class WgAccessImpl implements WgAccess {
 			if (!"ok".equals(status)) {
 				if ("error".equals(status)) {
 					JsonObject error = json.getJsonObject("error");
-					throw new WgApiException(error.getInt("code"),
+					throw new WgApiError(error.getInt("code"),
 							error.getString("field"),
 							error.getString("message"),
 							error.getString("value"));

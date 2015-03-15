@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import cworg.web.ProlongateResponse;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
-import cworg.web.WgApiException;
+import cworg.web.WgApiError;
 
 @WebServlet("/login/callback/")
 public class LoginCallbackServlet extends HttpServlet {
@@ -57,7 +57,7 @@ public class LoginCallbackServlet extends HttpServlet {
 				prlResp = wg.prolongate(token, Duration.ofDays(1));
 			} catch (WebException e) {
 				// TODO error page
-			} catch (WgApiException e) {
+			} catch (WgApiError e) {
 				// TODO error page
 			}
 			if (!accountId.equals(prlResp.getAccountId())) {

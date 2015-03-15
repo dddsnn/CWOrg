@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import cworg.web.WebException;
 import cworg.web.WgAccess;
-import cworg.web.WgApiException;
+import cworg.web.WgApiError;
 
 @WebServlet("/login/")
 public class LoginServlet extends HttpServlet {
@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 			resp.sendRedirect(wg.getLoginUrl(redirectUrl));
 		} catch (WebException e) {
 			// TODO error page
-		} catch (WgApiException e) {
+		} catch (WgApiError e) {
 			// TODO error page
 		}
 	}

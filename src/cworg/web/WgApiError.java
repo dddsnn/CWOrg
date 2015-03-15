@@ -1,6 +1,6 @@
 package cworg.web;
 
-public class WgApiException extends Exception {
+public class WgApiError extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	private int code;
@@ -8,7 +8,7 @@ public class WgApiException extends Exception {
 	private String message;
 	private String value;
 
-	public WgApiException(int code, String field, String message,
+	public WgApiError(int code, String field, String message,
 			String value) {
 		this.code = code;
 		this.field = field;
