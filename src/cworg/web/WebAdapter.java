@@ -2,7 +2,6 @@ package cworg.web;
 
 import java.util.TreeMap;
 
-import cworg.data.Tank;
 import cworg.data.TankType;
 
 public class WebAdapter {
