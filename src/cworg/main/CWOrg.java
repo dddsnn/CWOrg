@@ -1,26 +1,10 @@
 package cworg.main;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Calendar;
-import java.util.Vector;
 
 import cworg.data.Clan;
 import cworg.data.Player;
 import cworg.data.Project;
-import cworg.data.TankType;
-import cworg.replay.ReplayBattle;
-import cworg.replay.ReplayBattlePlayer;
-import cworg.web.UnknownClanException;
-import cworg.web.UnknownWebFormatException;
-import cworg.web.WebAccess;
 
 public class CWOrg /*implements UICallback */{
 	public static final Color TANK_NOT_RESEARCHED = Color.BLACK;

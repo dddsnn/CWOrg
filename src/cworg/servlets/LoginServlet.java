@@ -1,15 +1,23 @@
 package cworg.servlets;
 
 import java.io.IOException;
+
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/login")
+import cworg.web.WebException;
+import cworg.web.WgAccess;
+import cworg.web.WgApiException;
+
+@WebServlet("/login/")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	@EJB
+	private WgAccess wg;
 
 	public LoginServlet() {
 		super();
@@ -26,16 +34,18 @@ public class LoginServlet extends HttpServlet {
 		handle(request, response);
 	}
 
-	void handle(HttpServletRequest req, HttpServletResponse resp)
+	protected void handle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String status = req.getParameter("status");
-		if (!status.equals("ok"))
-			return;
-		String token = req.getParameter("access_token");
-		String nick = req.getParameter("nickname");
-		req.getSession().setAttribute("token", token);
-		req.getSession().setAttribute("nick", nick);
-		req.getRequestDispatcher("/index.xhtml").forward(req, resp);
+		String redirectUrl =
+				String.format("https://%s:%s%s/login/callback/",
+						req.getServerName(), req.getServerPort(),
+						req.getContextPath());
+		try {
+			resp.sendRedirect(wg.getLoginUrl(redirectUrl));
+		} catch (WebException e) {
+			// TODO error page
+		} catch (WgApiException e) {
+			// TODO error page
+		}
 	}
-
 }

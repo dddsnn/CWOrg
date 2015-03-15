@@ -10,19 +10,19 @@ import javax.servlet.ServletContextListener;
 public class StartupListener implements ServletContextListener {
 
 	@Override
-	public void contextDestroyed(ServletContextEvent e) {
+	public void contextDestroyed(ServletContextEvent ev) {
 		// nop
 	}
 
 	@Override
-	public void contextInitialized(ServletContextEvent e) {
+	public void contextInitialized(ServletContextEvent ev) {
 		// put app id into servletcontext
 		InputStream is =
 				getClass().getClassLoader().getResourceAsStream(
 						"/app-id.properties");
 		if (is == null) {
 			System.err.println("Couldn't find app-id.properties");
-			e.getServletContext().setAttribute("app-id", "");
+			ev.getServletContext().setAttribute("app-id", "");
 			return;
 		}
 		Properties prop = new Properties();
@@ -34,6 +34,6 @@ public class StartupListener implements ServletContextListener {
 			ex.printStackTrace();
 		}
 		String appId = (String) prop.get("app-id");
-		e.getServletContext().setAttribute("app-id", appId);
+		ev.getServletContext().setAttribute("app-id", appId);
 	}
 }

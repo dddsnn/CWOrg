@@ -5,24 +5,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.*;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonStructure;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import cworg.web.WgAccess;
 
 @RequestScoped
 @Named("testBean")
@@ -33,16 +34,20 @@ public class TestBean {
 	private ServletContext context;
 	@Inject
 	private HttpSession session;
+//	@EJB
+//	private TestDB db;
+//	@EJB
+//	private WgAccessImpl wg;
 	@EJB
-	private TestDB db;
+	private WgAccess blubb;
 
 	public String getTest() {
-		List<TestData> things = db.getAllThings();
+		List<TestData> things = new ArrayList<TestData>();//db.getAllThings();
 		String thingString = "";
 		for (TestData thing : things) {
 			thingString += thing.getData();
 		}
-		return request.getMethod() + thingString;
+		return request.getMethod() + thingString;//+wg.getClass().toString();
 	}
 
 	public String getNick() {
@@ -54,7 +59,7 @@ public class TestBean {
 	}
 
 	public void addAThing(String stuff) {
-		db.addStuff(stuff);
+//		db.addStuff(stuff);
 	}
 
 	public String getUrl() {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.net.ssl.SSLContext;
@@ -32,7 +33,14 @@ public class SecureSSLSocketFactory extends SSLSocketFactory {
 
 	public SecureSSLSocketFactory() {
 		try {
-			f = SSLContext.getInstance("TLS").getSocketFactory();
+			SSLContext sslctx = SSLContext.getInstance("TLS");
+			try {
+				sslctx.init(null, null, null);
+			} catch (KeyManagementException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			f = sslctx.getSocketFactory();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
