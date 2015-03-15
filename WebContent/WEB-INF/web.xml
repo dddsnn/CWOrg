@@ -4,29 +4,30 @@
 	version="3.1">
 	<display-name>CWOrg</display-name>
 	<welcome-file-list>
-		<welcome-file>login.xhtml</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
+
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+
 	<listener>
 		<listener-class>cworg.main.StartupListener</listener-class>
 	</listener>
+
 	<context-param>
 		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
 		<param-value>true</param-value>
 	</context-param>
-
-	<!-- <ejb-local-ref>
-		<ejb-ref-name>WGAccess</ejb-ref-name>
-		<ejb-ref-type>Session</ejb-ref-type>
-		<local-home />
-		<local>cworg.web.WgAccess</local>
-	</ejb-local-ref> -->
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
 </web-app>
