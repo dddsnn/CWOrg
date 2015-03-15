@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cworg.data.LoggedInUser;
 import cworg.web.ProlongateResponse;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
@@ -54,7 +55,8 @@ public class LoginCallbackServlet extends HttpServlet {
 			// prolongate access token and confirm it's legit
 			ProlongateResponse prlResp = null;
 			try {
-				prlResp = wg.prolongate(token, Duration.ofDays(1));
+				// TODO longer duration
+				prlResp = wg.prolongate(token, Duration.ofHours(1));
 			} catch (WebException e) {
 				// TODO error page
 			} catch (WgApiError e) {
@@ -66,20 +68,18 @@ public class LoginCallbackServlet extends HttpServlet {
 			}
 
 			// store data in session
-			// TODO store as a LoggedInPlayer object
-			req.getSession().setAttribute("token", prlResp.getAccessToken());
-			req.getSession().setAttribute("nick", nick);
-			req.getSession().setAttribute("account-id", prlResp.getAccountId());
-			req.getSession().setAttribute("expiry-time",
-					prlResp.getExpiryTime());
-			resp.sendRedirect(req.getContextPath() + "/index.xhtml");
+			LoggedInUser loggedInUser =
+					new LoggedInUser(prlResp.getAccountId(),
+							prlResp.getAccessToken(), prlResp.getExpiryTime());
+			req.getSession().setAttribute("user", loggedInUser);
+			resp.sendRedirect(req.getContextPath() + "/");
 		} else if ("error".equals(status)) {
 			// TODO
 		} else if (status == null) {
 			// no status, just redirect to index
-			resp.sendRedirect(req.getContextPath() + "/index.xhtml");
+			resp.sendRedirect(req.getContextPath() + "/");
 		} else {
-			// TODO
+			// TODO invalid status
 		}
 	}
 }

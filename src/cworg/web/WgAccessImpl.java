@@ -12,12 +12,15 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.inject.Inject;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -42,30 +45,100 @@ public class WgAccessImpl implements WgAccess {
 	@Override
 	public String getLoginUrl(String redirectUrl) throws WgApiError,
 			WebException {
-		String url = "https://api.worldoftanks.eu/wot/auth/login/";
-		Map<String, String> params = new HashMap<String, String>(3);
+		String methodUrl = "https://api.worldoftanks.eu/wot/auth/login/";
+		Map<String, String> params = new HashMap<>(3);
 		params.put("expires_at", "300");
 		params.put("nofollow", "1");
 		params.put("redirect_uri", redirectUrl);
-		JsonObject resp = (JsonObject) this.getResponseData(url, params, "GET");
-		return resp.getString("location");
+
+		String result = null;
+		try {
+			JsonObject resp =
+					(JsonObject) this.getResponseData(methodUrl, params, "GET");
+			result = resp.getString("location");
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
 	}
 
 	@Override
 	public ProlongateResponse prolongate(String accessToken, Duration duration)
 			throws WebException, WgApiError {
-		String url = "https://api.worldoftanks.eu/wot/auth/prolongate/";
+		String methodUrl = "https://api.worldoftanks.eu/wot/auth/prolongate/";
 		long seconds = duration.getSeconds();
-		Map<String, String> params = new HashMap<String, String>(3);
+		Map<String, String> params = new HashMap<>(2);
 		params.put("access_token", accessToken);
 		params.put("expires_at", Long.toString(seconds));
-		JsonObject resp =
-				(JsonObject) this.getResponseData(url, params, "POST");
-		String newToken = resp.getString("access_token");
-		String accountId = resp.get("account_id").toString();
-		long expiryTimeStamp = resp.getJsonNumber("expires_at").longValue();
-		Instant expiryTime = Instant.ofEpochSecond(expiryTimeStamp);
-		return new ProlongateResponse(newToken, accountId, expiryTime);
+
+		ProlongateResponse result = null;
+		try {
+			JsonObject resp =
+					(JsonObject) this
+							.getResponseData(methodUrl, params, "POST");
+			String newToken = resp.getString("access_token");
+			String accountId = resp.get("account_id").toString();
+			long expiryTimeStamp = resp.getJsonNumber("expires_at").longValue();
+			Instant expiryTime = Instant.ofEpochSecond(expiryTimeStamp);
+			result = new ProlongateResponse(newToken, accountId, expiryTime);
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
+	}
+
+	@Override
+	public void logout(String accessToken) throws WebException, WgApiError {
+		String methodUrl = "https://api.worldoftanks.eu/wot/auth/logout/";
+		Map<String, String> params = new HashMap<>(1);
+		params.put("access_token", accessToken);
+		this.getResponseData(methodUrl, params, "POST");
+	}
+
+	// TODO factor out parts
+	@Override
+	public List<String> getVehiclesInGarage(String accountId, String accessToken)
+			throws WebException, WgApiError {
+		String playerMethodUrl = "https://api.worldoftanks.eu/wot/tanks/stats/";
+		Map<String, String> playerParams = new HashMap<>(4);
+		playerParams.put("account_id", accountId);
+		playerParams.put("access_token", accessToken);
+		playerParams.put("in_garage", "1");
+		playerParams.put("fields", "tank_id");
+		String tankInfoMethodUrl =
+				"https://api.worldoftanks.eu/wot/encyclopedia/tanks/";
+		Map<String, String> tankInfoParams = new HashMap<>(1);
+		tankInfoParams.put("fields", "name_i18n,tank_id");
+
+		List<String> result = new LinkedList<>();
+		try {
+			// tank map first
+			Map<String, String> tankNameMap = new HashMap<>();
+			JsonObject resp =
+					(JsonObject) this.getResponseData(tankInfoMethodUrl,
+							tankInfoParams, "GET");
+			for (Map.Entry<String, JsonValue> e : resp.entrySet()) {
+				JsonObject o = (JsonObject) e.getValue();
+				tankNameMap.put(o.get("tank_id").toString(),
+						o.getString("name_i18n"));
+			}
+
+			// now player tanks
+			resp =
+					(JsonObject) this.getResponseData(playerMethodUrl,
+							playerParams, "GET");
+			JsonArray tankList = resp.getJsonArray(accountId);
+			for (JsonValue v : tankList) {
+				JsonObject o = (JsonObject) v;
+				String tankId = o.get("tank_id").toString();
+				result.add(tankNameMap.get(tankId));
+			}
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
+//		List<String> asd = new LinkedList<>();
+//		asd.add("foo");asd.add("bar");return asd;
 	}
 
 	private static String makeQueryString(String appId,

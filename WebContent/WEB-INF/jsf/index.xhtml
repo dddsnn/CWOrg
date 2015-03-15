@@ -10,12 +10,19 @@
 <h:body>
 	<h:outputLink value="login/">Login</h:outputLink>
 	<h:form>
-		<h:commandButton value="Logout" action="#{testBean.logout()}" />
+		<h:commandLink value="Logout" action="#{loginBean.logout}" />
 	</h:form>
-	<!-- #{loginBean.nick} -->
-	 <c:choose>
-		<c:when test="#{loginBean.loggedIn}">#{loginBean.nick}</c:when>
+
+	<c:choose>
+		<c:when test="#{loginBean.loggedIn}">logged in with account id #{loginBean.accountId}</c:when>
 		<c:otherwise>not logged in</c:otherwise>
 	</c:choose>
+	<c:if test="#{loginBean.loggedIn}">
+		<h:dataTable value="#{dataBean.tanksInGarage}" var="t">
+			<h:column>
+			#{t}
+    		</h:column>
+		</h:dataTable>
+	</c:if>
 </h:body>
 </html>
