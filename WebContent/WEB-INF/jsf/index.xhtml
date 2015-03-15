@@ -2,6 +2,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -18,9 +19,54 @@
 		<c:otherwise>not logged in</c:otherwise>
 	</c:choose>
 	<c:if test="#{loginBean.loggedIn}">
-		<h:dataTable value="#{dataBean.tanksInGarage}" var="t">
+		<h:dataTable value="#{dataBean.allTanks}" var="t">
 			<h:column>
-			#{t}
+				<f:facet name="header">id</f:facet>
+					#{t.id}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">name</f:facet>
+					#{t.name}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">type</f:facet>
+					#{t.type}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">nation</f:facet>
+					#{t.nation}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">tier</f:facet>
+					#{t.tier}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">image</f:facet>
+				<img src="#{t.imageUrl}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">small image</f:facet>
+				<img src="#{t.smallImageUrl}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">contour image</f:facet>
+				<img src="#{t.contourImageUrl}" />
+			</h:column>
+			<h:column>
+				<f:facet name="header">premium</f:facet>
+					#{t.premium}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">internal name</f:facet>
+					#{t.internalName}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">internal nation</f:facet>
+					#{t.internalNation}
+    		</h:column>
+			<h:column>
+				<f:facet name="header">internal type</f:facet>
+					#{t.internalType}
     		</h:column>
 		</h:dataTable>
 	</c:if>

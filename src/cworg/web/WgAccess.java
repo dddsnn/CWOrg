@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import cworg.data.Tank;
+
 @Local
 public interface WgAccess {
 	String getLoginUrl(String redirectUrl) throws WgApiError, WebException;
@@ -17,4 +19,6 @@ public interface WgAccess {
 	// TODO specific, just for testing
 	List<String> getVehiclesInGarage(String accountId, String accessToken)
 			throws WebException, WgApiError;
+
+	List<Tank> getAllTankInfo() throws WebException, WgApiError;
 }

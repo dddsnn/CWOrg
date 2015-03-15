@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -29,9 +29,10 @@ import javax.json.JsonValue;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletContext;
 
+import cworg.data.Tank;
 import cworg.main.SecureSSLSocketFactory;
 
-@Singleton
+@Stateless
 public class WgAccessImpl implements WgAccess {
 	@Inject
 	private ServletContext ctx;
@@ -137,8 +138,43 @@ public class WgAccessImpl implements WgAccess {
 			throw new WebException("Unexpected response format", e);
 		}
 		return result;
-//		List<String> asd = new LinkedList<>();
-//		asd.add("foo");asd.add("bar");return asd;
+		// List<String> asd = new LinkedList<>();
+		// asd.add("foo");asd.add("bar");return asd;
+	}
+
+	@Override
+	public List<Tank> getAllTankInfo() throws WebException, WgApiError {
+		String methodUrl =
+				"https://api.worldoftanks.eu/wot/encyclopedia/tanks/";
+		Map<String, String> params = new HashMap<>(0);
+
+		List<Tank> result = new LinkedList<>();
+		try {
+			JsonObject resp =
+					(JsonObject) this.getResponseData(methodUrl, params, "GET");
+			for (Map.Entry<String, JsonValue> e : resp.entrySet()) {
+				JsonObject o = (JsonObject) e.getValue();
+				String contourImageUrl = o.getString("contour_image");
+				String imageUrl = o.getString("image");
+				String smallImageUrl = o.getString("image_small");
+				boolean premium = o.getBoolean("is_premium");
+				int tier = o.getInt("level");
+				String internalName = o.getString("name");
+				String name = o.getString("name_i18n");
+				String internalNation = o.getString("nation");
+				String nation = o.getString("nation_i18n");
+				String shortName = o.getString("short_name_i18n");
+				String id = o.get("tank_id").toString();
+				String internalType = o.getString("type");
+				String type = o.getString("type_i18n");
+				result.add(new Tank(id, name, shortName, type, nation, tier,
+						imageUrl, smallImageUrl, contourImageUrl, premium,
+						internalName, internalNation, internalType));
+			}
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
 	}
 
 	private static String makeQueryString(String appId,

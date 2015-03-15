@@ -9,6 +9,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import cworg.data.LoggedInUser;
+import cworg.data.Tank;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
 import cworg.web.WgApiError;
@@ -29,6 +30,14 @@ public class DataBean {
 		try {
 			return wg.getVehiclesInGarage(user.getAccountId(),
 					user.getAccessToken());
+		} catch (WebException | WgApiError e) {
+			return null;
+		}
+	}
+
+	public List<Tank> getAllTanks() {
+		try {
+			return wg.getAllTankInfo();
 		} catch (WebException | WgApiError e) {
 			return null;
 		}
