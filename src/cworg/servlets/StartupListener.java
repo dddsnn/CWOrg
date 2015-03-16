@@ -1,4 +1,4 @@
-package cworg.main;
+package cworg.servlets;
 
 import java.io.IOException;
 import java.io.InputStream;

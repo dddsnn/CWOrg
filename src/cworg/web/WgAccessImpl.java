@@ -30,7 +30,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletContext;
 
 import cworg.data.Tank;
-import cworg.main.SecureSSLSocketFactory;
 
 @Stateless
 public class WgAccessImpl implements WgAccess {

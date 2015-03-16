@@ -1,4 +1,4 @@
-package cworg.main;
+package cworg.web;
 
 import java.io.IOException;
 import java.net.InetAddress;
