@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import cworg.data.LoggedInUser;
+import cworg.data.LoginInfo;
+import cworg.data.Player;
+import cworg.data.User;
 import cworg.web.ProlongateResponse;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
@@ -68,10 +70,14 @@ public class LoginCallbackServlet extends HttpServlet {
 			}
 
 			// store data in session
-			LoggedInUser loggedInUser =
-					new LoggedInUser(prlResp.getAccountId(),
-							prlResp.getAccessToken(), prlResp.getExpiryTime());
-			req.getSession().setAttribute("user", loggedInUser);
+			// TODO check if user is already in db
+			LoginInfo loginInfo =
+					new LoginInfo(prlResp.getAccessToken(),
+							prlResp.getExpiryTime());
+			// TODO load player if new
+			User user = new User(prlResp.getAccountId(), new Player());
+			user.setLoginInfo(loginInfo);
+			req.getSession().setAttribute("user", user);
 			resp.sendRedirect(req.getContextPath() + "/");
 		} else if ("error".equals(status)) {
 			// TODO

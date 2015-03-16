@@ -8,8 +8,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-import cworg.data.LoggedInUser;
 import cworg.data.Tank;
+import cworg.data.User;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
 import cworg.web.WgApiError;
@@ -23,13 +23,13 @@ public class DataBean {
 	private WgAccess wg;
 
 	public List<String> getTanksInGarage() {
-		LoggedInUser user = (LoggedInUser) session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			return null;
 		}
 		try {
 			return wg.getVehiclesInGarage(user.getAccountId(),
-					user.getAccessToken());
+					user.getLoginInfo().getAccessToken());
 		} catch (WebException | WgApiError e) {
 			return null;
 		}

@@ -36,6 +36,9 @@ public class LoginServlet extends HttpServlet {
 
 	protected void handle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		if (req.getSession().getAttribute("user") != null) {
+			// TODO user already logged in, redirect back to index/prolongate
+		}
 		String redirectUrl =
 				String.format("https://%s:%s%s/login/callback/",
 						req.getServerName(), req.getServerPort(),

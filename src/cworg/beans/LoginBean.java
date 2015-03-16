@@ -6,7 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
-import cworg.data.LoggedInUser;
+import cworg.data.User;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
 import cworg.web.WgApiError;
@@ -24,18 +24,18 @@ public class LoginBean {
 	}
 
 	public String getAccountId() {
-		LoggedInUser user = (LoggedInUser) session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		return user == null ? "" : user.getAccountId();
 	}
 
 	public String logout() {
-		LoggedInUser user = (LoggedInUser) session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
 		if (user == null) {
 			// not logged in
 			return "notlog";
 		}
 		try {
-			wg.logout(user.getAccessToken());
+			wg.logout(user.getLoginInfo().getAccessToken());
 		} catch (WebException e) {
 			return "webex";
 		} catch (WgApiError e) {

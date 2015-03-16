@@ -17,8 +17,8 @@ import javax.persistence.OneToOne;
 public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name = "ID")
-	private String id;
+	@Column(name = "ACCOUNT_ID")
+	private String accountId;
 	private Instant creationTime;
 	private Instant lastBattleTime;
 	private Instant lastLogoutTime;
@@ -28,7 +28,7 @@ public class Player implements Serializable {
 	private ClanMemberInformation clanInfo;
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "PLAYER_TANK", joinColumns = { @JoinColumn(
-			name = "PLAYER_ID", referencedColumnName = "ID") },
+			name = "PLAYER_ID", referencedColumnName = "ACCOUNT_ID") },
 			inverseJoinColumns = { @JoinColumn(name = "TANK_ID",
 					referencedColumnName = "ID") })
 	private Set<Tank> tanks;
