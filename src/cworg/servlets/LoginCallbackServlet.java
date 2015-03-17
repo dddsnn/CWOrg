@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import cworg.data.LoginInfo;
-import cworg.data.Player;
 import cworg.data.User;
+import cworg.db.DBAccess;
 import cworg.web.ProlongateResponse;
 import cworg.web.WebException;
 import cworg.web.WgAccess;
@@ -23,6 +23,8 @@ public class LoginCallbackServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB
 	private WgAccess wg;
+	@EJB
+	private DBAccess db;
 
 	public LoginCallbackServlet() {
 		super();
@@ -70,12 +72,10 @@ public class LoginCallbackServlet extends HttpServlet {
 			}
 
 			// store data in session
-			// TODO check if user is already in db
+			User user = db.findOrCreateUser(accountId);
 			LoginInfo loginInfo =
 					new LoginInfo(prlResp.getAccessToken(),
 							prlResp.getExpiryTime());
-			// TODO load player if new
-			User user = new User(prlResp.getAccountId(), new Player());
 			user.setLoginInfo(loginInfo);
 			req.getSession().setAttribute("user", user);
 			resp.sendRedirect(req.getContextPath() + "/");
