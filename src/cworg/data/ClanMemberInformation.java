@@ -27,4 +27,44 @@ public class ClanMemberInformation implements Serializable {
 	private String internalRole;
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "clanInfo")
 	private Player player;
+	
+	public ClanMemberInformation(Player player) {
+		this.player = player;
+	}
+
+	public Clan getClan() {
+		return clan;
+	}
+
+	public void setClan(Clan clan) {
+		this.clan = clan;
+	}
+
+	public Instant getJoinTime() {
+		return joinTime;
+	}
+
+	public void setJoinTime(Instant joinTime) {
+		this.joinTime = joinTime;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getInternalRole() {
+		return internalRole;
+	}
+
+	public void setInternalRole(String internalRole) {
+		this.internalRole = internalRole;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
 }

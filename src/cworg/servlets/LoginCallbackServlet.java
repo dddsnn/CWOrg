@@ -72,7 +72,16 @@ public class LoginCallbackServlet extends HttpServlet {
 			}
 
 			// store data in session
-			User user = db.findOrCreateUser(accountId);
+			User user = null;
+			try {
+				user = db.findOrCreateUser(accountId);
+			} catch (WebException e) {
+				// TODO error page
+				e.printStackTrace();
+			} catch (WgApiError e) {
+				// TODO error page
+				e.printStackTrace();
+			}
 			LoginInfo loginInfo =
 					new LoginInfo(prlResp.getAccessToken(),
 							prlResp.getExpiryTime());

@@ -12,9 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -142,12 +144,12 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	@Override
-	public List<Tank> getAllTankInfo() throws WebException, WgApiError {
+	public Set<Tank> getAllTankInfo() throws WebException, WgApiError {
 		String methodUrl =
 				"https://api.worldoftanks.eu/wot/encyclopedia/tanks/";
 		Map<String, String> params = new HashMap<>(0);
 
-		List<Tank> result = new LinkedList<>();
+		Set<Tank> result = new HashSet<>();
 		try {
 			JsonObject resp =
 					(JsonObject) this.getResponseData(methodUrl, params, "GET");
@@ -178,6 +180,18 @@ public class WgAccessImpl implements WgAccess {
 
 	@Override
 	public GetPlayerResponse getPlayer(String accountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GetClanMemberInfoResponse getClanMemberInfo(String accountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GetClanResponse getClan(String clanId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

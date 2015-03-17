@@ -28,18 +28,19 @@ public class DataBean {
 			return null;
 		}
 		try {
-			return wg.getVehiclesInGarage(user.getAccountId(),
-					user.getLoginInfo().getAccessToken());
+			return wg.getVehiclesInGarage(user.getAccountId(), user
+					.getLoginInfo().getAccessToken());
 		} catch (WebException | WgApiError e) {
 			return null;
 		}
 	}
 
 	public List<Tank> getAllTanks() {
-		try {
-			return wg.getAllTankInfo();
-		} catch (WebException | WgApiError e) {
-			return null;
-		}
+		// TODO was only for testing anyway
+		// try {
+		// return wg.getAllTankInfo();
+		// } catch (WebException | WgApiError e) {
+		return null;
+		// }
 	}
 }

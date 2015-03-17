@@ -2,6 +2,7 @@ package cworg.web;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Local;
 
@@ -20,7 +21,11 @@ public interface WgAccess {
 	List<String> getVehiclesInGarage(String accountId, String accessToken)
 			throws WebException, WgApiError;
 
-	List<Tank> getAllTankInfo() throws WebException, WgApiError;
+	Set<Tank> getAllTankInfo() throws WebException, WgApiError;
 
 	GetPlayerResponse getPlayer(String accountId);
+
+	GetClanMemberInfoResponse getClanMemberInfo(String accountId);
+
+	GetClanResponse getClan(String clanId);
 }
