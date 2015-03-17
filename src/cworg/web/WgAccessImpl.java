@@ -176,6 +176,12 @@ public class WgAccessImpl implements WgAccess {
 		return result;
 	}
 
+	@Override
+	public GetPlayerResponse getPlayer(String accountId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private static String makeQueryString(String appId,
 			Map<String, String> params) throws WebException {
 		Charset charset = StandardCharsets.UTF_8;

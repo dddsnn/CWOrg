@@ -2,6 +2,7 @@ package cworg.data;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +17,7 @@ public class User implements Serializable {
 	@Id
 	@Column(name = "ACCOUNT_ID")
 	private String accountId;
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ACCOUNT_ID")
 	private Player player;
 	@Transient

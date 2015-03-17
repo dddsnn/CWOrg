@@ -21,4 +21,6 @@ public interface WgAccess {
 			throws WebException, WgApiError;
 
 	List<Tank> getAllTankInfo() throws WebException, WgApiError;
+
+	GetPlayerResponse getPlayer(String accountId);
 }
