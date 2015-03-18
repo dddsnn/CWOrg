@@ -17,7 +17,7 @@ public class ClanMemberInformation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
-	@Column(name="CLANMEMBERINFO_ID")
+	@Column(name = "CLANMEMBERINFO_ID")
 	private long id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLAN_ID")
@@ -27,7 +27,10 @@ public class ClanMemberInformation implements Serializable {
 	private String internalRole;
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "clanInfo")
 	private Player player;
-	
+
+	public ClanMemberInformation() {
+	}
+
 	public ClanMemberInformation(Player player) {
 		this.player = player;
 	}

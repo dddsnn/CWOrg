@@ -215,11 +215,17 @@ public class WgAccessImpl implements WgAccess {
 					Instant.ofEpochSecond(playerJson.getJsonNumber("logout_at")
 							.longValue());
 			String nick = playerJson.getString("nickname");
-			String clanId = playerJson.get("clan_id").toString();
+			JsonValue clanIdJson = playerJson.get("clan_id");
+			// check if clan id is a null json value, otherwise set to the
+			// actual clan id
+			String clanId = null;
+			if (clanIdJson.getValueType() != JsonValue.ValueType.NULL) {
+				clanId = clanIdJson.toString();
+			}
 			Set<String> tankIds = new HashSet<>(tankList.size());
 			for (JsonValue v : tankList) {
 				JsonObject o = (JsonObject) v;
-				tankIds.add(o.getString("tank_id"));
+				tankIds.add(o.get("tank_id").toString());
 			}
 			result =
 					new GetPlayerResponse(creationTime, lastBattleTime,

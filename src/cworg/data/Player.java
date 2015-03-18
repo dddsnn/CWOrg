@@ -35,6 +35,9 @@ public class Player implements Serializable {
 					referencedColumnName = "ID") })
 	private Set<Tank> tanks;
 
+	public Player() {
+	}
+
 	public Player(String accountId, Instant creationTime) {
 		this.accountId = accountId;
 		this.creationTime = creationTime;

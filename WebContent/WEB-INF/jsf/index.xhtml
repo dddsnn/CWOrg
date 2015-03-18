@@ -19,7 +19,11 @@
 		<c:otherwise>not logged in</c:otherwise>
 	</c:choose>
 	<c:if test="#{loginBean.loggedIn}">
-		<h:dataTable value="#{dataBean.allTanks}" var="t">
+	acc id #{dataBean.player.accountId}
+	<c:forEach items="#{dataBean.player.tanks}" var="t">
+	#{t}
+	</c:forEach>
+		<!-- <h:dataTable value="#{dataBean.allTanks}" var="t">
 			<h:column>
 				<f:facet name="header">id</f:facet>
 					#{t.id}
@@ -68,7 +72,7 @@
 				<f:facet name="header">internal type</f:facet>
 					#{t.internalType}
     		</h:column>
-		</h:dataTable>
+		</h:dataTable> -->
 	</c:if>
 </h:body>
 </html>

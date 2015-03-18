@@ -13,9 +13,8 @@ public class LoginInfo {
 	public Instant getExpiryTime() {
 		return expiryTime;
 	}
-
+	
 	public LoginInfo(String accessToken, Instant expiryTime) {
-		super();
 		this.accessToken = accessToken;
 		this.expiryTime = expiryTime;
 	}

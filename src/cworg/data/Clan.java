@@ -35,6 +35,9 @@ public class Clan implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "clan")
 	private Set<ClanMemberInformation> members;
 
+	public Clan() {
+	}
+
 	public Clan(String clanId, Instant creationTime, String creatorId) {
 		this.clanId = clanId;
 		this.creationTime = creationTime;

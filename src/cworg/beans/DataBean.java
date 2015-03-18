@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
+import cworg.data.Player;
 import cworg.data.Tank;
 import cworg.data.User;
 import cworg.web.WebException;
@@ -42,5 +43,10 @@ public class DataBean {
 		// } catch (WebException | WgApiError e) {
 		return null;
 		// }
+	}
+
+	public Player getPlayer() {
+		User user = (User) session.getAttribute("user");
+		return user.getPlayer();
 	}
 }

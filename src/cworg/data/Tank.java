@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class Tank implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	private String id;
 	private String name;
 	private String shortName;
@@ -24,6 +24,9 @@ public class Tank implements Serializable {
 	private String internalName;
 	private String internalNation;
 	private String internalType;
+
+	public Tank() {
+	}
 
 	public Tank(String id, String name, String shortName, String type,
 			String nation, int tier, String imageUrl, String smallImageUrl,

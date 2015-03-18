@@ -4,8 +4,8 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import cworg.data.Clan;
 import cworg.data.ClanMemberInformation;
@@ -21,7 +21,7 @@ import cworg.web.WgApiError;
 
 @Stateless
 public class DBAccessImpl implements DBAccess {
-	@Inject
+	@PersistenceContext
 	EntityManager em;
 	@EJB
 	WgAccess wg;
