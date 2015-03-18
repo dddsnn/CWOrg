@@ -1,5 +1,6 @@
 package cworg.web;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -97,7 +98,7 @@ public class WgAccessImpl implements WgAccess {
 		this.getResponseData(methodUrl, params, "POST");
 	}
 
-	// TODO factor out parts
+	// TODO factor out parts, remove completely?
 	@Override
 	public List<String> getVehiclesInGarage(String accountId, String accessToken)
 			throws WebException, WgApiError {
@@ -179,21 +180,170 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	@Override
-	public GetPlayerResponse getPlayer(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public GetPlayerResponse getPlayer(String accountId) throws WebException,
+			WgApiError {
+		String playerMethodUrl =
+				"https://api.worldoftanks.eu/wot/account/info/";
+		String tankMethodUrl = "https://api.worldoftanks.eu/wot/account/tanks/";
+		String playerFields =
+				"clan_id," + "created_at," + "last_battle_time," + "logout_at,"
+						+ "nickname";
+		Map<String, String> playerParams = new HashMap<>(2);
+		playerParams.put("account_id", accountId);
+		playerParams.put("fields", playerFields);
+		Map<String, String> tankParams = new HashMap<>(2);
+		tankParams.put("account_id", accountId);
+		tankParams.put("fields", "tank_id");
+
+		GetPlayerResponse result = null;
+		try {
+			JsonObject playerResp =
+					(JsonObject) this.getResponseData(playerMethodUrl,
+							playerParams, "GET");
+			JsonObject tankResp =
+					(JsonObject) this.getResponseData(tankMethodUrl,
+							tankParams, "GET");
+			JsonObject playerJson = playerResp.getJsonObject(accountId);
+			JsonArray tankList = tankResp.getJsonArray(accountId);
+			Instant creationTime =
+					Instant.ofEpochSecond(playerJson
+							.getJsonNumber("created_at").longValue());
+			Instant lastBattleTime =
+					Instant.ofEpochSecond(playerJson.getJsonNumber(
+							"last_battle_time").longValue());
+			Instant lastLogoutTime =
+					Instant.ofEpochSecond(playerJson.getJsonNumber("logout_at")
+							.longValue());
+			String nick = playerJson.getString("nickname");
+			String clanId = playerJson.get("clan_id").toString();
+			Set<String> tankIds = new HashSet<>(tankList.size());
+			for (JsonValue v : tankList) {
+				JsonObject o = (JsonObject) v;
+				tankIds.add(o.getString("tank_id"));
+			}
+			result =
+					new GetPlayerResponse(creationTime, lastBattleTime,
+							lastLogoutTime, nick, clanId, tankIds);
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
 	}
 
 	@Override
-	public GetClanMemberInfoResponse getClanMemberInfo(String accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public GetClanMemberInfoResponse getClanMemberInfo(String accountId)
+			throws WebException, WgApiError {
+		String methodUrl = "https://api.worldoftanks.eu/wgn/clans/membersinfo/";
+		String fields = "joined_at," + "role," + "role_i18n," + "clan.clan_id";
+		Map<String, String> params = new HashMap<>(2);
+		params.put("account_id", accountId);
+		params.put("fields", fields);
+
+		GetClanMemberInfoResponse result = null;
+		try {
+			JsonObject resp =
+					(JsonObject) this.getResponseData(methodUrl, params, "GET");
+			JsonObject infoJson = resp.getJsonObject(accountId);
+			String internalRole = infoJson.getString("role");
+			String role = infoJson.getString("role_i18n");
+			Instant joinTime =
+					Instant.ofEpochSecond(infoJson.getJsonNumber("joined_at")
+							.longValue());
+			String clanId =
+					infoJson.getJsonObject("clan").get("clan_id").toString();
+			result =
+					new GetClanMemberInfoResponse(clanId, joinTime, role,
+							internalRole);
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
 	}
 
 	@Override
-	public GetClanResponse getClan(String clanId) {
-		// TODO Auto-generated method stub
-		return null;
+	public GetClanResponse getClan(String clanId) throws WebException,
+			WgApiError {
+		String methodUrl = "https://api.worldoftanks.eu/wgn/clans/info/";
+		String fields =
+				"color," + "created_at," + "creator_id," + "description,"
+						+ "is_clan_disbanded," + "leader_id,"
+						+ "members_count," + "motto," + "name," + "tag,"
+						+ "emblems," + "members.account_id";
+		Map<String, String> params = new HashMap<>(2);
+		params.put("clan_id", clanId);
+		params.put("fields", fields);
+
+		GetClanResponse result = null;
+		try {
+			JsonObject resp =
+					(JsonObject) this.getResponseData(methodUrl, params, "GET");
+			JsonObject infoJson = resp.getJsonObject(clanId);
+			String commanderId = infoJson.get("leader_id").toString();
+			String description = infoJson.getString("description");
+			Instant creationTime =
+					Instant.ofEpochSecond(infoJson.getJsonNumber("created_at")
+							.longValue());
+			String creatorId = infoJson.get("creator_id").toString();
+			String clanTag = infoJson.getString("tag");
+			boolean disbanded = infoJson.getBoolean("is_clan_disbanded");
+			String motto = infoJson.getString("motto");
+			int memberCount = infoJson.getInt("members_count");
+			String name = infoJson.getString("name");
+			String colorString = infoJson.getString("color");
+			int r = Integer.parseInt(colorString.substring(1, 3), 16);
+			int g = Integer.parseInt(colorString.substring(3, 5), 16);
+			int b = Integer.parseInt(colorString.substring(5, 7), 16);
+			Color color = new Color(r, g, b);
+			String globalMapEmblem24Url = null;
+			String recruitingStationEmblem32Url = null;
+			String recruitingStationEmblem64Url = null;
+			String profileEmblem195Url = null;
+			String tankEmblem64Url = null;
+			String aircraftEmblem256Url = null;
+			JsonArray emblemList = infoJson.getJsonArray("emblems");
+			for (JsonValue v : emblemList) {
+				JsonObject o = (JsonObject) v;
+				String url = o.getString("url");
+				switch (o.getString("type")) {
+				case "24x24":
+					globalMapEmblem24Url = url;
+					break;
+				case "32x32":
+					recruitingStationEmblem32Url = url;
+					break;
+				case "64x64":
+					if ("wot".equals(o.getString("game"))) {
+						tankEmblem64Url = url;
+					} else {
+						recruitingStationEmblem64Url = url;
+					}
+					break;
+				case "195x195":
+					profileEmblem195Url = url;
+					break;
+				case "256x256":
+					aircraftEmblem256Url = url;
+					break;
+				}
+			}
+			JsonArray memberList = infoJson.getJsonArray("member");
+			Set<String> memberIds = new HashSet<>(memberList.size());
+			for (JsonValue v : memberList) {
+				JsonObject o = (JsonObject) v;
+				memberIds.add(o.getString("account_id"));
+			}
+
+			result =
+					new GetClanResponse(color, creationTime, creatorId,
+							description, disbanded, commanderId, memberCount,
+							motto, name, clanTag, globalMapEmblem24Url,
+							recruitingStationEmblem32Url,
+							recruitingStationEmblem64Url, profileEmblem195Url,
+							tankEmblem64Url, aircraftEmblem256Url, memberIds);
+		} catch (ClassCastException | NullPointerException e) {
+			throw new WebException("Unexpected response format", e);
+		}
+		return result;
 	}
 
 	private static String makeQueryString(String appId,

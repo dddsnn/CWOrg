@@ -23,9 +23,10 @@ public interface WgAccess {
 
 	Set<Tank> getAllTankInfo() throws WebException, WgApiError;
 
-	GetPlayerResponse getPlayer(String accountId);
+	GetPlayerResponse getPlayer(String accountId) throws WebException, WgApiError;
 
-	GetClanMemberInfoResponse getClanMemberInfo(String accountId);
+	GetClanMemberInfoResponse getClanMemberInfo(String accountId)
+			throws WebException, WgApiError;
 
-	GetClanResponse getClan(String clanId);
+	GetClanResponse getClan(String clanId) throws WebException, WgApiError;
 }

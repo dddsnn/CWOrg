@@ -106,7 +106,7 @@ public class DBAccessImpl implements DBAccess {
 					new Clan(clanId, clanResp.getCreationTime(),
 							clanResp.getCreatorId());
 			clan.setAircraftEmblem256Url(clanResp.getAircraftEmblem256Url());
-			clan.setClanTag(clanResp.getClanId());
+			clan.setClanTag(clanResp.getClanTag());
 			clan.setColor(clanResp.getColor());
 			clan.setCommanderId(clanResp.getCommanderId());
 			clan.setDescription(clanResp.getDescription());

@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.util.Set;
 
 public class GetClanResponse {
-	private String clanId;
 	private Color color;
 	private Instant creationTime;
 	private String creatorId;
@@ -24,15 +23,13 @@ public class GetClanResponse {
 	private String aircraftEmblem256Url;
 	private Set<String> memberIds;
 
-	public GetClanResponse(String clanId, Color color, Instant creationTime,
-			String creatorId, String description, boolean disbanded,
-			String commanderId, int memberCount, String motto, String name,
-			String clanTag, String globalMapEmblem24Url,
-			String recruitingStationEmblem32Url,
+	public GetClanResponse(Color color, Instant creationTime, String creatorId,
+			String description, boolean disbanded, String commanderId,
+			int memberCount, String motto, String name, String clanTag,
+			String globalMapEmblem24Url, String recruitingStationEmblem32Url,
 			String recruitingStationEmblem64Url, String profileEmblem195Url,
 			String tankEmblem64Url, String aircraftEmblem256Url,
 			Set<String> memberIds) {
-		this.clanId = clanId;
 		this.color = color;
 		this.creationTime = creationTime;
 		this.creatorId = creatorId;
@@ -50,10 +47,6 @@ public class GetClanResponse {
 		this.tankEmblem64Url = tankEmblem64Url;
 		this.aircraftEmblem256Url = aircraftEmblem256Url;
 		this.memberIds = memberIds;
-	}
-
-	public String getClanId() {
-		return clanId;
 	}
 
 	public Color getColor() {
