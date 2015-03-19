@@ -22,6 +22,7 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
@@ -35,6 +36,7 @@ import javax.servlet.ServletContext;
 import cworg.data.Tank;
 
 @Stateless
+@Interceptors({ RetryInterceptor.class })
 public class WgAccessImpl implements WgAccess {
 	@Inject
 	private ServletContext ctx;
