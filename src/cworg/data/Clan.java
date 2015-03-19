@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ public class Clan implements Serializable {
 	private Color color;
 	private Instant creationTime;
 	private String creatorId;
+	@Column(length = 1500)
 	private String description;
 	private boolean disbanded;
 	private String commanderId;

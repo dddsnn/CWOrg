@@ -20,8 +20,10 @@
 	</c:choose>
 	<c:if test="#{loginBean.loggedIn}">
 	<!-- acc id #{dataBean.player.accountId} -->
-	<c:forEach items="#{dataBean.clan.members}" var="p">
-	#{p.nick}
+	<br/>
+	#{dataBean.clan.description}<br/>
+	<c:forEach items="#{dataBean.clan.members}" var="m">
+	#{m.player.nick}
 	</c:forEach>
 		<!-- <h:dataTable value="#{dataBean.allTanks}" var="t">
 			<h:column>
