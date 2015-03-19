@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
+import cworg.data.Clan;
+import cworg.data.ClanMemberInformation;
 import cworg.data.Player;
 import cworg.data.Tank;
 import cworg.data.User;
@@ -48,5 +50,15 @@ public class DataBean {
 	public Player getPlayer() {
 		User user = (User) session.getAttribute("user");
 		return user.getPlayer();
+	}
+
+	public Clan getClan() {
+		User user = (User) session.getAttribute("user");
+		ClanMemberInformation clanInfo = user.getPlayer().getClanInfo();
+		if (clanInfo == null) {
+			return null;
+		} else {
+			return clanInfo.getClan();
+		}
 	}
 }

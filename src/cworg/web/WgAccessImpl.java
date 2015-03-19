@@ -332,11 +332,11 @@ public class WgAccessImpl implements WgAccess {
 					break;
 				}
 			}
-			JsonArray memberList = infoJson.getJsonArray("member");
+			JsonArray memberList = infoJson.getJsonArray("members");
 			Set<String> memberIds = new HashSet<>(memberList.size());
 			for (JsonValue v : memberList) {
 				JsonObject o = (JsonObject) v;
-				memberIds.add(o.getString("account_id"));
+				memberIds.add(o.get("account_id").toString());
 			}
 
 			result =

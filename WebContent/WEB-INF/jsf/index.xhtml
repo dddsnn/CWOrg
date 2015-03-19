@@ -19,9 +19,9 @@
 		<c:otherwise>not logged in</c:otherwise>
 	</c:choose>
 	<c:if test="#{loginBean.loggedIn}">
-	acc id #{dataBean.player.accountId}
-	<c:forEach items="#{dataBean.player.tanks}" var="t">
-	#{t}
+	<!-- acc id #{dataBean.player.accountId} -->
+	<c:forEach items="#{dataBean.clan.members}" var="p">
+	#{p.nick}
 	</c:forEach>
 		<!-- <h:dataTable value="#{dataBean.allTanks}" var="t">
 			<h:column>
