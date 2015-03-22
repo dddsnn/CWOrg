@@ -11,8 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -28,12 +27,9 @@ public class Player implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "CLANMEMBERINFO_ID")
 	private ClanMemberInformation clanInfo;
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "PLAYER_TANK", joinColumns = { @JoinColumn(
-			name = "PLAYER_ID", referencedColumnName = "ACCOUNT_ID") },
-			inverseJoinColumns = { @JoinColumn(name = "TANK_ID",
-					referencedColumnName = "ID") })
-	private Set<Tank> tanks;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "player",
+			cascade = CascadeType.ALL)
+	private Set<PlayerTankInformation> tankInfos;
 
 	public Player() {
 	}
@@ -41,7 +37,7 @@ public class Player implements Serializable {
 	public Player(String accountId, Instant creationTime) {
 		this.accountId = accountId;
 		this.creationTime = creationTime;
-		tanks = new HashSet<>();
+		tankInfos = new HashSet<>();
 	}
 
 	public Instant getLastBattleTime() {
@@ -84,7 +80,7 @@ public class Player implements Serializable {
 		return creationTime;
 	}
 
-	public Set<Tank> getTanks() {
-		return tanks;
+	public Set<PlayerTankInformation> getTanks() {
+		return tankInfos;
 	}
 }

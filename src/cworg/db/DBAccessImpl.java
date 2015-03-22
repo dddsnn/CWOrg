@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import cworg.data.Clan;
 import cworg.data.ClanMemberInformation;
 import cworg.data.Player;
+import cworg.data.PlayerTankInformation;
 import cworg.data.Tank;
 import cworg.data.User;
 import cworg.web.GetClanMemberInfoResponse;
@@ -52,11 +53,13 @@ public class DBAccessImpl implements DBAccess {
 			// now get the related entities
 			ClanMemberInformation clanMemberInfo = null;
 			if (playerResp.getClanId() != null) {
-				clanMemberInfo = this.findOrCreateClanMemberInfo(player);
+				clanMemberInfo = this.createClanMemberInfo(player);
 			}
 			player.setClanInfo(clanMemberInfo);
 			for (String tankId : playerResp.getTankIds()) {
-				player.getTanks().add(this.findOrGetUpdateForTank(tankId));
+				// player.getTanks().add(this.findOrGetUpdateForTank(tankId));
+				player.getTanks()
+						.add(this.createPlayerTankInfo(player, tankId));
 			}
 			// TODO do i need to merge now?
 		}
@@ -64,7 +67,7 @@ public class DBAccessImpl implements DBAccess {
 	}
 
 	@Override
-	public ClanMemberInformation findOrCreateClanMemberInfo(Player player)
+	public ClanMemberInformation createClanMemberInfo(Player player)
 			throws WebException, WgApiError {
 		GetClanMemberInfoResponse cmInfoResp =
 				wg.getClanMemberInfo(player.getAccountId());
@@ -130,5 +133,15 @@ public class DBAccessImpl implements DBAccess {
 			// TODO do i need to merge now?
 		}
 		return clan;
+	}
+
+	@Override
+	public PlayerTankInformation createPlayerTankInfo(Player player,
+			String tankId) throws WebException, WgApiError {
+		PlayerTankInformation tankInfo =
+				new PlayerTankInformation(this.findOrGetUpdateForTank(tankId),
+						player);
+		em.persist(tankInfo);
+		return tankInfo;
 	}
 }
