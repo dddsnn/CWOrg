@@ -10,4 +10,7 @@ public class ReplayException extends Exception {
 		super(message);
 	}
 
+	public ReplayException(String message, Throwable cause) {
+		super(message, cause);
+	}
 }

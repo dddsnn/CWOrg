@@ -1,0 +1,496 @@
+
+
+{
+  "roamingSettings": [
+    2,
+    2,
+    [
+      [
+        2,
+        500000000,
+        999999999,
+        "EU"
+      ],
+      [
+        1,
+        1,
+        499999999,
+        "RU"
+      ],
+      [
+        3,
+        1000000000,
+        1499999999,
+        "NA"
+      ]
+    ],
+    [
+      
+    ]
+  ],
+  "clientVersionFromXml": "World\u00a0of\u00a0Tanks v.0.9.6 #822",
+  "clientVersionFromExe": "0.9.6.0",
+  "mapDisplayName": "Siegfried Line",
+  "gameplayID": "ctf",
+  "regionCode": "EU",
+  "playerID": 500974203,
+  "serverName": "WOT EU2",
+  "vehicles": {
+    "10355288": {
+      "vehicleType": "ussr:Object_140",
+      "isAlive": true,
+      "name": "silumz",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "ARKNE",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355289": {
+      "vehicleType": "ussr:Object_140",
+      "isAlive": true,
+      "name": "mario515",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "WPE",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355290": {
+      "vehicleType": "usa:M53_55",
+      "isAlive": true,
+      "name": "PetrBaj",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355291": {
+      "vehicleType": "germany:E-100",
+      "isAlive": true,
+      "name": "liplaTin",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355292": {
+      "vehicleType": "ussr:T62A",
+      "isAlive": true,
+      "name": "Der_Spieler",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "1-SAU",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355293": {
+      "vehicleType": "ussr:IS-7",
+      "isAlive": true,
+      "name": "dzikens1997",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "PADE",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355294": {
+      "vehicleType": "ussr:IS8",
+      "isAlive": true,
+      "name": "mst6034",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355295": {
+      "vehicleType": "ussr:IS8",
+      "isAlive": true,
+      "name": "boczo",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355296": {
+      "vehicleType": "usa:T57_58",
+      "isAlive": true,
+      "name": "R3LaXeD",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355297": {
+      "vehicleType": "france:Bat_Chatillon155_55",
+      "isAlive": true,
+      "name": "Chofu77",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "K-A",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355298": {
+      "vehicleType": "usa:T49",
+      "isAlive": true,
+      "name": "blackbaron1984",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "NLBE-",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355299": {
+      "vehicleType": "france:Lorraine40t",
+      "isAlive": true,
+      "name": "mondo77",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "VOJAK",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355300": {
+      "vehicleType": "germany:Waffentrager_IV",
+      "isAlive": true,
+      "name": "29mama29",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355301": {
+      "vehicleType": "usa:T30",
+      "isAlive": true,
+      "name": "LukeBlaster",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355302": {
+      "vehicleType": "france:AMX_50Fosh_155",
+      "isAlive": true,
+      "name": "Biggestpaddy",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "B-I-G",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355303": {
+      "vehicleType": "germany:JagdPz_E100",
+      "isAlive": true,
+      "name": "Snake184",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "1-SAU",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355304": {
+      "vehicleType": "usa:T110E3",
+      "isAlive": true,
+      "name": "raddo73",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "HADCS",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355305": {
+      "vehicleType": "ussr:Object_140",
+      "isAlive": true,
+      "name": "Maciej491",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "-AK-",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355306": {
+      "vehicleType": "ussr:IS-7",
+      "isAlive": true,
+      "name": "Mbyados",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "BRAT",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355307": {
+      "vehicleType": "usa:T110E4",
+      "isAlive": true,
+      "name": "Jetka1",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355308": {
+      "vehicleType": "usa:T54E1",
+      "isAlive": true,
+      "name": "Prime_N",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "RO-MW",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355309": {
+      "vehicleType": "ussr:Object_140",
+      "isAlive": true,
+      "name": "Ch_Kranz",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355310": {
+      "vehicleType": "ussr:IS8",
+      "isAlive": true,
+      "name": "RxL",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355311": {
+      "vehicleType": "germany:VK4502P",
+      "isAlive": true,
+      "name": "BoT_SD",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "NPLM",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355312": {
+      "vehicleType": "ussr:T62A",
+      "isAlive": true,
+      "name": "lube13",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355313": {
+      "vehicleType": "germany:E-100",
+      "isAlive": true,
+      "name": "Symen11098",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "32BIT",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355314": {
+      "vehicleType": "usa:T30",
+      "isAlive": true,
+      "name": "hay_07",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355315": {
+      "vehicleType": "usa:T30",
+      "isAlive": true,
+      "name": "Bandit_3p",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "_LTG_",
+      "team": 2,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355316": {
+      "vehicleType": "germany:VK4502P",
+      "isAlive": true,
+      "name": "dddsnn",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        16
+      ],
+      "clanAbbrev": "",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    },
+    "10355317": {
+      "vehicleType": "france:AMX_13_90",
+      "isAlive": true,
+      "name": "leon19761",
+      "igrType": 0,
+      "potapovQuestIDs": [
+        
+      ],
+      "clanAbbrev": "E_SP",
+      "team": 1,
+      "events": {
+        
+      },
+      "isTeamKiller": false
+    }
+  },
+  "dateTime": "17.03.2015 20:27:24",
+  "mapName": "14_siegfried_line",
+  "playerName": "dddsnn",
+  "battleType": 1,
+  "playerVehicle": "germany-VK4502P"
+}
+
