@@ -36,15 +36,20 @@ public class Clan implements Serializable {
 	private String aircraftEmblem256Url;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "clan")
 	private Set<ClanMemberInformation> members;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+	private Set<TankFreezeInformation> freezeInfos;
 
 	public Clan() {
+		this.members = new HashSet<>();
+		this.freezeInfos = new HashSet<>();
 	}
 
 	public Clan(String clanId, Instant creationTime, String creatorId) {
 		this.clanId = clanId;
 		this.creationTime = creationTime;
 		this.creatorId = creatorId;
-		members = new HashSet<>();
+		this.members = new HashSet<>();
+		this.freezeInfos = new HashSet<>();
 	}
 
 	public Color getColor() {
@@ -175,5 +180,9 @@ public class Clan implements Serializable {
 
 	public Set<ClanMemberInformation> getMembers() {
 		return members;
+	}
+
+	public Set<TankFreezeInformation> getFreezeInfos() {
+		return freezeInfos;
 	}
 }

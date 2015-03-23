@@ -1,7 +1,6 @@
 package cworg.data;
 
 import java.io.Serializable;
-import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +23,6 @@ public class PlayerTankInformation implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PLAYER_ID")
 	private Player player;
-	private Instant unfreezeTime;
 
 	public PlayerTankInformation() {
 	}
@@ -40,24 +38,5 @@ public class PlayerTankInformation implements Serializable {
 
 	public Player getPlayer() {
 		return player;
-	}
-
-	public Instant getUnfreezeTime() {
-		return unfreezeTime;
-	}
-
-	public void setUnfreezeTime(Instant unfreezeTime) {
-		this.unfreezeTime = unfreezeTime;
-	}
-
-	public boolean isFrozen() {
-		if (unfreezeTime == null) {
-			return false;
-		} else if (unfreezeTime.isBefore(Instant.now())) {
-			unfreezeTime = null;
-			return false;
-		} else {
-			return true;
-		}
 	}
 }
