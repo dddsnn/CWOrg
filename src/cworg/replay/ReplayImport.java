@@ -1,17 +1,11 @@
 package cworg.replay;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 
 import javax.ejb.Local;
 
-import org.codehaus.jettison.json.JSONArray;
-
 @Local
 public interface ReplayImport {
-	ReplayBattle getBattleFromReplay(File replayFile) throws ReplayException;
-
-	JSONArray getJSONs(File f) throws FileNotFoundException, IOException,
-			ReplayException;
+	ParseReplayResponse parseReplay(InputStream is)
+			throws ReplayException;
 }

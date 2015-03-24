@@ -6,6 +6,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -13,23 +15,30 @@ import javax.json.JsonArray;
 import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonValue;
 
-import cworg.replay.ReplayBattle.BattleOutcome;
-import cworg.replay.ReplayBattle.BattleType;
+import cworg.data.ReplayBattle.BattleOutcome;
+import cworg.data.ReplayBattle.BattleType;
+import cworg.replay.ParseReplayResponse.ParseReplayResponsePlayer;
 
 @Stateless
-public class ReplayImportImpl {
-	public ReplayBattle getBattleFromReplay(InputStream is)
+public class ReplayImportImpl implements ReplayImport {
+	public ParseReplayResponse parseReplay(InputStream is)
 			throws ReplayException {
 		Pair<JsonObject, JsonArray> blocks = this.readTwoBlocks(is);
 		JsonObject firstBlock = blocks.a;
 		JsonArray secondBlock = blocks.b;
+		ParseReplayResponse response = null;
 		try {
+			long arenaId = secondBlock.getJsonObject(0).getInt("arenaUniqueID");
 			JsonObject commonInfo =
 					secondBlock.getJsonObject(0).getJsonObject("common");
-			String playerId = firstBlock.get("playerID").toString();
+			JsonObject postBattleInfo = secondBlock.getJsonObject(1);
+			JsonObject vehiclesInfo =
+					secondBlock.getJsonObject(0).getJsonObject("vehicles");
+			String recordingPlayerId = firstBlock.get("playerID").toString();
 			int typeInt = commonInfo.getInt("bonusType");
-			BattleType type = this.determineBattleType(typeInt);
+			BattleType type = this.getBattleType(typeInt);
 			boolean lockingEnabled = commonInfo.getInt("vehLockMode") != 0;
 			Instant arenaCreateTime =
 					Instant.ofEpochSecond(commonInfo.getJsonNumber(
@@ -42,16 +51,42 @@ public class ReplayImportImpl {
 			Duration duration = Duration.ofNanos(durationNanos);
 			int winningTeam = commonInfo.getInt("winnerTeam");
 			int outcomeInt = commonInfo.getInt("finishReason");
-			BattleOutcome outcome = this.determineBattleOutcome(outcomeInt);
-			// TODO players
+			BattleOutcome outcome = this.getBattleOutcome(outcomeInt);
+			Map<String, ParseReplayResponsePlayer> team1 = new HashMap<>();
+			Map<String, ParseReplayResponsePlayer> team2 = new HashMap<>();
+			for (Map.Entry<String, JsonValue> e : vehiclesInfo.entrySet()) {
+				JsonObject info = (JsonObject) e.getValue();
+				long typeCompDescr =
+						info.getJsonNumber("typeCompDescr").longValue();
+				String tankId = new Long(typeCompDescr & 65535).toString();
+				String playerId = info.get("accountDBID").toString();
+				boolean survived =
+						postBattleInfo.getJsonObject(playerId).getBoolean(
+								"isAlive");
+				int team = info.getInt("team");
+				ParseReplayResponsePlayer player =
+						new ParseReplayResponsePlayer(tankId, survived);
+				if (team == 1) {
+					team1.put(playerId, player);
+				} else if (team == 2) {
+					team2.put(playerId, player);
+				} else {
+					throw new ReplayException(
+							"Error parsing replay: one of the players doesn't "
+									+ "belong to either team");
+				}
+			}
+			response =
+					new ParseReplayResponse(arenaId, recordingPlayerId, type,
+							lockingEnabled, arenaCreateTime, mapName, duration,
+							winningTeam, outcome, team1, team2);
 		} catch (ClassCastException | NullPointerException e) {
 			throw new ReplayException("Unexpected replay format", e);
 		}
-		// TODO
-		return new ReplayBattle();
+		return response;
 	}
 
-	private BattleOutcome determineBattleOutcome(int outcomeInt) {
+	private BattleOutcome getBattleOutcome(int outcomeInt) {
 		BattleOutcome outcome = null;
 		switch (outcomeInt) {
 		case 1:
@@ -75,7 +110,7 @@ public class ReplayImportImpl {
 		return outcome;
 	}
 
-	private BattleType determineBattleType(int typeInt) {
+	private BattleType getBattleType(int typeInt) {
 		BattleType type = null;
 		switch (typeInt) {
 		case 1:

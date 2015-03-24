@@ -1,10 +1,11 @@
-package cworg.replay;
+package cworg.data;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
-
-import cworg.data.Player;
 
 @Entity
 public class ReplayBattle implements Serializable {
@@ -45,9 +44,14 @@ public class ReplayBattle implements Serializable {
 	private Duration duration;
 	private int winningTeam;
 	private BattleOutcome outcome;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "battle")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "battle",
+			cascade = CascadeType.ALL)
 	private Set<ReplayPlayer> team1;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "battle")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "battle",
+			cascade = CascadeType.ALL)
 	private Set<ReplayPlayer> team2;
+
+	public ReplayBattle() {
+	}
 
 }
