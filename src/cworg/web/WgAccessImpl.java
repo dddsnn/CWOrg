@@ -51,7 +51,7 @@ public class WgAccessImpl implements WgAccess {
 	public String getLoginUrl(String redirectUrl) throws WgApiError,
 			WebException {
 		String methodUrl = "https://api.worldoftanks.eu/wot/auth/login/";
-		Map<String, String> params = new HashMap<>(3);
+		Map<String, String> params = new HashMap<>(3, 1.0f);
 		params.put("expires_at", "300");
 		params.put("nofollow", "1");
 		params.put("redirect_uri", redirectUrl);
@@ -72,7 +72,7 @@ public class WgAccessImpl implements WgAccess {
 			throws WebException, WgApiError {
 		String methodUrl = "https://api.worldoftanks.eu/wot/auth/prolongate/";
 		long seconds = duration.getSeconds();
-		Map<String, String> params = new HashMap<>(2);
+		Map<String, String> params = new HashMap<>(2, 1.0f);
 		params.put("access_token", accessToken);
 		params.put("expires_at", Long.toString(seconds));
 
@@ -95,7 +95,7 @@ public class WgAccessImpl implements WgAccess {
 	@Override
 	public void logout(String accessToken) throws WebException, WgApiError {
 		String methodUrl = "https://api.worldoftanks.eu/wot/auth/logout/";
-		Map<String, String> params = new HashMap<>(1);
+		Map<String, String> params = new HashMap<>(1, 1.0f);
 		params.put("access_token", accessToken);
 		this.getResponseData(methodUrl, params, "POST");
 	}
@@ -105,14 +105,14 @@ public class WgAccessImpl implements WgAccess {
 	public List<String> getVehiclesInGarage(String accountId, String accessToken)
 			throws WebException, WgApiError {
 		String playerMethodUrl = "https://api.worldoftanks.eu/wot/tanks/stats/";
-		Map<String, String> playerParams = new HashMap<>(4);
+		Map<String, String> playerParams = new HashMap<>(4, 1.0f);
 		playerParams.put("account_id", accountId);
 		playerParams.put("access_token", accessToken);
 		playerParams.put("in_garage", "1");
 		playerParams.put("fields", "tank_id");
 		String tankInfoMethodUrl =
 				"https://api.worldoftanks.eu/wot/encyclopedia/tanks/";
-		Map<String, String> tankInfoParams = new HashMap<>(1);
+		Map<String, String> tankInfoParams = new HashMap<>(1, 1.0f);
 		tankInfoParams.put("fields", "name_i18n,tank_id");
 
 		List<String> result = new LinkedList<>();
@@ -150,7 +150,7 @@ public class WgAccessImpl implements WgAccess {
 	public Set<Tank> getAllTankInfo() throws WebException, WgApiError {
 		String methodUrl =
 				"https://api.worldoftanks.eu/wot/encyclopedia/tanks/";
-		Map<String, String> params = new HashMap<>(0);
+		Map<String, String> params = new HashMap<>(0, 1.0f);
 
 		Set<Tank> result = new HashSet<>();
 		try {
@@ -190,10 +190,10 @@ public class WgAccessImpl implements WgAccess {
 		String playerFields =
 				"clan_id," + "created_at," + "last_battle_time," + "logout_at,"
 						+ "nickname";
-		Map<String, String> playerParams = new HashMap<>(2);
+		Map<String, String> playerParams = new HashMap<>(2, 1.0f);
 		playerParams.put("account_id", accountId);
 		playerParams.put("fields", playerFields);
-		Map<String, String> tankParams = new HashMap<>(2);
+		Map<String, String> tankParams = new HashMap<>(2, 1.0f);
 		tankParams.put("account_id", accountId);
 		tankParams.put("fields", "tank_id");
 
@@ -243,7 +243,7 @@ public class WgAccessImpl implements WgAccess {
 			throws WebException, WgApiError {
 		String methodUrl = "https://api.worldoftanks.eu/wgn/clans/membersinfo/";
 		String fields = "joined_at," + "role," + "role_i18n," + "clan.clan_id";
-		Map<String, String> params = new HashMap<>(2);
+		Map<String, String> params = new HashMap<>(2, 1.0f);
 		params.put("account_id", accountId);
 		params.put("fields", fields);
 
@@ -277,7 +277,7 @@ public class WgAccessImpl implements WgAccess {
 						+ "is_clan_disbanded," + "leader_id,"
 						+ "members_count," + "motto," + "name," + "tag,"
 						+ "emblems," + "members.account_id";
-		Map<String, String> params = new HashMap<>(2);
+		Map<String, String> params = new HashMap<>(2, 1.0f);
 		params.put("clan_id", clanId);
 		params.put("fields", fields);
 

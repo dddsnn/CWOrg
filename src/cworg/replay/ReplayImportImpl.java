@@ -2,8 +2,10 @@ package cworg.replay;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -56,12 +58,15 @@ public class ReplayImportImpl implements ReplayImport {
 			Map<String, ParseReplayResponsePlayer> team2 = new HashMap<>();
 			for (Map.Entry<String, JsonValue> e : vehiclesInfo.entrySet()) {
 				JsonObject info = (JsonObject) e.getValue();
+				// weird id used as keys in the replays (maybe tmp ids only
+				// valid for that replay?)
+				String tmpId = e.getKey();
 				long typeCompDescr =
 						info.getJsonNumber("typeCompDescr").longValue();
 				String tankId = new Long(typeCompDescr & 65535).toString();
 				String playerId = info.get("accountDBID").toString();
 				boolean survived =
-						postBattleInfo.getJsonObject(playerId).getBoolean(
+						postBattleInfo.getJsonObject(tmpId).getBoolean(
 								"isAlive");
 				int team = info.getInt("team");
 				ParseReplayResponsePlayer player =
@@ -164,13 +169,13 @@ public class ReplayImportImpl implements ReplayImport {
 		if (numBlocks < 2)
 			throw new ReplayException(
 					"No post-battle block contained in this replay.");
+		String blockString = null;
 		try {
-			// read length of first block
-			readLittleEndInt(is);
+			blockString = readBlock(is);
 		} catch (IOException e) {
 			throw new ReplayException("Error reading replay", e);
 		}
-		JsonReader reader = Json.createReader(is);
+		JsonReader reader = Json.createReader(new StringReader(blockString));
 		JsonObject firstBlock = null;
 		try {
 			firstBlock = reader.readObject();
@@ -178,11 +183,12 @@ public class ReplayImportImpl implements ReplayImport {
 			throw new ReplayException("Error parsing Replay metadata", e);
 		}
 		try {
-			// read length of second block
-			readLittleEndInt(is);
+			blockString = readBlock(is);
 		} catch (IOException e) {
 			throw new ReplayException("Error reading replay", e);
 		}
+		// create a new reader to read a new object/array
+		reader = Json.createReader(new StringReader(blockString));
 		JsonArray secondBlock = null;
 		try {
 			secondBlock = reader.readArray();
@@ -192,10 +198,17 @@ public class ReplayImportImpl implements ReplayImport {
 		return new Pair<JsonObject, JsonArray>(firstBlock, secondBlock);
 	}
 
+	private static String readBlock(InputStream is) throws IOException {
+		int len = readLittleEndInt(is);
+		byte[] buf = new byte[len];
+		is.read(buf, 0, len);
+		return new String(buf, StandardCharsets.US_ASCII);
+	}
+
 	/**
 	 * Reads a 4 byte int from stream in little endian.
 	 */
-	private int readLittleEndInt(InputStream stream) throws IOException {
+	private static int readLittleEndInt(InputStream stream) throws IOException {
 		byte[] bytes = new byte[4];
 		int bytesRead = stream.read(bytes);
 		if (bytesRead != 4) {

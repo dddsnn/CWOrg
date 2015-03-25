@@ -13,16 +13,21 @@
 	<h:form>
 		<h:commandLink value="Logout" action="#{loginBean.logout}" />
 	</h:form>
+	<form action="replayupload/" method="post"
+		enctype="multipart/form-data">
+		<input type="file" name="fileName" /> <input type="submit"
+			value="Upload" />
+	</form>
 
 	<c:choose>
 		<c:when test="#{loginBean.loggedIn}">logged in with account id #{loginBean.accountId}</c:when>
 		<c:otherwise>not logged in</c:otherwise>
 	</c:choose>
 	<c:if test="#{loginBean.loggedIn}">
-	<!-- acc id #{dataBean.player.accountId} -->
-	<br/>
-	#{dataBean.clan.description}<br/>
-	<c:forEach items="#{dataBean.clan.members}" var="m">
+		<!-- acc id #{dataBean.player.accountId} -->
+		<br />
+	#{dataBean.clan.description}<br />
+		<c:forEach items="#{dataBean.clan.members}" var="m">
 	#{m.player.nick}
 	</c:forEach>
 		<!-- <h:dataTable value="#{dataBean.allTanks}" var="t">

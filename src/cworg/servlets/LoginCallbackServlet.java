@@ -31,17 +31,19 @@ public class LoginCallbackServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		handle(request, response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		handle(request, response);
 	}
 
-	protected void handle(HttpServletRequest req, HttpServletResponse resp)
+	private void handle(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String status = req.getParameter("status");
 		if ("ok".equals(status)) {
