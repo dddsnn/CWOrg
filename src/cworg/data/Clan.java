@@ -10,16 +10,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
 public class Clan implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	private String clanId;
+	private long clanId;
 	private Color color;
 	private Instant creationTime;
-	private String creatorId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CREATOR_ID")
+	private Player creator;
 	@Column(length = 1500)
 	private String description;
 	private boolean disbanded;
@@ -44,10 +48,9 @@ public class Clan implements Serializable {
 		this.freezeInfos = new HashSet<>();
 	}
 
-	public Clan(String clanId, Instant creationTime, String creatorId) {
+	public Clan(long clanId, Instant creationTime) {
 		this.clanId = clanId;
 		this.creationTime = creationTime;
-		this.creatorId = creatorId;
 		this.members = new HashSet<>();
 		this.freezeInfos = new HashSet<>();
 	}
@@ -166,7 +169,7 @@ public class Clan implements Serializable {
 		this.aircraftEmblem256Url = aircraftEmblem256Url;
 	}
 
-	public String getClanId() {
+	public long getClanId() {
 		return clanId;
 	}
 
@@ -174,8 +177,12 @@ public class Clan implements Serializable {
 		return creationTime;
 	}
 
-	public String getCreatorId() {
-		return creatorId;
+	public Player getCreator() {
+		return creator;
+	}
+
+	public void setCreator(Player creator) {
+		this.creator = creator;
 	}
 
 	public Set<ClanMemberInformation> getMembers() {

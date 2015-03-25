@@ -18,15 +18,15 @@ public interface WgAccess {
 	void logout(String accessToken) throws WebException, WgApiError;
 
 	// TODO specific, just for testing
-	List<String> getVehiclesInGarage(String accountId, String accessToken)
+	List<String> getVehiclesInGarage(long accountId, String accessToken)
 			throws WebException, WgApiError;
 
 	Set<Tank> getAllTankInfo() throws WebException, WgApiError;
 
-	GetPlayerResponse getPlayer(String accountId) throws WebException, WgApiError;
+	GetPlayerResponse getPlayer(long accountId) throws WebException, WgApiError;
 
-	GetClanMemberInfoResponse getClanMemberInfo(String accountId)
+	GetClanMemberInfoResponse getClanMemberInfo(long accountId)
 			throws WebException, WgApiError;
 
-	GetClanResponse getClan(String clanId) throws WebException, WgApiError;
+	GetClanResponse getClan(long clanId) throws WebException, WgApiError;
 }

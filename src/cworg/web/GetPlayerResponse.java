@@ -8,12 +8,12 @@ public class GetPlayerResponse {
 	private Instant lastBattleTime;
 	private Instant lastLogoutTime;
 	private String nick;
-	private String clanId;
-	private Set<String> tankIds;
+	private long clanId;
+	private Set<Long> tankIds;
 
 	public GetPlayerResponse(Instant creationTime, Instant lastBattleTime,
-			Instant lastLogoutTime, String nick, String clanId,
-			Set<String> tankIds) {
+			Instant lastLogoutTime, String nick, long clanId,
+			Set<Long> tankIds) {
 		this.creationTime = creationTime;
 		this.lastBattleTime = lastBattleTime;
 		this.lastLogoutTime = lastLogoutTime;
@@ -38,11 +38,11 @@ public class GetPlayerResponse {
 		return nick;
 	}
 
-	public String getClanId() {
+	public long getClanId() {
 		return clanId;
 	}
 
-	public Set<String> getTankIds() {
+	public Set<Long> getTankIds() {
 		return tankIds;
 	}
 }

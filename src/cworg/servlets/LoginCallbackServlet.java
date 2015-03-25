@@ -50,13 +50,14 @@ public class LoginCallbackServlet extends HttpServlet {
 			// parse data
 			String token = req.getParameter("access_token");
 			String nick = req.getParameter("nickname");
-			String accountId = req.getParameter("account_id");
+			String accountIdString = req.getParameter("account_id");
 			String expiryTimeStr = req.getParameter("expires_at");
-			if (token == null || nick == null || accountId == null
+			if (token == null || nick == null || accountIdString == null
 					|| expiryTimeStr == null) {
 				// TODO invalid response from wg, send to error page
 				return;
 			}
+			long accountId = Long.parseLong(accountIdString);
 
 			// prolongate access token and confirm it's legit
 			ProlongateResponse prlResp = null;
@@ -68,7 +69,7 @@ public class LoginCallbackServlet extends HttpServlet {
 			} catch (WgApiError e) {
 				// TODO error page
 			}
-			if (!accountId.equals(prlResp.getAccountId())) {
+			if (accountId != prlResp.getAccountId()) {
 				// TODO error page (forged token)
 				return;
 			}

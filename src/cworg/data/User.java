@@ -20,7 +20,7 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "ACCOUNT_ID")
-	private String accountId;
+	private long accountId;
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@MapsId
 	@JoinColumn(name = "ACCOUNT_ID")
@@ -31,7 +31,7 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(String accountId, Player player) {
+	public User(long accountId, Player player) {
 		this.accountId = accountId;
 		this.player = player;
 	}
@@ -44,7 +44,7 @@ public class User implements Serializable {
 		this.loginInfo = loginInfo;
 	}
 
-	public String getAccountId() {
+	public long getAccountId() {
 		return accountId;
 	}
 

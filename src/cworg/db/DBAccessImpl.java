@@ -28,7 +28,7 @@ public class DBAccessImpl implements DBAccess {
 	WgAccess wg;
 
 	@Override
-	public User findOrCreateUser(String accountId) throws WebException,
+	public User findOrCreateUser(long accountId) throws WebException,
 			WgApiError {
 		User user = em.find(User.class, accountId);
 		if (user == null) {
@@ -39,7 +39,7 @@ public class DBAccessImpl implements DBAccess {
 		return user;
 	}
 
-	public Player findOrCreatePlayer(String accountId) throws WebException,
+	public Player findOrCreatePlayer(long accountId) throws WebException,
 			WgApiError {
 		Player player = em.find(Player.class, accountId);
 		if (player == null) {
@@ -52,11 +52,11 @@ public class DBAccessImpl implements DBAccess {
 			em.persist(player);
 			// now get the related entities
 			ClanMemberInformation clanMemberInfo = null;
-			if (playerResp.getClanId() != null) {
+			if (playerResp.getClanId() != 0) {
 				clanMemberInfo = this.createClanMemberInfo(player);
 			}
 			player.setClanInfo(clanMemberInfo);
-			for (String tankId : playerResp.getTankIds()) {
+			for (long tankId : playerResp.getTankIds()) {
 				// player.getTanks().add(this.findOrGetUpdateForTank(tankId));
 				player.getTanks()
 						.add(this.createPlayerTankInfo(player, tankId));
@@ -84,7 +84,7 @@ public class DBAccessImpl implements DBAccess {
 	}
 
 	@Override
-	public Tank findOrGetUpdateForTank(String tankId) throws WebException,
+	public Tank findOrGetUpdateForTank(long tankId) throws WebException,
 			WgApiError {
 		Tank tank = em.find(Tank.class, tankId);
 		if (tank == null) {
@@ -101,13 +101,11 @@ public class DBAccessImpl implements DBAccess {
 	}
 
 	@Override
-	public Clan findOrCreateClan(String clanId) throws WebException, WgApiError {
+	public Clan findOrCreateClan(long clanId) throws WebException, WgApiError {
 		Clan clan = em.find(Clan.class, clanId);
 		if (clan == null) {
 			GetClanResponse clanResp = wg.getClan(clanId);
-			clan =
-					new Clan(clanId, clanResp.getCreationTime(),
-							clanResp.getCreatorId());
+			clan = new Clan(clanId, clanResp.getCreationTime());
 			clan.setAircraftEmblem256Url(clanResp.getAircraftEmblem256Url());
 			clan.setClanTag(clanResp.getClanTag());
 			clan.setColor(clanResp.getColor());
@@ -126,18 +124,19 @@ public class DBAccessImpl implements DBAccess {
 			clan.setTankEmblem64Url(clanResp.getTankEmblem64Url());
 			// persist to avoid a loop
 			em.persist(clan);
-			for (String memberId : clanResp.getMemberIds()) {
+			for (long memberId : clanResp.getMemberIds()) {
 				Player member = this.findOrCreatePlayer(memberId);
 				clan.getMembers().add(member.getClanInfo());
 			}
+			clan.setCreator(this.findOrCreatePlayer(clanResp.getCreatorId()));
 			// TODO do i need to merge now?
 		}
 		return clan;
 	}
 
 	@Override
-	public PlayerTankInformation createPlayerTankInfo(Player player,
-			String tankId) throws WebException, WgApiError {
+	public PlayerTankInformation createPlayerTankInfo(Player player, long tankId)
+			throws WebException, WgApiError {
 		PlayerTankInformation tankInfo =
 				new PlayerTankInformation(this.findOrGetUpdateForTank(tankId),
 						player);

@@ -23,9 +23,9 @@ public class LoginBean {
 		return session.getAttribute("user") != null;
 	}
 
-	public String getAccountId() {
+	public long getAccountId() {
 		User user = (User) session.getAttribute("user");
-		return user == null ? "" : user.getAccountId();
+		return user == null ? 0 : user.getAccountId();
 	}
 
 	public String logout() {

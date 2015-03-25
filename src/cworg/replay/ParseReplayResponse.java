@@ -9,15 +9,15 @@ import cworg.data.ReplayBattle.BattleType;
 
 public class ParseReplayResponse {
 	public static class ParseReplayResponsePlayer {
-		private String tankId;
+		private long tankId;
 		private boolean survived;
 
-		public ParseReplayResponsePlayer(String tankId, boolean survived) {
+		public ParseReplayResponsePlayer(long tankId, boolean survived) {
 			this.tankId = tankId;
 			this.survived = survived;
 		}
 
-		public String getTankId() {
+		public long getTankId() {
 			return tankId;
 		}
 
@@ -27,7 +27,7 @@ public class ParseReplayResponse {
 	}
 
 	private long arenaId;
-	private String playerId;
+	private long playerId;
 	private BattleType battleType;
 	private boolean lockingEnabled;
 	private Instant arenaCreateTime;
@@ -38,7 +38,7 @@ public class ParseReplayResponse {
 	private Map<String, ParseReplayResponsePlayer> team1;
 	private Map<String, ParseReplayResponsePlayer> team2;
 
-	public ParseReplayResponse(long arenaId, String playerId,
+	public ParseReplayResponse(long arenaId, long playerId,
 			BattleType battleType, boolean lockingEnabled,
 			Instant arenaCreateTime, String mapName, Duration duration,
 			int winningTeam, BattleOutcome outcome,
@@ -61,7 +61,7 @@ public class ParseReplayResponse {
 		return arenaId;
 	}
 
-	public String getPlayerId() {
+	public long getPlayerId() {
 		return playerId;
 	}
 

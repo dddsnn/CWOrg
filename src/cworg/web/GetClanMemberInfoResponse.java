@@ -3,12 +3,12 @@ package cworg.web;
 import java.time.Instant;
 
 public class GetClanMemberInfoResponse {
-	private String clanId;
+	private long clanId;
 	private Instant joinTime;
 	private String role;
 	private String internalRole;
 
-	public GetClanMemberInfoResponse(String clanId, Instant joinTime,
+	public GetClanMemberInfoResponse(long clanId, Instant joinTime,
 			String role, String internalRole) {
 		this.clanId = clanId;
 		this.joinTime = joinTime;
@@ -16,7 +16,7 @@ public class GetClanMemberInfoResponse {
 		this.internalRole = internalRole;
 	}
 
-	public String getClanId() {
+	public long getClanId() {
 		return clanId;
 	}
 

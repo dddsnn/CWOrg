@@ -26,6 +26,7 @@ import javax.interceptor.Interceptors;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonStructure;
@@ -82,7 +83,7 @@ public class WgAccessImpl implements WgAccess {
 					(JsonObject) this
 							.getResponseData(methodUrl, params, "POST");
 			String newToken = resp.getString("access_token");
-			String accountId = resp.get("account_id").toString();
+			long accountId = resp.getJsonNumber("account_id").longValue();
 			long expiryTimeStamp = resp.getJsonNumber("expires_at").longValue();
 			Instant expiryTime = Instant.ofEpochSecond(expiryTimeStamp);
 			result = new ProlongateResponse(newToken, accountId, expiryTime);
@@ -102,11 +103,11 @@ public class WgAccessImpl implements WgAccess {
 
 	// TODO factor out parts, remove completely?
 	@Override
-	public List<String> getVehiclesInGarage(String accountId, String accessToken)
+	public List<String> getVehiclesInGarage(long accountId, String accessToken)
 			throws WebException, WgApiError {
 		String playerMethodUrl = "https://api.worldoftanks.eu/wot/tanks/stats/";
 		Map<String, String> playerParams = new HashMap<>(4, 1.0f);
-		playerParams.put("account_id", accountId);
+		playerParams.put("account_id", Long.toString(accountId));
 		playerParams.put("access_token", accessToken);
 		playerParams.put("in_garage", "1");
 		playerParams.put("fields", "tank_id");
@@ -132,7 +133,7 @@ public class WgAccessImpl implements WgAccess {
 			resp =
 					(JsonObject) this.getResponseData(playerMethodUrl,
 							playerParams, "GET");
-			JsonArray tankList = resp.getJsonArray(accountId);
+			JsonArray tankList = resp.getJsonArray(Long.toString(accountId));
 			for (JsonValue v : tankList) {
 				JsonObject o = (JsonObject) v;
 				String tankId = o.get("tank_id").toString();
@@ -142,8 +143,6 @@ public class WgAccessImpl implements WgAccess {
 			throw new WebException("Unexpected response format", e);
 		}
 		return result;
-		// List<String> asd = new LinkedList<>();
-		// asd.add("foo");asd.add("bar");return asd;
 	}
 
 	@Override
@@ -168,7 +167,7 @@ public class WgAccessImpl implements WgAccess {
 				String internalNation = o.getString("nation");
 				String nation = o.getString("nation_i18n");
 				String shortName = o.getString("short_name_i18n");
-				String id = o.get("tank_id").toString();
+				long id = o.getJsonNumber("tank_id").longValue();
 				String internalType = o.getString("type");
 				String type = o.getString("type_i18n");
 				result.add(new Tank(id, name, shortName, type, nation, tier,
@@ -182,7 +181,7 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	@Override
-	public GetPlayerResponse getPlayer(String accountId) throws WebException,
+	public GetPlayerResponse getPlayer(long accountId) throws WebException,
 			WgApiError {
 		String playerMethodUrl =
 				"https://api.worldoftanks.eu/wot/account/info/";
@@ -191,10 +190,10 @@ public class WgAccessImpl implements WgAccess {
 				"clan_id," + "created_at," + "last_battle_time," + "logout_at,"
 						+ "nickname";
 		Map<String, String> playerParams = new HashMap<>(2, 1.0f);
-		playerParams.put("account_id", accountId);
+		playerParams.put("account_id", Long.toString(accountId));
 		playerParams.put("fields", playerFields);
 		Map<String, String> tankParams = new HashMap<>(2, 1.0f);
-		tankParams.put("account_id", accountId);
+		tankParams.put("account_id", Long.toString(accountId));
 		tankParams.put("fields", "tank_id");
 
 		GetPlayerResponse result = null;
@@ -205,8 +204,10 @@ public class WgAccessImpl implements WgAccess {
 			JsonObject tankResp =
 					(JsonObject) this.getResponseData(tankMethodUrl,
 							tankParams, "GET");
-			JsonObject playerJson = playerResp.getJsonObject(accountId);
-			JsonArray tankList = tankResp.getJsonArray(accountId);
+			JsonObject playerJson =
+					playerResp.getJsonObject(Long.toString(accountId));
+			JsonArray tankList =
+					tankResp.getJsonArray(Long.toString(accountId));
 			Instant creationTime =
 					Instant.ofEpochSecond(playerJson
 							.getJsonNumber("created_at").longValue());
@@ -220,14 +221,14 @@ public class WgAccessImpl implements WgAccess {
 			JsonValue clanIdJson = playerJson.get("clan_id");
 			// check if clan id is a null json value, otherwise set to the
 			// actual clan id
-			String clanId = null;
+			long clanId = 0;
 			if (clanIdJson.getValueType() != JsonValue.ValueType.NULL) {
-				clanId = clanIdJson.toString();
+				clanId = ((JsonNumber) clanIdJson).longValue();
 			}
-			Set<String> tankIds = new HashSet<>(tankList.size());
+			Set<Long> tankIds = new HashSet<>(tankList.size());
 			for (JsonValue v : tankList) {
 				JsonObject o = (JsonObject) v;
-				tankIds.add(o.get("tank_id").toString());
+				tankIds.add(o.getJsonNumber("tank_id").longValue());
 			}
 			result =
 					new GetPlayerResponse(creationTime, lastBattleTime,
@@ -239,26 +240,27 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	@Override
-	public GetClanMemberInfoResponse getClanMemberInfo(String accountId)
+	public GetClanMemberInfoResponse getClanMemberInfo(long accountId)
 			throws WebException, WgApiError {
 		String methodUrl = "https://api.worldoftanks.eu/wgn/clans/membersinfo/";
 		String fields = "joined_at," + "role," + "role_i18n," + "clan.clan_id";
 		Map<String, String> params = new HashMap<>(2, 1.0f);
-		params.put("account_id", accountId);
+		params.put("account_id", Long.toString(accountId));
 		params.put("fields", fields);
 
 		GetClanMemberInfoResponse result = null;
 		try {
 			JsonObject resp =
 					(JsonObject) this.getResponseData(methodUrl, params, "GET");
-			JsonObject infoJson = resp.getJsonObject(accountId);
+			JsonObject infoJson = resp.getJsonObject(Long.toString(accountId));
 			String internalRole = infoJson.getString("role");
 			String role = infoJson.getString("role_i18n");
 			Instant joinTime =
 					Instant.ofEpochSecond(infoJson.getJsonNumber("joined_at")
 							.longValue());
-			String clanId =
-					infoJson.getJsonObject("clan").get("clan_id").toString();
+			long clanId =
+					infoJson.getJsonObject("clan").getJsonNumber("clan_id")
+							.longValue();
 			result =
 					new GetClanMemberInfoResponse(clanId, joinTime, role,
 							internalRole);
@@ -269,8 +271,7 @@ public class WgAccessImpl implements WgAccess {
 	}
 
 	@Override
-	public GetClanResponse getClan(String clanId) throws WebException,
-			WgApiError {
+	public GetClanResponse getClan(long clanId) throws WebException, WgApiError {
 		String methodUrl = "https://api.worldoftanks.eu/wgn/clans/info/";
 		String fields =
 				"color," + "created_at," + "creator_id," + "description,"
@@ -278,20 +279,20 @@ public class WgAccessImpl implements WgAccess {
 						+ "members_count," + "motto," + "name," + "tag,"
 						+ "emblems," + "members.account_id";
 		Map<String, String> params = new HashMap<>(2, 1.0f);
-		params.put("clan_id", clanId);
+		params.put("clan_id", Long.toString(clanId));
 		params.put("fields", fields);
 
 		GetClanResponse result = null;
 		try {
 			JsonObject resp =
 					(JsonObject) this.getResponseData(methodUrl, params, "GET");
-			JsonObject infoJson = resp.getJsonObject(clanId);
+			JsonObject infoJson = resp.getJsonObject(Long.toString(clanId));
 			String commanderId = infoJson.get("leader_id").toString();
 			String description = infoJson.getString("description");
 			Instant creationTime =
 					Instant.ofEpochSecond(infoJson.getJsonNumber("created_at")
 							.longValue());
-			String creatorId = infoJson.get("creator_id").toString();
+			long creatorId = infoJson.getJsonNumber("creator_id").longValue();
 			String clanTag = infoJson.getString("tag");
 			boolean disbanded = infoJson.getBoolean("is_clan_disbanded");
 			String motto = infoJson.getString("motto");
@@ -335,10 +336,10 @@ public class WgAccessImpl implements WgAccess {
 				}
 			}
 			JsonArray memberList = infoJson.getJsonArray("members");
-			Set<String> memberIds = new HashSet<>(memberList.size());
+			Set<Long> memberIds = new HashSet<>(memberList.size());
 			for (JsonValue v : memberList) {
 				JsonObject o = (JsonObject) v;
-				memberIds.add(o.get("account_id").toString());
+				memberIds.add(o.getJsonNumber("account_id").longValue());
 			}
 
 			result =

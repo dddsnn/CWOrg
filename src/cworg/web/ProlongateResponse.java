@@ -4,10 +4,10 @@ import java.time.Instant;
 
 public class ProlongateResponse {
 	private String accessToken;
-	private String accountId;
+	private long accountId;
 	private Instant expiryTime;
 
-	public ProlongateResponse(String accessToken, String accountId,
+	public ProlongateResponse(String accessToken, long accountId,
 			Instant expiryTime) {
 		this.accessToken = accessToken;
 		this.accountId = accountId;
@@ -18,7 +18,7 @@ public class ProlongateResponse {
 		return accessToken;
 	}
 
-	public String getAccountId() {
+	public long getAccountId() {
 		return accountId;
 	}
 

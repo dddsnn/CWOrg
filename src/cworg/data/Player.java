@@ -19,7 +19,7 @@ public class Player implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "ACCOUNT_ID")
-	private String accountId;
+	private long accountId;
 	private Instant creationTime;
 	private Instant lastBattleTime;
 	private Instant lastLogoutTime;
@@ -34,7 +34,7 @@ public class Player implements Serializable {
 	public Player() {
 	}
 
-	public Player(String accountId, Instant creationTime) {
+	public Player(long accountId, Instant creationTime) {
 		this.accountId = accountId;
 		this.creationTime = creationTime;
 		tankInfos = new HashSet<>();
@@ -72,7 +72,7 @@ public class Player implements Serializable {
 		this.clanInfo = clanInfo;
 	}
 
-	public String getAccountId() {
+	public long getAccountId() {
 		return accountId;
 	}
 

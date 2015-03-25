@@ -7,7 +7,7 @@ import java.util.Set;
 public class GetClanResponse {
 	private Color color;
 	private Instant creationTime;
-	private String creatorId;
+	private long creatorId;
 	private String description;
 	private boolean disbanded;
 	private String commanderId;
@@ -21,15 +21,15 @@ public class GetClanResponse {
 	private String profileEmblem195Url;
 	private String tankEmblem64Url;
 	private String aircraftEmblem256Url;
-	private Set<String> memberIds;
+	private Set<Long> memberIds;
 
-	public GetClanResponse(Color color, Instant creationTime, String creatorId,
+	public GetClanResponse(Color color, Instant creationTime, long creatorId,
 			String description, boolean disbanded, String commanderId,
 			int memberCount, String motto, String name, String clanTag,
 			String globalMapEmblem24Url, String recruitingStationEmblem32Url,
 			String recruitingStationEmblem64Url, String profileEmblem195Url,
 			String tankEmblem64Url, String aircraftEmblem256Url,
-			Set<String> memberIds) {
+			Set<Long> memberIds) {
 		this.color = color;
 		this.creationTime = creationTime;
 		this.creatorId = creatorId;
@@ -57,7 +57,7 @@ public class GetClanResponse {
 		return creationTime;
 	}
 
-	public String getCreatorId() {
+	public long getCreatorId() {
 		return creatorId;
 	}
 
@@ -113,7 +113,7 @@ public class GetClanResponse {
 		return aircraftEmblem256Url;
 	}
 
-	public Set<String> getMemberIds() {
+	public Set<Long> getMemberIds() {
 		return memberIds;
 	}
 }

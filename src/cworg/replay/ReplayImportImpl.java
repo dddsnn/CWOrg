@@ -38,7 +38,8 @@ public class ReplayImportImpl implements ReplayImport {
 			JsonObject postBattleInfo = secondBlock.getJsonObject(1);
 			JsonObject vehiclesInfo =
 					secondBlock.getJsonObject(0).getJsonObject("vehicles");
-			String recordingPlayerId = firstBlock.get("playerID").toString();
+			long recordingPlayerId =
+					firstBlock.getJsonNumber("playerID").longValue();
 			int typeInt = commonInfo.getInt("bonusType");
 			BattleType type = this.getBattleType(typeInt);
 			boolean lockingEnabled = commonInfo.getInt("vehLockMode") != 0;
@@ -63,7 +64,7 @@ public class ReplayImportImpl implements ReplayImport {
 				String tmpId = e.getKey();
 				long typeCompDescr =
 						info.getJsonNumber("typeCompDescr").longValue();
-				String tankId = new Long(typeCompDescr & 65535).toString();
+				long tankId = new Long(typeCompDescr & 65535);
 				String playerId = info.get("accountDBID").toString();
 				boolean survived =
 						postBattleInfo.getJsonObject(tmpId).getBoolean(

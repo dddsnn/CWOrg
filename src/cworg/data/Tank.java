@@ -11,7 +11,7 @@ public class Tank implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "ID")
-	private String id;
+	private long id;
 	private String name;
 	private String shortName;
 	private String type;
@@ -28,7 +28,7 @@ public class Tank implements Serializable {
 	public Tank() {
 	}
 
-	public Tank(String id, String name, String shortName, String type,
+	public Tank(long id, String name, String shortName, String type,
 			String nation, int tier, String imageUrl, String smallImageUrl,
 			String contourImageUrl, boolean premium, String internalName,
 			String internalNation, String internalType) {
@@ -47,7 +47,7 @@ public class Tank implements Serializable {
 		this.internalType = internalType;
 	}
 
-	public String getId() {
+	public long getId() {
 		return id;
 	}
 
