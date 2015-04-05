@@ -13,13 +13,13 @@ import cworg.web.WebException;
 import cworg.web.WgAccess;
 import cworg.web.WgApiError;
 
-@WebServlet("/login/")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/login/generatelink/")
+public class LoginLinkServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@EJB
 	private WgAccess wg;
 
-	public LoginServlet() {
+	public LoginLinkServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

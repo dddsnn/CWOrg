@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import cworg.data.User;
 
-@WebFilter("/home/*")
-public class LoggedInFilter implements Filter {
+@WebFilter("/login/*")
+public class DontLogInTwiceFilter implements Filter {
 	@Override
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
@@ -32,9 +32,9 @@ public class LoggedInFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		User user = (User) req.getSession().getAttribute("user");
-		if (user == null) {
-			// not logged in, redirect to index
-			resp.sendRedirect(req.getContextPath() + "/");
+		if (user != null) {
+			// logged in, redirect to home TODO
+			resp.sendRedirect(req.getContextPath() + "/home/");
 		} else {
 			chain.doFilter(request, response);
 		}
