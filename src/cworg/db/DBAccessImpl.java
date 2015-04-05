@@ -51,34 +51,30 @@ public class DBAccessImpl implements DBAccess {
 			// persist the preliminary player, so we don't get a loop
 			em.persist(player);
 			// now get the related entities
-			ClanMemberInformation clanMemberInfo = null;
-			if (playerResp.getClanId() != 0) {
-				clanMemberInfo = this.createClanMemberInfo(player);
-			}
-			player.setClanInfo(clanMemberInfo);
 			for (long tankId : playerResp.getTankIds()) {
-				// player.getTanks().add(this.findOrGetUpdateForTank(tankId));
 				player.getTanks()
 						.add(this.createPlayerTankInfo(player, tankId));
+			}
+			if (playerResp.getClanId() != 0) {
+				// update the clan, let it set the clanmember info
+				this.updateOrCreateClan(playerResp.getClanId());
 			}
 			// TODO do i need to merge now?
 		}
 		return player;
 	}
 
-	@Override
-	public ClanMemberInformation createClanMemberInfo(Player player)
+	private ClanMemberInformation createClanMemberInfo(Player player, Clan clan)
 			throws WebException, WgApiError {
 		GetClanMemberInfoResponse cmInfoResp =
 				wg.getClanMemberInfo(player.getAccountId());
 		ClanMemberInformation cmInfo = new ClanMemberInformation(player);
+		cmInfo.setClan(clan);
 		cmInfo.setInternalRole(cmInfoResp.getInternalRole());
 		cmInfo.setJoinTime(cmInfoResp.getJoinTime());
 		cmInfo.setRole(cmInfoResp.getRole());
 		// persist to avoid a loop
 		em.persist(cmInfo);
-		Clan clan = this.findOrCreateClan(cmInfoResp.getClanId());
-		cmInfo.setClan(clan);
 		// TODO do i need to merge now?
 		return cmInfo;
 	}
@@ -104,33 +100,51 @@ public class DBAccessImpl implements DBAccess {
 	public Clan findOrCreateClan(long clanId) throws WebException, WgApiError {
 		Clan clan = em.find(Clan.class, clanId);
 		if (clan == null) {
-			GetClanResponse clanResp = wg.getClan(clanId);
-			clan = new Clan(clanId, clanResp.getCreationTime());
-			clan.setAircraftEmblem256Url(clanResp.getAircraftEmblem256Url());
-			clan.setClanTag(clanResp.getClanTag());
-			clan.setColor(clanResp.getColor());
-			clan.setCommanderId(clanResp.getCommanderId());
-			clan.setDescription(clanResp.getDescription());
-			clan.setDisbanded(clanResp.isDisbanded());
-			clan.setGlobalMapEmblem24Url(clanResp.getGlobalMapEmblem24Url());
-			clan.setMemberCount(clanResp.getMemberCount());
-			clan.setMotto(clanResp.getMotto());
-			clan.setName(clanResp.getName());
-			clan.setProfileEmblem195Url(clanResp.getProfileEmblem195Url());
-			clan.setRecruitingStationEmblem32Url(clanResp
-					.getRecruitingStationEmblem32Url());
-			clan.setRecruitingStationEmblem64Url(clanResp
-					.getRecruitingStationEmblem64Url());
-			clan.setTankEmblem64Url(clanResp.getTankEmblem64Url());
-			// persist to avoid a loop
-			em.persist(clan);
-			for (long memberId : clanResp.getMemberIds()) {
-				Player member = this.findOrCreatePlayer(memberId);
-				clan.getMembers().add(member.getClanInfo());
-			}
-			clan.setCreator(this.findOrCreatePlayer(clanResp.getCreatorId()));
-			// TODO do i need to merge now?
+			clan = this.createClan(clanId);
 		}
+		return clan;
+	}
+
+	private Clan updateOrCreateClan(long clanId) throws WebException,
+			WgApiError {
+		Clan clan = em.find(Clan.class, clanId);
+		if (clan == null) {
+			clan = this.createClan(clanId);
+		}
+		return clan;
+	}
+
+	private Clan createClan(long clanId) throws WebException, WgApiError {
+		GetClanResponse clanResp = wg.getClan(clanId);
+		Clan clan = new Clan(clanId, clanResp.getCreationTime());
+		clan.setAircraftEmblem256Url(clanResp.getAircraftEmblem256Url());
+		clan.setClanTag(clanResp.getClanTag());
+		clan.setColor(clanResp.getColor());
+		clan.setCommanderId(clanResp.getCommanderId());
+		clan.setDescription(clanResp.getDescription());
+		clan.setDisbanded(clanResp.isDisbanded());
+		clan.setGlobalMapEmblem24Url(clanResp.getGlobalMapEmblem24Url());
+		clan.setMemberCount(clanResp.getMemberCount());
+		clan.setMotto(clanResp.getMotto());
+		clan.setName(clanResp.getName());
+		clan.setRecruitingStationEmblem32Url(clanResp
+				.getRecruitingStationEmblem32Url());
+		clan.setRecruitingStationEmblem64Url(clanResp
+				.getRecruitingStationEmblem64Url());
+		clan.setTankEmblem64Url(clanResp.getTankEmblem64Url());
+		// persist to avoid a loop
+		em.persist(clan);
+		for (long memberId : clanResp.getMemberIds()) {
+			Player member = this.findOrCreatePlayer(memberId);
+			if (member.getClanInfo() == null
+					|| !member.getClanInfo().getClan().equals(clan)) {
+				// player joined recently, add clan member info
+				member.setClanInfo(this.createClanMemberInfo(member, clan));
+			}
+			clan.getMembers().add(member.getClanInfo());
+		}
+		clan.setCreator(this.findOrCreatePlayer(clanResp.getCreatorId()));
+
 		return clan;
 	}
 

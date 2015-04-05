@@ -306,32 +306,24 @@ public class WgAccessImpl implements WgAccess {
 			String globalMapEmblem24Url = null;
 			String recruitingStationEmblem32Url = null;
 			String recruitingStationEmblem64Url = null;
-			String profileEmblem195Url = null;
 			String tankEmblem64Url = null;
 			String aircraftEmblem256Url = null;
-			JsonArray emblemList = infoJson.getJsonArray("emblems");
-			for (JsonValue v : emblemList) {
-				JsonObject o = (JsonObject) v;
-				String url = o.getString("url");
-				switch (o.getString("type")) {
-				case "24x24":
-					globalMapEmblem24Url = url;
+			JsonObject emblems = infoJson.getJsonObject("emblems");
+			for (Map.Entry<String, JsonValue> e : emblems.entrySet()) {
+				JsonObject o = (JsonObject) e.getValue();
+				switch (e.getKey()) {
+				case "x24":
+					globalMapEmblem24Url = o.getString("portal");
 					break;
-				case "32x32":
-					recruitingStationEmblem32Url = url;
+				case "x32":
+					recruitingStationEmblem32Url = o.getString("portal");
 					break;
-				case "64x64":
-					if ("wot".equals(o.getString("game"))) {
-						tankEmblem64Url = url;
-					} else {
-						recruitingStationEmblem64Url = url;
-					}
+				case "x64":
+					tankEmblem64Url = o.getString("wot");
+					recruitingStationEmblem64Url = o.getString("portal");
 					break;
-				case "195x195":
-					profileEmblem195Url = url;
-					break;
-				case "256x256":
-					aircraftEmblem256Url = url;
+				case "x256":
+					aircraftEmblem256Url = o.getString("wowp");
 					break;
 				}
 			}
@@ -347,8 +339,8 @@ public class WgAccessImpl implements WgAccess {
 							description, disbanded, commanderId, memberCount,
 							motto, name, clanTag, globalMapEmblem24Url,
 							recruitingStationEmblem32Url,
-							recruitingStationEmblem64Url, profileEmblem195Url,
-							tankEmblem64Url, aircraftEmblem256Url, memberIds);
+							recruitingStationEmblem64Url, tankEmblem64Url,
+							aircraftEmblem256Url, memberIds);
 		} catch (ClassCastException | NullPointerException e) {
 			throw new WebException("Unexpected response format", e);
 		}

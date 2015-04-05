@@ -24,7 +24,8 @@ public class Player implements Serializable {
 	private Instant lastBattleTime;
 	private Instant lastLogoutTime;
 	private String nick;
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	@JoinColumn(name = "CLANMEMBERINFO_ID")
 	private ClanMemberInformation clanInfo;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "player",

@@ -18,7 +18,6 @@ public class GetClanResponse {
 	private String globalMapEmblem24Url;
 	private String recruitingStationEmblem32Url;
 	private String recruitingStationEmblem64Url;
-	private String profileEmblem195Url;
 	private String tankEmblem64Url;
 	private String aircraftEmblem256Url;
 	private Set<Long> memberIds;
@@ -27,9 +26,8 @@ public class GetClanResponse {
 			String description, boolean disbanded, String commanderId,
 			int memberCount, String motto, String name, String clanTag,
 			String globalMapEmblem24Url, String recruitingStationEmblem32Url,
-			String recruitingStationEmblem64Url, String profileEmblem195Url,
-			String tankEmblem64Url, String aircraftEmblem256Url,
-			Set<Long> memberIds) {
+			String recruitingStationEmblem64Url, String tankEmblem64Url,
+			String aircraftEmblem256Url, Set<Long> memberIds) {
 		this.color = color;
 		this.creationTime = creationTime;
 		this.creatorId = creatorId;
@@ -43,7 +41,6 @@ public class GetClanResponse {
 		this.globalMapEmblem24Url = globalMapEmblem24Url;
 		this.recruitingStationEmblem32Url = recruitingStationEmblem32Url;
 		this.recruitingStationEmblem64Url = recruitingStationEmblem64Url;
-		this.profileEmblem195Url = profileEmblem195Url;
 		this.tankEmblem64Url = tankEmblem64Url;
 		this.aircraftEmblem256Url = aircraftEmblem256Url;
 		this.memberIds = memberIds;
@@ -99,10 +96,6 @@ public class GetClanResponse {
 
 	public String getRecruitingStationEmblem64Url() {
 		return recruitingStationEmblem64Url;
-	}
-
-	public String getProfileEmblem195Url() {
-		return profileEmblem195Url;
 	}
 
 	public String getTankEmblem64Url() {

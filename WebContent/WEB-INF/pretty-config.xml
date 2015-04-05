@@ -6,4 +6,8 @@
 		<pattern value="/" />
 		<view-id value="/WEB-INF/jsf/index.xhtml" />
 	</url-mapping>
+	<url-mapping id="clanlist">
+		<pattern value="/home/clanlist" />
+		<view-id value="/WEB-INF/jsf/clanlist.xhtml" />
+	</url-mapping>
 </pretty-config>

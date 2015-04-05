@@ -35,7 +35,6 @@ public class Clan implements Serializable {
 	private String globalMapEmblem24Url;
 	private String recruitingStationEmblem32Url;
 	private String recruitingStationEmblem64Url;
-	private String profileEmblem195Url;
 	private String tankEmblem64Url;
 	private String aircraftEmblem256Url;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "clan")
@@ -145,14 +144,6 @@ public class Clan implements Serializable {
 		this.recruitingStationEmblem64Url = recruitingStationEmblem64Url;
 	}
 
-	public String getProfileEmblem195Url() {
-		return profileEmblem195Url;
-	}
-
-	public void setProfileEmblem195Url(String profileEmblem195Url) {
-		this.profileEmblem195Url = profileEmblem195Url;
-	}
-
 	public String getTankEmblem64Url() {
 		return tankEmblem64Url;
 	}
@@ -191,5 +182,17 @@ public class Clan implements Serializable {
 
 	public Set<TankFreezeInformation> getFreezeInfos() {
 		return freezeInfos;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other == this)
+			return true;
+		if (!(other instanceof Clan))
+			return false;
+		Clan otherClan = (Clan) other;
+		return this.getClanId() == otherClan.getClanId();
 	}
 }

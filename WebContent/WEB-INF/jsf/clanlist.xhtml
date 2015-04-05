@@ -9,33 +9,12 @@
 	<title>Insert title here</title>
 </h:head>
 <h:body>
-	<h:outputLink value="login/generatelink/">Login</h:outputLink>
-	<h:form>
-		<h:commandLink value="Logout" action="#{loginBean.logout}" />
-	</h:form>
-	<form action="replayupload/" method="post"
-		enctype="multipart/form-data">
-		<input type="file" name="fileName" /> <input type="submit"
-			value="Upload" />
-	</form>
-
-	<c:choose>
-		<c:when test="#{loginBean.loggedIn}">logged in with account id #{loginBean.accountId}</c:when>
-		<c:otherwise>not logged in</c:otherwise>
-	</c:choose>
-	<c:if test="#{loginBean.loggedIn}">
-		<!-- acc id #{dataBean.player.accountId} -->
-		<br />
-	#{dataBean.clan.description}<br />
-		<c:forEach items="#{dataBean.clan.members}" var="m">
-	#{m.player.nick}
-	</c:forEach>
-		<!-- <h:dataTable value="#{dataBean.allTanks}" var="t">
-			<h:column>
-				<f:facet name="header">id</f:facet>
-					#{t.id}
+	<h:dataTable value="#{clanListBean.playerNicks}" var="p">
+		<h:column>
+			<f:facet name="header">Name</f:facet>
+					#{p}
     		</h:column>
-			<h:column>
+		<!-- <h:column>
 				<f:facet name="header">name</f:facet>
 					#{t.name}
     		</h:column>
@@ -78,8 +57,7 @@
 			<h:column>
 				<f:facet name="header">internal type</f:facet>
 					#{t.internalType}
-    		</h:column>
-		</h:dataTable> -->
-	</c:if>
+    		</h:column> -->
+	</h:dataTable>
 </h:body>
 </html>
