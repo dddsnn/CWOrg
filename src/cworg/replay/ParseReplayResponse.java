@@ -35,15 +35,15 @@ public class ParseReplayResponse {
 	private Duration duration;
 	private int winningTeam;
 	private BattleOutcome outcome;
-	private Map<String, ParseReplayResponsePlayer> team1;
-	private Map<String, ParseReplayResponsePlayer> team2;
+	private Map<Long, ParseReplayResponsePlayer> team1;
+	private Map<Long, ParseReplayResponsePlayer> team2;
 
 	public ParseReplayResponse(long arenaId, long playerId,
 			BattleType battleType, boolean lockingEnabled,
 			Instant arenaCreateTime, String mapName, Duration duration,
 			int winningTeam, BattleOutcome outcome,
-			Map<String, ParseReplayResponsePlayer> team1,
-			Map<String, ParseReplayResponsePlayer> team2) {
+			Map<Long, ParseReplayResponsePlayer> team1,
+			Map<Long, ParseReplayResponsePlayer> team2) {
 		this.arenaId = arenaId;
 		this.playerId = playerId;
 		this.battleType = battleType;
@@ -93,11 +93,11 @@ public class ParseReplayResponse {
 		return outcome;
 	}
 
-	public Map<String, ParseReplayResponsePlayer> getTeam1() {
+	public Map<Long, ParseReplayResponsePlayer> getTeam1() {
 		return team1;
 	}
 
-	public Map<String, ParseReplayResponsePlayer> getTeam2() {
+	public Map<Long, ParseReplayResponsePlayer> getTeam2() {
 		return team2;
 	}
 }

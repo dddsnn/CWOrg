@@ -55,8 +55,8 @@ public class ReplayImportImpl implements ReplayImport {
 			int winningTeam = commonInfo.getInt("winnerTeam");
 			int outcomeInt = commonInfo.getInt("finishReason");
 			BattleOutcome outcome = this.getBattleOutcome(outcomeInt);
-			Map<String, ParseReplayResponsePlayer> team1 = new HashMap<>();
-			Map<String, ParseReplayResponsePlayer> team2 = new HashMap<>();
+			Map<Long, ParseReplayResponsePlayer> team1 = new HashMap<>();
+			Map<Long, ParseReplayResponsePlayer> team2 = new HashMap<>();
 			for (Map.Entry<String, JsonValue> e : vehiclesInfo.entrySet()) {
 				JsonObject info = (JsonObject) e.getValue();
 				// weird id used as keys in the replays (maybe tmp ids only
@@ -65,7 +65,7 @@ public class ReplayImportImpl implements ReplayImport {
 				long typeCompDescr =
 						info.getJsonNumber("typeCompDescr").longValue();
 				long tankId = new Long(typeCompDescr & 65535);
-				String playerId = info.get("accountDBID").toString();
+				long playerId = info.getJsonNumber("accountDBID").longValue();
 				boolean survived =
 						postBattleInfo.getJsonObject(tmpId).getBoolean(
 								"isAlive");
