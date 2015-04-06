@@ -90,7 +90,7 @@ public class LoginCallbackServlet extends HttpServlet {
 							prlResp.getExpiryTime());
 			user.setLoginInfo(loginInfo);
 			req.getSession().setAttribute("user", user);
-			resp.sendRedirect(req.getContextPath() + "/");
+			resp.sendRedirect(req.getContextPath() + "/home/");
 		} else if ("error".equals(status)) {
 			// TODO
 		} else if (status == null) {

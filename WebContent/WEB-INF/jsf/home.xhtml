@@ -9,16 +9,11 @@
 	<title>Insert title here</title>
 </h:head>
 <h:body>
-	<c:choose>
-		<c:when test="#{loginBean.loggedIn}">
-		logged in with account id #{loginBean.accountId}
-	<h:form>
-				<h:commandLink value="Logout" action="#{loginBean.logout}" />
-			</h:form>
-		</c:when>
-		<c:otherwise>
-			<h:outputLink value="login/generatelink/">Login</h:outputLink>
-		</c:otherwise>
-	</c:choose>
+	<form action="../replayupload/" method="post"
+		enctype="multipart/form-data">
+		<input type="file" name="fileName" /> <input type="submit"
+			value="Upload" />
+	</form>
+	<h:outputLink value="clanlist/">clan list</h:outputLink>
 </h:body>
 </html>
