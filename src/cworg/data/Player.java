@@ -81,7 +81,7 @@ public class Player implements Serializable {
 		return creationTime;
 	}
 
-	public Set<PlayerTankInformation> getTanks() {
+	public Set<PlayerTankInformation> getTankInfos() {
 		return tankInfos;
 	}
 }

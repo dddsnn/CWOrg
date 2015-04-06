@@ -5,7 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
+@NamedQueries({ @NamedQuery(name = "findAllTanks",
+		query = "select t from Tank t") })
 @Entity
 public class Tank implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -99,4 +103,15 @@ public class Tank implements Serializable {
 		return internalType;
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other == this)
+			return true;
+		if (!(other instanceof Tank))
+			return false;
+		Tank otherTank = (Tank) other;
+		return this.getId() == otherTank.getId();
+	}
 }

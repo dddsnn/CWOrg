@@ -52,7 +52,7 @@ public class DBAccessImpl implements DBAccess {
 			em.persist(player);
 			// now get the related entities
 			for (long tankId : playerResp.getTankIds()) {
-				player.getTanks()
+				player.getTankInfos()
 						.add(this.createPlayerTankInfo(player, tankId));
 			}
 			if (playerResp.getClanId() != 0) {
