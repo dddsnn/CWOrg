@@ -39,4 +39,16 @@ public class PlayerTankInformation implements Serializable {
 	public Player getPlayer() {
 		return player;
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other == this)
+			return true;
+		if (!(other instanceof PlayerTankInformation))
+			return false;
+		PlayerTankInformation otherTankInfo = (PlayerTankInformation) other;
+		return this.id == otherTankInfo.id;
+	}
 }

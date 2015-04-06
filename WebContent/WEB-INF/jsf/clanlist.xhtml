@@ -17,8 +17,11 @@
     	</h:column>
 		<c:forEach items="#{clanListBean.tanks}" var="t">
 			<h:column>
-				<f:facet name="header">#{t.shortName}</f:facet> 
-				#{p.isTankAvailable(t)}
+				<f:facet name="header">#{t.shortName}</f:facet>
+				<h:outputText value="+"
+					rendered="#{p.getTankAvailability(t) == 'AVAILABLE'}" />
+				<h:outputText value="*"
+					rendered="#{p.getTankAvailability(t) == 'FROZEN'}" />
 			</h:column>
 		</c:forEach>
 	</h:dataTable>
