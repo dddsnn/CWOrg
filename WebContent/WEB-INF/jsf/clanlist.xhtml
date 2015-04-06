@@ -20,8 +20,10 @@
 				<f:facet name="header">#{t.shortName}</f:facet>
 				<h:outputText value="+"
 					rendered="#{p.getTankAvailability(t) == 'AVAILABLE'}" />
-				<h:outputText value="*"
-					rendered="#{p.getTankAvailability(t) == 'FROZEN'}" />
+				<h:outputText value="#{p.getUnfreezeTime(t)}"
+					rendered="#{p.getTankAvailability(t) == 'FROZEN'}">
+					<f:convertDateTime pattern="E H:m" />
+				</h:outputText>
 			</h:column>
 		</c:forEach>
 	</h:dataTable>

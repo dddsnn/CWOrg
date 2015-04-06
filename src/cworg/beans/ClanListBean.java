@@ -1,5 +1,6 @@
 package cworg.beans;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +76,7 @@ public class ClanListBean {
 			if (researched) {
 				res = TankAvailability.AVAILABLE;
 				PlayerTankInformation tankInfo = tankInfoOpt.get();
+				// TODO cache freeze info in a map (tank -> info)
 				Optional<TankFreezeInformation> freezeInfoOpt =
 						clan.getFreezeInfos()
 								.stream()
@@ -86,6 +88,27 @@ public class ClanListBean {
 				}
 			}
 			return res;
+		}
+
+		public Instant getUnfreezeTime(Tank tank) {
+			Optional<PlayerTankInformation> tankInfoOpt =
+					player.getTankInfos()
+							.stream()
+							.filter((tankInfo) -> tankInfo.getTank().equals(
+									tank)).findFirst();
+			// TODO better throw exception?
+			if (!tankInfoOpt.isPresent()) {
+				return Instant.EPOCH;
+			}
+			Optional<TankFreezeInformation> freezeInfoOpt =
+					clan.getFreezeInfos()
+							.stream()
+							.filter((freezeInfo) -> freezeInfo.getTankInfo()
+									.equals(tankInfoOpt.get())).findFirst();
+			if (!freezeInfoOpt.isPresent()) {
+				return Instant.EPOCH;
+			}
+			return freezeInfoOpt.get().getUnfreezeTime();
 		}
 
 		public String getNick() {
