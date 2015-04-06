@@ -1,9 +1,7 @@
 package cworg.beans;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import cworg.data.Clan;
 import cworg.data.ClanMemberInformation;
 import cworg.data.Player;
-import cworg.data.PlayerTankInformation;
 import cworg.data.Tank;
 import cworg.data.User;
 import cworg.web.WgAccess;
@@ -52,39 +49,8 @@ public class ClanListBean {
 			return tanks;
 		List<Tank> l =
 				em.createNamedQuery("findAllTanks", Tank.class).getResultList();
-		List<Tank> res = new ArrayList<>(l);
-		// List<Tank> res = new ArrayList<>();
-		// res.add(l.get(0));
-		tanks = res;
-		return res;
-	}
-
-	// public Set<Map<Tank, String>> getMaps() {
-	// Set<Map<Tank, String>> maps = new HashSet<>();
-	// for (Player p : this.getPlayers()) {
-	// Map<Tank, String> map = new HashMap<>();
-	// for (Tank t : this.getTanks()) {
-	// String s = p.getTanks().contains(t) ? "yea" : "nope";
-	// map.put(t, s);
-	// }
-	// maps.add(map);
-	// }
-	// return maps;
-	// }
-
-	public List<Map<String, String>> getLom() {
-		List<Map<String, String>> res = new ArrayList<>();
-		Map<String, String> one = new HashMap<>();
-		one.put("a", "one a");
-		one.put("b", "one b");
-		one.put("c", "one c");
-		Map<String, String> two = new HashMap<>();
-		one.put("a", "two a");
-		one.put("b", "two b");
-		one.put("c", "two c");
-		res.add(one);
-		res.add(two);
-		return res;
+		tanks = l;
+		return l;
 	}
 
 	public static class PlayerModel {
@@ -94,15 +60,9 @@ public class ClanListBean {
 			this.player = player;
 		}
 
-		public boolean tankAvailable(Tank tank) {
-			boolean res = false;
-			for (PlayerTankInformation tankInfo : player.getTankInfos()) {
-				if (tankInfo.getTank().equals(tank))
-					res = true;
-			}
-			return res;
-			// return player.getTankInfos().stream()
-			// .anyMatch((tankInfo) -> tankInfo.getTank().equals(tank));
+		public boolean isTankAvailable(Tank tank) {
+			return player.getTankInfos().stream()
+					.anyMatch((tankInfo) -> tankInfo.getTank().equals(tank));
 		}
 
 		public String getNick() {
