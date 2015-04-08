@@ -195,4 +195,9 @@ public class Clan implements Serializable {
 		Clan otherClan = (Clan) other;
 		return this.getClanId() == otherClan.getClanId();
 	}
+
+	@Override
+	public int hashCode() {
+		return Long.hashCode(clanId);
+	}
 }

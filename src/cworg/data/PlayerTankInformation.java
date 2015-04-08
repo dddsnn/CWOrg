@@ -51,4 +51,9 @@ public class PlayerTankInformation implements Serializable {
 		PlayerTankInformation otherTankInfo = (PlayerTankInformation) other;
 		return this.id == otherTankInfo.id;
 	}
+
+	@Override
+	public int hashCode() {
+		return Long.hashCode(id);
+	}
 }

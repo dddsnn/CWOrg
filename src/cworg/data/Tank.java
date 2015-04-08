@@ -114,4 +114,9 @@ public class Tank implements Serializable {
 		Tank otherTank = (Tank) other;
 		return this.getId() == otherTank.getId();
 	}
+
+	@Override
+	public int hashCode() {
+		return Long.hashCode(id);
+	}
 }
