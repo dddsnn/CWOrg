@@ -3,6 +3,8 @@ package cworg.servlets;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,11 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import cworg.data.Clan;
+import cworg.data.FreezeDurations;
 import cworg.data.Player;
 import cworg.data.PlayerTankInformation;
 import cworg.data.ReplayBattle;
 import cworg.data.ReplayBattle.BattleType;
 import cworg.data.ReplayPlayer;
+import cworg.data.Tank;
 import cworg.data.TankFreezeInformation;
 import cworg.db.DBAccess;
 import cworg.replay.ParseReplayResponse;
@@ -101,10 +105,25 @@ public class ReplayUploadServlet extends HttpServlet {
 		setBattleOnPlayers(replay, team1);
 		setBattleOnPlayers(replay, team2);
 		em.persist(replay);
+		this.makeFreezeInfos(replay, team1);
+		this.makeFreezeInfos(replay, team2);
+		// redirect home TODO success msg
+		response.sendRedirect(request.getContextPath() + "/home/");
+	}
+
+	private void makeFreezeInfos(ReplayBattle replay, Set<ReplayPlayer> players) {
 		// make freeze infos out of the battle
 		// TODO conditional on this being a cw, probably factor out
 		Clan ownerClan = replay.getPlayer().getClanInfo().getClan();
-		for (ReplayPlayer p : team1) {
+		// battle end time: 45 seconds extra for battle loading
+		Instant endTime =
+				replay.getArenaCreateTime().plus(replay.getDuration())
+						.plus(Duration.ofSeconds(45));
+		// TODO decide which to use based on user input, freeze duration of
+		// uploading player or something
+		FreezeDurations freezeDurations =
+				em.find(FreezeDurations.class, "standard");
+		for (ReplayPlayer p : players) {
 			if (p.isSurvived()) {
 				continue;
 			}
@@ -117,11 +136,39 @@ public class ReplayUploadServlet extends HttpServlet {
 					(PlayerTankInformation) q.getSingleResult();
 			TankFreezeInformation freezeInfo =
 					new TankFreezeInformation(tankInfo, ownerClan);
-			// TODO set unfreeze time
+			Instant unfreezeTime = endTime;
+			Tank tank = p.getTank();
+			switch (tank.getInternalType()) {
+			case "heavyTank":
+				unfreezeTime =
+						unfreezeTime.plus(freezeDurations.getHeavyDurations()
+								.get(tank.getTier()));
+				break;
+			case "mediumTank":
+				unfreezeTime =
+						unfreezeTime.plus(freezeDurations.getMediumDurations()
+								.get(tank.getTier()));
+				break;
+			case "lightTank":
+				unfreezeTime =
+						unfreezeTime.plus(freezeDurations.getLightDurations()
+								.get(tank.getTier()));
+				break;
+			case "AT-SPG":
+				unfreezeTime =
+						unfreezeTime.plus(freezeDurations.getTdDurations().get(
+								tank.getTier()));
+				break;
+			case "SPG":
+				unfreezeTime =
+						unfreezeTime.plus(freezeDurations.getSpgDurations()
+								.get(tank.getTier()));
+				break;
+			}
+			freezeInfo.setUnfreezeTime(unfreezeTime);
+			em.persist(freezeDurations);
 			ownerClan.getFreezeInfos().add(freezeInfo);
 		}
-		// redirect home TODO success msg
-		response.sendRedirect(request.getContextPath() + "/home/");
 	}
 
 	private Set<ReplayPlayer> makeTeam(Map<Long, ParseReplayResponsePlayer> team)
