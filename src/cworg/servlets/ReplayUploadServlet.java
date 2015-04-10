@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import cworg.data.Clan;
 import cworg.data.Player;
+import cworg.data.PlayerTankInformation;
 import cworg.data.ReplayBattle;
 import cworg.data.ReplayBattle.BattleType;
 import cworg.data.ReplayPlayer;
+import cworg.data.TankFreezeInformation;
 import cworg.db.DBAccess;
 import cworg.replay.ParseReplayResponse;
 import cworg.replay.ParseReplayResponse.ParseReplayResponsePlayer;
@@ -96,7 +100,26 @@ public class ReplayUploadServlet extends HttpServlet {
 
 		setBattleOnPlayers(replay, team1);
 		setBattleOnPlayers(replay, team2);
-		// TODO persist battle, make freeze infos out of it
+		em.persist(replay);
+		// make freeze infos out of the battle
+		// TODO conditional on this being a cw, probably factor out
+		Clan ownerClan = replay.getPlayer().getClanInfo().getClan();
+		for (ReplayPlayer p : team1) {
+			if (p.isSurvived()) {
+				continue;
+			}
+			Query q =
+					em.createNamedQuery("findPlayerTank",
+							PlayerTankInformation.class);
+			q.setParameter("player", p.getPlayer());
+			q.setParameter("tank", p.getTank());
+			PlayerTankInformation tankInfo =
+					(PlayerTankInformation) q.getSingleResult();
+			TankFreezeInformation freezeInfo =
+					new TankFreezeInformation(tankInfo, ownerClan);
+			// TODO set unfreeze time
+			ownerClan.getFreezeInfos().add(freezeInfo);
+		}
 		// redirect home TODO success msg
 		response.sendRedirect(request.getContextPath() + "/home/");
 	}
