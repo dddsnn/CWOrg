@@ -2,6 +2,7 @@ package cworg.data;
 
 import java.io.Serializable;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
@@ -14,14 +15,19 @@ public class FreezeDurations implements Serializable {
 	@Id
 	private String name;
 	@ElementCollection
+	private List<Long> lightDurationSeconds;
+	@ElementCollection
+	private List<Long> mediumDurationSeconds;
+	@ElementCollection
+	private List<Long> heavyDurationSeconds;
+	@ElementCollection
+	private List<Long> tdDurationSeconds;
+	@ElementCollection
+	private List<Long> spgDurationSeconds;
 	private List<Duration> lightDurations;
-	@ElementCollection
 	private List<Duration> mediumDurations;
-	@ElementCollection
 	private List<Duration> heavyDurations;
-	@ElementCollection
 	private List<Duration> tdDurations;
-	@ElementCollection
 	private List<Duration> spgDurations;
 
 	public FreezeDurations() {
@@ -41,6 +47,11 @@ public class FreezeDurations implements Serializable {
 		this.heavyDurations = heavyDurations;
 		this.tdDurations = tdDurations;
 		this.spgDurations = spgDurations;
+		this.lightDurationSeconds = makeDurationSeconds(lightDurations);
+		this.mediumDurationSeconds = makeDurationSeconds(mediumDurations);
+		this.heavyDurationSeconds = makeDurationSeconds(heavyDurations);
+		this.tdDurationSeconds = makeDurationSeconds(tdDurations);
+		this.spgDurationSeconds = makeDurationSeconds(spgDurations);
 	}
 
 	public String getName() {
@@ -48,23 +59,55 @@ public class FreezeDurations implements Serializable {
 	}
 
 	public List<Duration> getLightDurations() {
+		if (lightDurations == null) {
+			lightDurations = makeDurations(lightDurationSeconds);
+		}
 		return lightDurations;
 	}
 
 	public List<Duration> getMediumDurations() {
+		if (mediumDurations == null) {
+			mediumDurations = makeDurations(mediumDurationSeconds);
+		}
 		return mediumDurations;
 	}
 
 	public List<Duration> getHeavyDurations() {
+		if (heavyDurations == null) {
+			heavyDurations = makeDurations(heavyDurationSeconds);
+		}
 		return heavyDurations;
 	}
 
 	public List<Duration> getTdDurations() {
+		if (tdDurations == null) {
+			tdDurations = makeDurations(tdDurationSeconds);
+		}
 		return tdDurations;
 	}
 
 	public List<Duration> getSpgDurations() {
+		if (spgDurations == null) {
+			spgDurations = makeDurations(spgDurationSeconds);
+		}
 		return spgDurations;
+	}
+
+	private static List<Duration> makeDurations(List<Long> durationSeconds) {
+		List<Duration> durations = new ArrayList<>(11);
+		for (long seconds : durationSeconds) {
+			durations.add(Duration.ofSeconds(seconds));
+		}
+		return durations;
+	}
+
+	private static List<Long> makeDurationSeconds(List<Duration> durations) {
+		List<Long> durationSeconds = new ArrayList<>(11);
+		for (Duration d : durations) {
+			long seconds = d == null ? 0 : d.getSeconds();
+			durationSeconds.add(seconds);
+		}
+		return durationSeconds;
 	}
 
 	@Override

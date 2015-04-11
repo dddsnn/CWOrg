@@ -49,11 +49,9 @@ public class ReplayImportImpl implements ReplayImport {
 					Instant.ofEpochSecond(commonInfo.getJsonNumber(
 							"arenaCreateTime").longValue());
 			String mapName = firstBlock.getString("mapName");
-			double durationDouble =
-					commonInfo.getJsonNumber("duration").doubleValue();
-			long durationNanos =
-					new Double(durationDouble * 1000 * 1000).longValue();
-			Duration duration = Duration.ofNanos(durationNanos);
+			long durationSeconds =
+					commonInfo.getJsonNumber("duration").longValue();
+			Duration duration = Duration.ofSeconds(durationSeconds);
 			int winningTeam = commonInfo.getInt("winnerTeam");
 			int outcomeInt = commonInfo.getInt("finishReason");
 			BattleOutcome outcome = this.getBattleOutcome(outcomeInt);
