@@ -12,7 +12,8 @@ import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -47,12 +48,13 @@ public class ReplayUploadServlet extends HttpServlet {
 	private ReplayImport replayImport;
 	@EJB
 	private DBAccess db;
-	@PersistenceContext
-	private EntityManager em;
+	@PersistenceUnit
+	private EntityManagerFactory emf;
 
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		EntityManager em = emf.createEntityManager();
 		// TODO make sure only one file can be uploaded (in jsf), or support
 		// multiples
 		ParseReplayResponse replayResp = null;
@@ -86,8 +88,8 @@ public class ReplayUploadServlet extends HttpServlet {
 		Set<ReplayPlayer> team2 = null;
 		try {
 			recordingPlayer = db.findOrCreatePlayer(replayResp.getPlayerId());
-			team1 = this.makeTeam(replayResp.getTeam1());
-			team2 = this.makeTeam(replayResp.getTeam2());
+			team1 = this.makeTeam(replayResp.getTeam1(), em);
+			team2 = this.makeTeam(replayResp.getTeam2(), em);
 		} catch (WebException e) {
 			throw new ServletException(e);
 		} catch (WgApiError e) {
@@ -105,13 +107,15 @@ public class ReplayUploadServlet extends HttpServlet {
 		setBattleOnPlayers(replay, team1);
 		setBattleOnPlayers(replay, team2);
 		em.persist(replay);
-		this.makeFreezeInfos(replay, team1);
-		this.makeFreezeInfos(replay, team2);
+		this.makeFreezeInfos(replay, team1, em);
+		this.makeFreezeInfos(replay, team2, em);
+		em.close();
 		// redirect home TODO success msg
 		response.sendRedirect(request.getContextPath() + "/home/");
 	}
 
-	private void makeFreezeInfos(ReplayBattle replay, Set<ReplayPlayer> players) {
+	private void makeFreezeInfos(ReplayBattle replay,
+			Set<ReplayPlayer> players, EntityManager em) {
 		// make freeze infos out of the battle
 		// TODO conditional on this being a cw, probably factor out
 		Clan ownerClan = replay.getPlayer().getClanInfo().getClan();
@@ -175,7 +179,8 @@ public class ReplayUploadServlet extends HttpServlet {
 		}
 	}
 
-	private Set<ReplayPlayer> makeTeam(Map<Long, ParseReplayResponsePlayer> team)
+	private Set<ReplayPlayer> makeTeam(
+			Map<Long, ParseReplayResponsePlayer> team, EntityManager em)
 			throws WebException, WgApiError {
 		Set<ReplayPlayer> res = new HashSet<>();
 		for (Map.Entry<Long, ParseReplayResponsePlayer> e : team.entrySet()) {
