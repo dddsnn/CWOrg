@@ -15,9 +15,11 @@ import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonException;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
+import javax.json.JsonValue.ValueType;
 
 import cworg.data.ReplayBattle.BattleOutcome;
 import cworg.data.ReplayBattle.BattleType;
@@ -62,9 +64,15 @@ public class ReplayImportImpl implements ReplayImport {
 				// weird id used as keys in the replays (maybe tmp ids only
 				// valid for that replay?)
 				String tmpId = e.getKey();
-				long typeCompDescr =
-						info.getJsonNumber("typeCompDescr").longValue();
-				long tankId = new Long(typeCompDescr & 65535);
+				long tankId = 0;
+				JsonValue typeCompDescrJson = info.get("typeCompDescr");
+				if (typeCompDescrJson.getValueType() == ValueType.NUMBER) {
+					// typeCompDescr can be null if the tank was never spotted
+					long typeCompDescr =
+							((JsonNumber) typeCompDescrJson).longValue();
+
+					tankId = new Long(typeCompDescr & 65535);
+				}
 				long playerId = info.getJsonNumber("accountDBID").longValue();
 				boolean survived =
 						postBattleInfo.getJsonObject(tmpId).getBoolean(

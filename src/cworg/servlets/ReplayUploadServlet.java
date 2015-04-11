@@ -128,7 +128,9 @@ public class ReplayUploadServlet extends HttpServlet {
 		FreezeDurations freezeDurations =
 				em.find(FreezeDurations.class, "standard");
 		for (ReplayPlayer p : players) {
-			if (p.isSurvived()) {
+			if (p.isSurvived() || p.getTank() == null) {
+				// not interested if tank survived (not frozen), or wasn't
+				// spotted in fog of war
 				continue;
 			}
 			Query q =
@@ -188,7 +190,12 @@ public class ReplayUploadServlet extends HttpServlet {
 			ParseReplayResponsePlayer p = e.getValue();
 			ReplayPlayer player = new ReplayPlayer(p.isSurvived());
 			player.setPlayer(db.findOrCreatePlayer(id));
-			player.setTank(db.findOrGetUpdateForTank(p.getTankId()));
+			if (p.getTankId() != 0) {
+				player.setTank(db.findOrGetUpdateForTank(p.getTankId()));
+			} else {
+				// fog of war
+				player.setTank(null);
+			}
 			em.persist(player);
 		}
 		return res;
