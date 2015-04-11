@@ -24,6 +24,9 @@ public class FreezeDurations implements Serializable {
 	@ElementCollection
 	private List<Duration> spgDurations;
 
+	public FreezeDurations() {
+	}
+
 	public FreezeDurations(String name, List<Duration> lightDurations,
 			List<Duration> mediumDurations, List<Duration> heavyDurations,
 			List<Duration> tdDurations, List<Duration> spgDurations) {

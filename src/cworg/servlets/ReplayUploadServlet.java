@@ -165,6 +165,10 @@ public class ReplayUploadServlet extends HttpServlet {
 								.get(tank.getTier()));
 				break;
 			}
+			if (unfreezeTime.isBefore(Instant.now())) {
+				// irrelevant
+				return;
+			}
 			freezeInfo.setUnfreezeTime(unfreezeTime);
 			em.persist(freezeDurations);
 			ownerClan.getFreezeInfos().add(freezeInfo);
