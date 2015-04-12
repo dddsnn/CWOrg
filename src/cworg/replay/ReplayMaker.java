@@ -58,15 +58,45 @@ public class ReplayMaker {
 		}
 	}
 
-	private static Map<Long, Long> makeTeam2() {
+	private static Map<Long, Long> makeTeam1() {
 		Map<Long, Long> res = new HashMap<>(15, 1.0f);
-		// TODO Auto-generated method stub
+		// zer0
+		res.put(501504024L, 9489L);
+		res.put(500359296L, 9489L);
+		res.put(503577582L, 9489L);
+		res.put(500538976L, 9489L);
+		res.put(511006172L, 7169L);
+		res.put(500111530L, 7169L);
+		res.put(505261143L, 7169L);
+		res.put(500812951L, 7169L);
+		res.put(507936657L, 7249L);
+		res.put(500226168L, 7169L);
+		res.put(500739231L, 7169L);
+		res.put(502424058L, 7169L);
+		res.put(507572264L, 7169L);
+		res.put(507875739L, 7169L);
+		res.put(500506363L, 9489L);
 		return res;
 	}
 
-	private static Map<Long, Long> makeTeam1() {
+	private static Map<Long, Long> makeTeam2() {
 		Map<Long, Long> res = new HashMap<>(15, 1.0f);
-		// TODO Auto-generated method stub
+		// fame
+		res.put(500057617L, 7169L);
+		res.put(503045600L, 7169L);
+		res.put(500549947L, 7169L);
+		res.put(502467332L, 7169L);
+		res.put(502182060L, 7169L);
+		res.put(513245847L, 7169L);
+		res.put(500910204L, 7169L);
+		res.put(505167907L, 10785L);
+		res.put(500374070L, 10785L);
+		res.put(501077600L, 10785L);
+		res.put(500274824L, 10785L);
+		res.put(500125424L, 10785L);
+		res.put(500916751L, 10785L);
+		res.put(503425775L, 10785L);
+		res.put(500475485L, 10785L);
 		return res;
 	}
 
@@ -102,7 +132,7 @@ public class ReplayMaker {
 		for (Map.Entry<Long, Long> e : team1.entrySet()) {
 			JsonObjectBuilder vehicleBuilder = Json.createObjectBuilder();
 			vehicleBuilder.add("accountDBID", e.getKey())
-					.add("typeCompDescr", e.getValue()).add("team", 0);
+					.add("typeCompDescr", e.getValue()).add("team", 1);
 			vehiclesInfoBuilder
 					.add(Integer.toString(i), vehicleBuilder.build());
 			i++;
@@ -110,7 +140,7 @@ public class ReplayMaker {
 		for (Map.Entry<Long, Long> e : team2.entrySet()) {
 			JsonObjectBuilder vehicleBuilder = Json.createObjectBuilder();
 			vehicleBuilder.add("accountDBID", e.getKey())
-					.add("typeCompDescr", e.getValue()).add("team", 1);
+					.add("typeCompDescr", e.getValue()).add("team", 2);
 			vehiclesInfoBuilder
 					.add(Integer.toString(i), vehicleBuilder.build());
 			i++;
