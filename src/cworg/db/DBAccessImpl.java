@@ -24,6 +24,7 @@ import cworg.data.TankFreezeInformation;
 import cworg.data.User;
 import cworg.replay.ParseReplayResponse;
 import cworg.replay.ParseReplayResponse.ParseReplayResponsePlayer;
+import cworg.replay.ReplayExistsException;
 import cworg.web.GetClanMemberInfoResponse;
 import cworg.web.GetClanResponse;
 import cworg.web.GetPlayerResponse;
@@ -40,15 +41,14 @@ public class DBAccessImpl implements DBAccess {
 
 	@Override
 	public ReplayBattle createReplayBattle(ParseReplayResponse replayResp)
-			throws WebException, WgApiError {
+			throws WebException, WgApiError, ReplayExistsException {
 		ReplayBattle replay =
 				em.find(ReplayBattle.class, new ReplayBattle.ReplayBattlePK(
 						replayResp.getArenaId(), replayResp.getPlayerId()));
 		if (replay != null) {
 			// TODO replay of this battle from this player has already been
 			// uploaded
-			// throw new ServletException("already been upped");
-			return replay;
+			throw new ReplayExistsException(replay);
 		}
 
 		Player recordingPlayer = null;

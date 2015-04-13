@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import cworg.data.ReplayBattle;
 import cworg.data.ReplayBattle.BattleType;
 import cworg.db.DBAccess;
 import cworg.replay.ParseReplayResponse;
 import cworg.replay.ReplayException;
+import cworg.replay.ReplayExistsException;
 import cworg.replay.ReplayImport;
 import cworg.web.WebException;
 import cworg.web.WgApiError;
@@ -55,8 +55,10 @@ public class ReplayUploadServlet extends HttpServlet {
 			throw new ServletException("no CW");
 		}
 		try {
-			ReplayBattle replay = db.createReplayBattle(replayResp);
+			db.createReplayBattle(replayResp);
 		} catch (WebException | WgApiError e) {
+			throw new ServletException(e);
+		} catch (ReplayExistsException e) {
 			throw new ServletException(e);
 		}
 

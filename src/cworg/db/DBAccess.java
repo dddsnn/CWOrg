@@ -9,6 +9,7 @@ import cworg.data.ReplayBattle;
 import cworg.data.Tank;
 import cworg.data.User;
 import cworg.replay.ParseReplayResponse;
+import cworg.replay.ReplayExistsException;
 import cworg.web.WebException;
 import cworg.web.WgApiError;
 
@@ -26,5 +27,5 @@ public interface DBAccess {
 			throws WebException, WgApiError;
 
 	ReplayBattle createReplayBattle(ParseReplayResponse resp)
-			throws WebException, WgApiError;
+			throws WebException, WgApiError, ReplayExistsException;
 }
