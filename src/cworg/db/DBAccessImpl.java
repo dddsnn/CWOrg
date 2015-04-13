@@ -54,17 +54,9 @@ public class DBAccessImpl implements DBAccess {
 		Player recordingPlayer = null;
 		Set<ReplayPlayer> team1 = null;
 		Set<ReplayPlayer> team2 = null;
-		// try {
 		recordingPlayer = this.findOrCreatePlayer(replayResp.getPlayerId());
-		// TODO
-		em.merge(recordingPlayer);
 		team1 = this.makeTeam(replayResp.getTeam1());
 		team2 = this.makeTeam(replayResp.getTeam2());
-		// } catch (WebException e) {
-		// throw new ServletException(e);
-		// } catch (WgApiError e) {
-		// throw new ServletException(e);
-		// }
 		replay =
 				new ReplayBattle(replayResp.getArenaId(), recordingPlayer,
 						replayResp.getBattleType(),
@@ -82,7 +74,6 @@ public class DBAccessImpl implements DBAccess {
 	}
 
 	private void makeFreezeInfos(ReplayBattle replay, Set<ReplayPlayer> players) {
-		// make freeze infos out of the battle
 		// TODO conditional on this being a cw, probably factor out
 		Clan ownerClan = replay.getPlayer().getClanInfo().getClan();
 		// battle end time: 45 seconds extra for battle loading
@@ -154,16 +145,10 @@ public class DBAccessImpl implements DBAccess {
 			ParseReplayResponsePlayer responsePlayer = e.getValue();
 			ReplayPlayer replayPlayer =
 					new ReplayPlayer(responsePlayer.isSurvived());
-			// TODO
-			Player p = this.findOrCreatePlayer(id);
-			// em.merge(p);
-			replayPlayer.setPlayer(p);
+			replayPlayer.setPlayer(this.findOrCreatePlayer(id));
 			if (responsePlayer.getTankId() != 0) {
-				// TODO
-				Tank t =
-						this.findOrGetUpdateForTank(responsePlayer.getTankId());
-				// em.merge(t);
-				replayPlayer.setTank(t);
+				replayPlayer.setTank(this.findOrGetUpdateForTank(responsePlayer
+						.getTankId()));
 			} else {
 				// fog of war
 				replayPlayer.setTank(null);
