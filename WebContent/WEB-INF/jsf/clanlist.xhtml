@@ -22,7 +22,7 @@
 					rendered="#{p.getTankAvailability(t) == 'AVAILABLE'}" />
 				<h:outputText value="#{p.getUnfreezeTime(t)}"
 					rendered="#{p.getTankAvailability(t) == 'FROZEN'}">
-					<f:convertDateTime pattern="E H:m" />
+					<!-- <f:convertDateTime pattern="E H:m" /> -->
 				</h:outputText>
 			</h:column>
 		</c:forEach>
