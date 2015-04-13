@@ -15,7 +15,8 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({ @NamedQuery(
 		name = "findPlayerTank",
-		query = "select pti from PlayerTankInformation pti where pti.player = :player and pti.tank = :tank") })
+		query = "select pti from PlayerTankInformation pti "
+				+ "where pti.player = :player and pti.tank = :tank") })
 public class PlayerTankInformation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id

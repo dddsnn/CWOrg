@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,8 @@ public class Clan implements Serializable {
 	private String aircraftEmblem256Url;
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "clan")
 	private Set<ClanMemberInformation> members;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "owner",
+			cascade = CascadeType.ALL)
 	private Set<TankFreezeInformation> freezeInfos;
 
 	public Clan() {
