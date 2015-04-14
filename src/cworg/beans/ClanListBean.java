@@ -39,7 +39,9 @@ public class ClanListBean {
 		if (players != null)
 			return players;
 		User user = (User) session.getAttribute("user");
-		clan = user.getPlayer().getClanInfo().getClan();
+		// get player from db so info is refreshed
+		Player player = em.find(Player.class, user.getAccountId());
+		clan = player.getClanInfo().getClan();
 		List<PlayerModel> res = new ArrayList<>();
 		for (ClanMemberInformation cm : clan.getMembers()) {
 			Player p = cm.getPlayer();

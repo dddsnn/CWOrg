@@ -22,8 +22,7 @@
 					rendered="#{p.getTankAvailability(t) == 'AVAILABLE'}" />
 				<h:outputText value="#{p.getUnfreezeTime(t)}"
 					rendered="#{p.getTankAvailability(t) == 'FROZEN'}">
-					<!-- <f:convertDateTime pattern="E HH:mm" /> -->
-					<f:converter converterId="InstantConverter" />
+					<f:converter converterId="InstantJsfConverter" />
 					<f:attribute name="pattern" value="E HH:mm" />
 				</h:outputText>
 			</h:column>
