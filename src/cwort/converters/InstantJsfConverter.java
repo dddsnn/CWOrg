@@ -12,8 +12,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
-@FacesConverter("InstantConverter")
-public class InstantConverter implements Converter {
+@FacesConverter("InstantJsfConverter")
+public class InstantJsfConverter implements Converter {
 
 	@Override
 	public Object getAsObject(FacesContext ctx, UIComponent comp, String s) {
