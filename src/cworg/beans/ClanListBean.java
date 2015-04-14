@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.servlet.http.HttpSession;
 
 import cworg.data.Clan;
@@ -52,10 +53,12 @@ public class ClanListBean {
 	}
 
 	public List<Tank> getTanks() {
-		if (tanks != null)
+		if (tanks != null) {
 			return tanks;
-		List<Tank> l =
-				em.createNamedQuery("findAllTanks", Tank.class).getResultList();
+		}
+		TypedQuery<Tank> q = em.createNamedQuery("findTanksByTier", Tank.class);
+		q.setParameter("tier", 10);
+		List<Tank> l = q.getResultList();
 		tanks = l;
 		return l;
 	}

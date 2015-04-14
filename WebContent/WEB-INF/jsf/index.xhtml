@@ -11,8 +11,8 @@
 <h:body>
 	<c:choose>
 		<c:when test="#{loginBean.loggedIn}">
-		logged in with account id #{loginBean.accountId}
-	<h:form>
+			logged in with account id #{loginBean.accountId}
+			<h:form>
 				<h:commandLink value="Logout" action="#{loginBean.logout}" />
 			</h:form>
 		</c:when>

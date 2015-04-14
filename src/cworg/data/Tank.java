@@ -8,8 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
-@NamedQueries({ @NamedQuery(name = "findAllTanks",
-		query = "select t from Tank t") })
+@NamedQueries({
+		@NamedQuery(name = "findAllTanks", query = "select t from Tank t"),
+		@NamedQuery(name = "findTanksByTier",
+				query = "select t from Tank t where t.tier = :tier") })
 @Entity
 public class Tank implements Serializable {
 	private static final long serialVersionUID = 1L;

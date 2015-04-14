@@ -9,6 +9,10 @@
 	<title>Insert title here</title>
 </h:head>
 <h:body>
+	logged in with account id #{loginBean.accountId}
+	<h:form>
+		<h:commandLink value="Logout" action="#{loginBean.logout}" />
+	</h:form>
 	<form action="replayupload/" method="post"
 		enctype="multipart/form-data">
 		<input type="file" name="fileName" /> <input type="submit"

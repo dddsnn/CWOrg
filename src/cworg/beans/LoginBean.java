@@ -44,6 +44,6 @@ public class LoginBean {
 		// TODO maybe remove from session on exception?
 		// successfully invalidated the token, remove user from session
 		session.removeAttribute("user");
-		return null;
+		return "/WEB-INF/jsf/index.xhtml?faces-redirect=true";
 	}
 }
